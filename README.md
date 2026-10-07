@@ -23,10 +23,12 @@ integrations/              ← Kiro steering rules to copy into each product rep
 ## Use it in a product
 
 ```html
-<link rel="stylesheet" href="https://<design-system host>/dist/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/perceptionmanager/design-system@main/dist/tokens.css">
 <!-- portfolio only, while migrating: -->
-<link rel="stylesheet" href="https://<design-system host>/dist/legacy-aliases.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/perceptionmanager/design-system@main/dist/legacy-aliases.css">
 ```
+
+For production, pin a release tag instead of `@main` (e.g. `@v0.1.0`) so a token change never reaches a product until you bump the version.
 
 ```css
 @layer tokens, base, components, product;
@@ -42,7 +44,11 @@ integrations/              ← Kiro steering rules to copy into each product rep
 
 Product CSS uses **semantic and component tokens**, not primitives. Type sizes are fluid: each role scales between its mobile and desktop size for viewports from 375px to 1280px, so you rarely need breakpoint overrides for text.
 
-**Hosting:** this repo is private, so public CDNs such as jsDelivr can't serve it. Import the repo into Vercel (`vercel.json` is ready). The stylesheet will then be at `https://<project>.vercel.app/dist/tokens.css`, with CORS open and a 5-minute cache.
+**Hosting:** the repo is public, so jsDelivr serves `dist/` directly from GitHub. `vercel.json` is also ready if you'd rather host it on Vercel with your own domain.
+
+## Figma
+
+The Figma library mirrors these tokens: [perceptionmanager design system](https://www.figma.com/design/OjKldfSUdETPYRFhlJ2PkU). It has 160 variables (with the CSS variable name as each one's code syntax), 12 text styles, 6 shadow styles, a gradient paint style, and 7 components. Primitives are hidden from pickers, so designers only see roles. Type sizes switch between the Responsive collection's Desktop and Mobile modes.
 
 ## Change a token
 
@@ -68,7 +74,7 @@ CI runs `npm run check` on every push and pull request. It also fails if `dist/`
 
 - [x] Audit and approved foundations
 - [x] Tokens, build, validation, CI
-- [ ] Figma library built from these tokens (variables → text styles → components)
+- [x] Figma library built from these tokens (variables → text styles → components)
 - [ ] Shared component CSS (`dist/components.css`) built from the portfolio's per-page copies
 - [ ] Migrate perceptionmanager.com, then Role Analyzer, UX Intelligence Engine and Kiro UX Auditor
 - [ ] Light mode (deferred — see DECISIONS.md)

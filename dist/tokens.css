@@ -230,14 +230,14 @@
     --pm-card-bg: var(--pm-color-surface-card);
     --pm-card-border: var(--pm-color-border-subtle);
     --pm-card-radius: var(--pm-radius-lg);
-    --pm-card-padding: var(--pm-space-8);
+    --pm-card-padding: var(--pm-space-6);
     /* tag */
-    --pm-tag-bg: var(--pm-color-surface-tint);
+    --pm-tag-bg: var(--pm-color-surface-tint-strong);
     --pm-tag-border: var(--pm-color-border-subtle);
     --pm-tag-radius: var(--pm-radius-full);
     --pm-tag-padding-y: var(--pm-space-1);
     --pm-tag-padding-x: var(--pm-space-3);
-    --pm-tag-text: var(--pm-color-text-secondary);
+    --pm-tag-text: var(--pm-color-text-tertiary);
     /* stat */
     --pm-stat-value-typography-size: var(--pm-type-heading-md-size);
     --pm-stat-value-typography-line-height: var(--pm-type-heading-md-line-height);
@@ -246,7 +246,7 @@
     --pm-stat-value-typography-tracking: var(--pm-type-heading-md-tracking);
     --pm-stat-label-color: var(--pm-color-text-tertiary);
     /* step */
-    --pm-step-num-size: var(--pm-space-10);
+    --pm-step-num-size: var(--pm-space-12);
     --pm-step-line-color: var(--pm-color-border-subtle);
     /* check */
     --pm-check-size: var(--pm-space-6);

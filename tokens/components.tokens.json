@@ -61,13 +61,13 @@
     },
     "padding": {
       "$type": "dimension",
-      "$value": "{space.8}"
+      "$value": "{space.6}"
     }
   },
   "tag": {
     "bg": {
       "$type": "color",
-      "$value": "{color.surface.tint}"
+      "$value": "{color.surface.tint-strong}"
     },
     "border": {
       "$type": "color",
@@ -87,7 +87,7 @@
     },
     "text": {
       "$type": "color",
-      "$value": "{color.text.secondary}"
+      "$value": "{color.text.tertiary}"
     }
   },
   "stat": {
@@ -103,7 +103,7 @@
   "step": {
     "num-size": {
       "$type": "dimension",
-      "$value": "{space.10}"
+      "$value": "{space.12}"
     },
     "line-color": {
       "$type": "color",

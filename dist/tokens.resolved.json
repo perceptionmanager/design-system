@@ -2266,10 +2266,10 @@
     "type": "dimension",
     "tier": "components",
     "value": {
-      "value": 2,
+      "value": 1.5,
       "unit": "rem"
     },
-    "aliasOf": "space.8"
+    "aliasOf": "space.6"
   },
   "tag.bg": {
     "type": "color",
@@ -2282,9 +2282,9 @@
         1
       ],
       "hex": "#ffffff",
-      "alpha": 0.03
+      "alpha": 0.06
     },
-    "aliasOf": "color.surface.tint"
+    "aliasOf": "color.surface.tint-strong"
   },
   "tag.border": {
     "type": "color",
@@ -2334,13 +2334,13 @@
     "value": {
       "colorSpace": "srgb",
       "components": [
-        0.651,
-        0.6784,
-        0.7333
+        0.5451,
+        0.5765,
+        0.6314
       ],
-      "hex": "#a6adbb"
+      "hex": "#8b93a1"
     },
-    "aliasOf": "color.text.secondary"
+    "aliasOf": "color.text.tertiary"
   },
   "stat.value-typography": {
     "type": "typography",
@@ -2383,10 +2383,10 @@
     "type": "dimension",
     "tier": "components",
     "value": {
-      "value": 2.5,
+      "value": 3,
       "unit": "rem"
     },
-    "aliasOf": "space.10"
+    "aliasOf": "space.12"
   },
   "step.line-color": {
     "type": "color",
