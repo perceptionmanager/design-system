@@ -48,7 +48,7 @@ Product CSS uses **semantic and component tokens**, not primitives. Type sizes a
 
 ## Figma
 
-The Figma library mirrors these tokens: [perceptionmanager design system](https://www.figma.com/design/OjKldfSUdETPYRFhlJ2PkU). It has 160 variables (with the CSS variable name as each one's code syntax), 12 text styles, 6 shadow styles, a gradient paint style, and 7 components. Primitives are hidden from pickers, so designers only see roles. Type sizes switch between the Responsive collection's Desktop and Mobile modes.
+The Figma library mirrors these tokens: [perceptionmanager design system](https://www.figma.com/design/OjKldfSUdETPYRFhlJ2PkU). It has 162 variables (with the CSS variable name as each one's code syntax), 12 text styles, 6 shadow styles, a gradient paint style, and 7 components. Primitives are hidden from pickers, so designers only see roles. Type sizes switch between the Responsive collection's Desktop and Mobile modes.
 
 ## Change a token
 

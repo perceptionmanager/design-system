@@ -218,6 +218,8 @@
     --pm-button-radius: var(--pm-radius-md);
     --pm-button-padding-y: var(--pm-space-4);
     --pm-button-padding-x: var(--pm-space-8);
+    --pm-button-tertiary-padding-y: var(--pm-space-2);
+    --pm-button-tertiary-padding-x: var(--pm-space-2);
     --pm-button-gap: var(--pm-space-3);
     --pm-button-min-height: var(--pm-layout-target-min);
     --pm-button-primary-bg: var(--pm-gradient-brand);

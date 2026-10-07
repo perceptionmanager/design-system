@@ -2054,6 +2054,24 @@
     },
     "aliasOf": "space.8"
   },
+  "button.tertiary-padding-y": {
+    "type": "dimension",
+    "tier": "components",
+    "value": {
+      "value": 0.5,
+      "unit": "rem"
+    },
+    "aliasOf": "space.2"
+  },
+  "button.tertiary-padding-x": {
+    "type": "dimension",
+    "tier": "components",
+    "value": {
+      "value": 0.5,
+      "unit": "rem"
+    },
+    "aliasOf": "space.2"
+  },
   "button.gap": {
     "type": "dimension",
     "tier": "components",

@@ -26,3 +26,9 @@ File: https://www.figma.com/design/OjKldfSUdETPYRFhlJ2PkU
 - 12 text styles: the 10 roles plus `Label/button` and `Label/tag`. The two extra styles combine existing tokens only (no new values), for the button and tag components.
 - Components: Button (Primary/Ghost/Tertiary × Default/Hover/Focus), Pill, Tag, Card, Stat, Step, Check item.
 - Known Figma limits: the focus ring has no 2px offset (Figma strokes can't offset), and hover lift / press scale are code-only motion.
+
+## 2026-10-07: Tertiary button padding
+Changed in Figma by Alex: the Tertiary button looked wrong with the portfolio's 8px/2px padding. Tertiary now uses **8px on all sides**.
+- New tokens: `button.tertiary-padding-y` and `button.tertiary-padding-x`, both `{space.2}`, mirrored as Figma variables bound to the Tertiary variants.
+- The Tertiary button is 36px tall. That passes WCAG 2.2 SC 2.5.8 (24px minimum) but is below the system's 44px comfortable target, which is acceptable for low-emphasis inline navigation.
+- The portfolio picks this up when it migrates to the tokens; today's `.btn-tertiary { padding: 8px 2px }` gets replaced.

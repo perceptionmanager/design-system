@@ -13,6 +13,15 @@
       "$type": "dimension",
       "$value": "{space.8}"
     },
+    "tertiary-padding-y": {
+      "$type": "dimension",
+      "$value": "{space.2}",
+      "$description": "Tertiary (text-only) button. Set in Figma 2026-10-07: 8px all sides (was 8px 2px in portfolio CSS)."
+    },
+    "tertiary-padding-x": {
+      "$type": "dimension",
+      "$value": "{space.2}"
+    },
     "gap": {
       "$type": "dimension",
       "$value": "{space.3}"
