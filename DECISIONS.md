@@ -37,3 +37,10 @@ Changed in Figma by Alex: the Tertiary button looked wrong with the portfolio's 
 In Figma the Ghost button was 54px and the others 52px: its 1px border counted toward its size. The live site has the same 2px mismatch (`.btn-ghost` adds `border: 1px` and `.btn` has none).
 - **Figma:** borders on every Button variant are now excluded from layout, so Primary and Ghost are both 52px. Tertiary is 36px.
 - **Code (applies when the shared button CSS is written):** a border must not change a button's size. Give every button `border: 1px solid transparent` and subtract 1px from its padding, or draw the Ghost outline with `box-shadow: inset 0 0 0 1px var(--pm-button-ghost-border)`. Either way, Primary and Ghost render at the same height.
+
+## 2026-10-07: Status and severity colors
+Needed by the Kiro UX Auditor (audit severity) and useful for any product that shows errors or warnings. Coral is the brand accent, so it is not used for severity.
+- New primitives: `rose.400` #FB7185, `orange.400` #FB923C, `amber.300` #FCD34D, plus 12% and 35% alpha versions of each.
+- New semantic roles under `color.status`: `critical`, `high`, `medium`, `low`, `error` (same hue as critical) and `warning` (same hue as medium). Each has `-subtle` (badge background) and `-border` variants.
+- All pass WCAG AA on every surface, and on their own 12% tint over a card (lowest: critical 4.83:1). `npm run validate` now checks them.
+- Severity is never shown by color alone: badges always carry the text label (SC 1.4.1).

@@ -38,7 +38,7 @@ for (const [path, t] of tokens) {
 const c = (p) => resolve(tokens, `{${p}}`);
 const gates = [];
 const SURFACES = ['color.surface.page', 'color.surface.raised', 'color.surface.card'];
-for (const text of ['color.text.primary', 'color.text.secondary', 'color.text.tertiary', 'color.text.accent', 'color.text.interactive-hover', 'color.status.success']) {
+for (const text of ['color.text.primary', 'color.text.secondary', 'color.text.tertiary', 'color.text.accent', 'color.text.interactive-hover', 'color.status.success', 'color.status.critical', 'color.status.high', 'color.status.medium', 'color.status.low', 'color.status.error', 'color.status.warning']) {
   for (const s of SURFACES) gates.push([text, s, 4.5, '1.4.3 text']);
 }
 gates.push(['color.text.on-accent', 'color.accent.primary', 4.5, '1.4.3 text']);

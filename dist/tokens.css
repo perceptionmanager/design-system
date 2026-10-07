@@ -37,6 +37,18 @@
     --pm-color-alpha-coral-a55: rgb(255 106 76 / 0.55);
     --pm-color-alpha-coral-a70: rgb(255 106 76 / 0.7);
     --pm-color-alpha-cyan-a12: rgb(69 224 255 / 0.12);
+    --pm-color-alpha-rose-a12: rgb(251 113 133 / 0.12);
+    --pm-color-alpha-rose-a35: rgb(251 113 133 / 0.35);
+    --pm-color-alpha-orange-a12: rgb(251 146 60 / 0.12);
+    --pm-color-alpha-orange-a35: rgb(251 146 60 / 0.35);
+    --pm-color-alpha-amber-a12: rgb(252 211 77 / 0.12);
+    --pm-color-alpha-amber-a35: rgb(252 211 77 / 0.35);
+    /* color.rose */
+    --pm-color-rose-400: #fb7185;
+    /* color.orange */
+    --pm-color-orange-400: #fb923c;
+    /* color.amber */
+    --pm-color-amber-300: #fcd34d;
     /* space */
     --pm-space-1: 0.25rem;
     --pm-space-2: 0.5rem;
@@ -137,6 +149,24 @@
     --pm-color-accent-secondary-subtle: var(--pm-color-alpha-cyan-a12);
     /* color.status */
     --pm-color-status-success: var(--pm-color-green-400);
+    --pm-color-status-critical: var(--pm-color-rose-400);
+    --pm-color-status-critical-subtle: var(--pm-color-alpha-rose-a12);
+    --pm-color-status-critical-border: var(--pm-color-alpha-rose-a35);
+    --pm-color-status-high: var(--pm-color-orange-400);
+    --pm-color-status-high-subtle: var(--pm-color-alpha-orange-a12);
+    --pm-color-status-high-border: var(--pm-color-alpha-orange-a35);
+    --pm-color-status-medium: var(--pm-color-amber-300);
+    --pm-color-status-medium-subtle: var(--pm-color-alpha-amber-a12);
+    --pm-color-status-medium-border: var(--pm-color-alpha-amber-a35);
+    --pm-color-status-low: var(--pm-color-neutral-400);
+    --pm-color-status-low-subtle: var(--pm-color-alpha-white-a6);
+    --pm-color-status-low-border: var(--pm-color-alpha-white-a10);
+    --pm-color-status-error: var(--pm-color-rose-400);
+    --pm-color-status-error-subtle: var(--pm-color-alpha-rose-a12);
+    --pm-color-status-error-border: var(--pm-color-alpha-rose-a35);
+    --pm-color-status-warning: var(--pm-color-amber-300);
+    --pm-color-status-warning-subtle: var(--pm-color-alpha-amber-a12);
+    --pm-color-status-warning-border: var(--pm-color-alpha-amber-a35);
     /* color.focus */
     --pm-color-focus-ring: var(--pm-color-cyan-400);
     /* gradient */

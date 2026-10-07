@@ -323,6 +323,117 @@
           "hex": "#45e0ff",
           "alpha": 0.12
         }
+      },
+      "rose-a12": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9843,
+            0.4431,
+            0.5216
+          ],
+          "hex": "#fb7185",
+          "alpha": 0.12
+        }
+      },
+      "rose-a35": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9843,
+            0.4431,
+            0.5216
+          ],
+          "hex": "#fb7185",
+          "alpha": 0.35
+        }
+      },
+      "orange-a12": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9843,
+            0.5725,
+            0.2353
+          ],
+          "hex": "#fb923c",
+          "alpha": 0.12
+        }
+      },
+      "orange-a35": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9843,
+            0.5725,
+            0.2353
+          ],
+          "hex": "#fb923c",
+          "alpha": 0.35
+        }
+      },
+      "amber-a12": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9882,
+            0.8275,
+            0.302
+          ],
+          "hex": "#fcd34d",
+          "alpha": 0.12
+        }
+      },
+      "amber-a35": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9882,
+            0.8275,
+            0.302
+          ],
+          "hex": "#fcd34d",
+          "alpha": 0.35
+        }
+      }
+    },
+    "rose": {
+      "400": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9843,
+            0.4431,
+            0.5216
+          ],
+          "hex": "#fb7185"
+        }
+      }
+    },
+    "orange": {
+      "400": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9843,
+            0.5725,
+            0.2353
+          ],
+          "hex": "#fb923c"
+        }
+      }
+    },
+    "amber": {
+      "300": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.9882,
+            0.8275,
+            0.302
+          ],
+          "hex": "#fcd34d"
+        }
       }
     }
   },

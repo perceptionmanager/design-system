@@ -82,7 +82,68 @@
     },
     "status": {
       "success": {
-        "$value": "{color.green.400}"
+        "$value": "{color.green.400}",
+        "$description": "Positive status (live dot, success messages)."
+      },
+      "critical": {
+        "$value": "{color.rose.400}",
+        "$description": "Severity: critical. Text/icon color; pair with -subtle background and -border."
+      },
+      "critical-subtle": {
+        "$value": "{color.alpha.rose-a12}"
+      },
+      "critical-border": {
+        "$value": "{color.alpha.rose-a35}"
+      },
+      "high": {
+        "$value": "{color.orange.400}",
+        "$description": "Severity: high."
+      },
+      "high-subtle": {
+        "$value": "{color.alpha.orange-a12}"
+      },
+      "high-border": {
+        "$value": "{color.alpha.orange-a35}"
+      },
+      "medium": {
+        "$value": "{color.amber.300}",
+        "$description": "Severity: medium."
+      },
+      "medium-subtle": {
+        "$value": "{color.alpha.amber-a12}"
+      },
+      "medium-border": {
+        "$value": "{color.alpha.amber-a35}"
+      },
+      "low": {
+        "$value": "{color.neutral.400}",
+        "$description": "Severity: low."
+      },
+      "low-subtle": {
+        "$value": "{color.alpha.white-a6}"
+      },
+      "low-border": {
+        "$value": "{color.alpha.white-a10}"
+      },
+      "error": {
+        "$value": "{color.rose.400}",
+        "$description": "Error messages and destructive states. Same hue as critical."
+      },
+      "error-subtle": {
+        "$value": "{color.alpha.rose-a12}"
+      },
+      "error-border": {
+        "$value": "{color.alpha.rose-a35}"
+      },
+      "warning": {
+        "$value": "{color.amber.300}",
+        "$description": "Warning messages. Same hue as medium."
+      },
+      "warning-subtle": {
+        "$value": "{color.alpha.amber-a12}"
+      },
+      "warning-border": {
+        "$value": "{color.alpha.amber-a35}"
       }
     },
     "focus": {
