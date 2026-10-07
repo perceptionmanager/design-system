@@ -1,0 +1,683 @@
+{
+  "$description": "Tier 2 — semantic roles. What products use. Change a role here and every product follows.",
+  "color": {
+    "$type": "color",
+    "surface": {
+      "page": {
+        "$value": "{color.neutral.900}"
+      },
+      "raised": {
+        "$value": "{color.neutral.850}"
+      },
+      "card": {
+        "$value": "{color.neutral.800}"
+      },
+      "sunken": {
+        "$value": "{color.neutral.950}"
+      },
+      "tint": {
+        "$value": "{color.alpha.white-a3}"
+      },
+      "tint-strong": {
+        "$value": "{color.alpha.white-a6}"
+      },
+      "scrim": {
+        "$value": "{color.alpha.neutral-950-a88}"
+      },
+      "scrim-strong": {
+        "$value": "{color.alpha.neutral-950-a97}"
+      }
+    },
+    "text": {
+      "primary": {
+        "$value": "{color.neutral.50}"
+      },
+      "secondary": {
+        "$value": "{color.neutral.400}"
+      },
+      "tertiary": {
+        "$value": "{color.neutral.500}",
+        "$description": "Was #7A8290 (4.0:1 on cards — fails AA). Lifted to #8B93A1 (5.0:1 on cards)."
+      },
+      "on-accent": {
+        "$value": "{color.neutral.950}"
+      },
+      "accent": {
+        "$value": "{color.coral.500}"
+      },
+      "interactive-hover": {
+        "$value": "{color.cyan.400}"
+      }
+    },
+    "border": {
+      "subtle": {
+        "$value": "{color.alpha.white-a10}"
+      },
+      "strong": {
+        "$value": "{color.alpha.white-a24}"
+      },
+      "accent": {
+        "$value": "{color.alpha.coral-a35}"
+      },
+      "interactive-hover": {
+        "$value": "{color.cyan.400}"
+      }
+    },
+    "accent": {
+      "primary": {
+        "$value": "{color.coral.500}"
+      },
+      "secondary": {
+        "$value": "{color.cyan.400}"
+      },
+      "primary-subtle": {
+        "$value": "{color.alpha.coral-a12}"
+      },
+      "primary-muted": {
+        "$value": "{color.alpha.coral-a24}"
+      },
+      "secondary-subtle": {
+        "$value": "{color.alpha.cyan-a12}"
+      }
+    },
+    "status": {
+      "success": {
+        "$value": "{color.green.400}"
+      }
+    },
+    "focus": {
+      "ring": {
+        "$value": "{color.cyan.400}"
+      }
+    }
+  },
+  "gradient": {
+    "$type": "gradient",
+    "brand": {
+      "$value": [
+        {
+          "color": "{color.coral.500}",
+          "position": 0
+        },
+        {
+          "color": "{color.coral.300}",
+          "position": 0.35
+        },
+        {
+          "color": "{color.cyan.400}",
+          "position": 1
+        }
+      ],
+      "$extensions": {
+        "com.perceptionmanager.css": {
+          "angle": "100deg"
+        }
+      }
+    }
+  },
+  "typography": {
+    "$type": "typography",
+    "caption": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.12}",
+        "fontWeight": "{font.weight.semibold}",
+        "letterSpacing": {
+          "value": 0.0375,
+          "unit": "rem"
+        },
+        "lineHeight": "{font.line-height.normal}"
+      },
+      "$extensions": {
+        "com.perceptionmanager.fluid": {
+          "min": {
+            "value": 0.75,
+            "unit": "rem"
+          },
+          "max": {
+            "value": 0.75,
+            "unit": "rem"
+          },
+          "viewport": {
+            "min": 375,
+            "max": 1280
+          }
+        },
+        "com.perceptionmanager.css": {
+          "tracking": "{font.tracking.caps}",
+          "textTransform": "uppercase"
+        }
+      },
+      "$description": "0.05em at 12px = 0.0375rem. CSS output uses the em token so tracking scales with size."
+    },
+    "small": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.14}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        },
+        "lineHeight": "{font.line-height.normal}"
+      },
+      "$extensions": {
+        "com.perceptionmanager.fluid": {
+          "min": {
+            "value": 0.875,
+            "unit": "rem"
+          },
+          "max": {
+            "value": 0.875,
+            "unit": "rem"
+          },
+          "viewport": {
+            "min": 375,
+            "max": 1280
+          }
+        },
+        "com.perceptionmanager.css": {
+          "tracking": "{font.tracking.normal}"
+        }
+      }
+    },
+    "body": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.16}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        },
+        "lineHeight": "{font.line-height.relaxed}"
+      },
+      "$extensions": {
+        "com.perceptionmanager.fluid": {
+          "min": {
+            "value": 1,
+            "unit": "rem"
+          },
+          "max": {
+            "value": 1,
+            "unit": "rem"
+          },
+          "viewport": {
+            "min": 375,
+            "max": 1280
+          }
+        },
+        "com.perceptionmanager.css": {
+          "tracking": "{font.tracking.normal}"
+        }
+      }
+    },
+    "body-lg": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.18}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        },
+        "lineHeight": "{font.line-height.relaxed}"
+      },
+      "$extensions": {
+        "com.perceptionmanager.fluid": {
+          "min": {
+            "value": 1.125,
+            "unit": "rem"
+          },
+          "max": {
+            "value": 1.125,
+            "unit": "rem"
+          },
+          "viewport": {
+            "min": 375,
+            "max": 1280
+          }
+        },
+        "com.perceptionmanager.css": {
+          "tracking": "{font.tracking.normal}"
+        }
+      }
+    },
+    "lead": {
+      "$value": {
+        "fontFamily": "{font.family.sans}",
+        "fontSize": "{font.size.20}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        },
+        "lineHeight": "{font.line-height.relaxed}"
+      },
+      "$extensions": {
+        "com.perceptionmanager.fluid": {
+          "min": {
+            "value": 1.0625,
+            "unit": "rem"
+          },
+          "max": {
+            "value": 1.25,
+            "unit": "rem"
+          },
+          "viewport": {
+            "min": 375,
+            "max": 1280
+          }
+        },
+        "com.perceptionmanager.css": {
+          "tracking": "{font.tracking.normal}"
+        }
+      }
+    },
+    "heading-sm": {
+      "$value": {
+        "fontFamily": "{font.family.display}",
+        "fontSize": "{font.size.24}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        },
+        "lineHeight": "{font.line-height.snug}"
+      },
+      "$extensions": {
+        "com.perceptionmanager.fluid": {
+          "min": {
+            "value": 1.25,
+            "unit": "rem"
+          },
+          "max": {
+            "value": 1.5,
+            "unit": "rem"
+          },
+          "viewport": {
+            "min": 375,
+            "max": 1280
+          }
+        },
+        "com.perceptionmanager.css": {
+          "tracking": "{font.tracking.normal}"
+        }
+      }
+    },
+    "heading-md": {
+      "$value": {
+        "fontFamily": "{font.family.display}",
+        "fontSize": "{font.size.32}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        },
+        "lineHeight": "{font.line-height.snug}"
+      },
+      "$extensions": {
+        "com.perceptionmanager.fluid": {
+          "min": {
+            "value": 1.5,
+            "unit": "rem"
+          },
+          "max": {
+            "value": 2,
+            "unit": "rem"
+          },
+          "viewport": {
+            "min": 375,
+            "max": 1280
+          }
+        },
+        "com.perceptionmanager.css": {
+          "tracking": "{font.tracking.normal}"
+        }
+      }
+    },
+    "heading-lg": {
+      "$value": {
+        "fontFamily": "{font.family.display}",
+        "fontSize": "{font.size.40}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        },
+        "lineHeight": "{font.line-height.snug}"
+      },
+      "$extensions": {
+        "com.perceptionmanager.fluid": {
+          "min": {
+            "value": 1.75,
+            "unit": "rem"
+          },
+          "max": {
+            "value": 2.5,
+            "unit": "rem"
+          },
+          "viewport": {
+            "min": 375,
+            "max": 1280
+          }
+        },
+        "com.perceptionmanager.css": {
+          "tracking": "{font.tracking.normal}"
+        }
+      }
+    },
+    "display-md": {
+      "$value": {
+        "fontFamily": "{font.family.display}",
+        "fontSize": "{font.size.60}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        },
+        "lineHeight": "{font.line-height.tight}"
+      },
+      "$extensions": {
+        "com.perceptionmanager.fluid": {
+          "min": {
+            "value": 2.25,
+            "unit": "rem"
+          },
+          "max": {
+            "value": 3.75,
+            "unit": "rem"
+          },
+          "viewport": {
+            "min": 375,
+            "max": 1280
+          }
+        },
+        "com.perceptionmanager.css": {
+          "tracking": "{font.tracking.normal}"
+        }
+      }
+    },
+    "display-lg": {
+      "$value": {
+        "fontFamily": "{font.family.display}",
+        "fontSize": "{font.size.76}",
+        "fontWeight": "{font.weight.regular}",
+        "letterSpacing": {
+          "value": 0,
+          "unit": "px"
+        },
+        "lineHeight": "{font.line-height.tight}"
+      },
+      "$extensions": {
+        "com.perceptionmanager.fluid": {
+          "min": {
+            "value": 2.625,
+            "unit": "rem"
+          },
+          "max": {
+            "value": 4.75,
+            "unit": "rem"
+          },
+          "viewport": {
+            "min": 375,
+            "max": 1280
+          }
+        },
+        "com.perceptionmanager.css": {
+          "tracking": "{font.tracking.normal}"
+        }
+      }
+    }
+  },
+  "shadow": {
+    "$type": "shadow",
+    "elevation-1": {
+      "$value": {
+        "color": "{color.alpha.black-a50}",
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 10,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 30,
+          "unit": "px"
+        },
+        "spread": {
+          "value": -10,
+          "unit": "px"
+        }
+      }
+    },
+    "elevation-2": {
+      "$value": {
+        "color": "{color.alpha.black-a35}",
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 10,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 30,
+          "unit": "px"
+        },
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    },
+    "elevation-3": {
+      "$value": {
+        "color": "{color.alpha.black-a60}",
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 20,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 60,
+          "unit": "px"
+        },
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    },
+    "glow-accent": {
+      "$value": {
+        "color": "{color.alpha.coral-a55}",
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 8,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 24,
+          "unit": "px"
+        },
+        "spread": {
+          "value": -8,
+          "unit": "px"
+        }
+      }
+    },
+    "glow-accent-hover": {
+      "$value": {
+        "color": "{color.alpha.coral-a70}",
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 14,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 32,
+          "unit": "px"
+        },
+        "spread": {
+          "value": -8,
+          "unit": "px"
+        }
+      }
+    },
+    "glow-success": {
+      "$value": {
+        "color": "{color.green.400}",
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 0,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 12,
+          "unit": "px"
+        },
+        "spread": {
+          "value": 2,
+          "unit": "px"
+        }
+      }
+    }
+  },
+  "motion": {
+    "$type": "transition",
+    "hover": {
+      "$value": {
+        "duration": "{duration.fast}",
+        "delay": {
+          "value": 0,
+          "unit": "ms"
+        },
+        "timingFunction": "{easing.standard}"
+      }
+    },
+    "state": {
+      "$value": {
+        "duration": "{duration.base}",
+        "delay": {
+          "value": 0,
+          "unit": "ms"
+        },
+        "timingFunction": "{easing.standard}"
+      }
+    },
+    "enter": {
+      "$value": {
+        "duration": "{duration.entrance}",
+        "delay": {
+          "value": 0,
+          "unit": "ms"
+        },
+        "timingFunction": "{easing.emphasized}"
+      }
+    }
+  },
+  "layout": {
+    "$type": "dimension",
+    "content-max": {
+      "$value": {
+        "value": 72.5,
+        "unit": "rem"
+      }
+    },
+    "measure-narrow": {
+      "$value": {
+        "value": 40,
+        "unit": "rem"
+      }
+    },
+    "measure": {
+      "$value": {
+        "value": 45,
+        "unit": "rem"
+      }
+    },
+    "measure-wide": {
+      "$value": {
+        "value": 53.75,
+        "unit": "rem"
+      }
+    },
+    "gutter": {
+      "$value": {
+        "value": 3,
+        "unit": "rem"
+      },
+      "$extensions": {
+        "com.perceptionmanager.fluid": {
+          "min": {
+            "value": 1.25,
+            "unit": "rem"
+          },
+          "max": {
+            "value": 3,
+            "unit": "rem"
+          }
+        }
+      }
+    },
+    "section-y": {
+      "$value": {
+        "value": 6,
+        "unit": "rem"
+      },
+      "$extensions": {
+        "com.perceptionmanager.fluid": {
+          "min": {
+            "value": 3.5,
+            "unit": "rem"
+          },
+          "max": {
+            "value": 6,
+            "unit": "rem"
+          }
+        }
+      }
+    },
+    "nav-height": {
+      "$value": {
+        "value": 6,
+        "unit": "rem"
+      },
+      "$extensions": {
+        "com.perceptionmanager.fluid": {
+          "min": {
+            "value": 5,
+            "unit": "rem"
+          },
+          "max": {
+            "value": 6,
+            "unit": "rem"
+          }
+        }
+      }
+    },
+    "target-min": {
+      "$value": {
+        "value": 2.75,
+        "unit": "rem"
+      },
+      "$description": "Minimum interactive target. WCAG 2.2 SC 2.5.8 requires 24px; 44px is the comfortable touch target."
+    }
+  }
+}

@@ -1,0 +1,19 @@
+/* Legacy aliases — GENERATED. Maps the portfolio's original variable names to tokens so pages can migrate one at a time.
+   Load after tokens.css. Remove once no page references the old names. */
+@layer tokens {
+  :root {
+    --bg: var(--pm-color-surface-page);
+    --bg-panel: var(--pm-color-surface-raised);
+    --bg-card: var(--pm-color-surface-card);
+    --line: var(--pm-color-border-subtle);
+    --ink: var(--pm-color-text-primary);
+    --ink-dim: var(--pm-color-text-secondary);
+    --ink-faint: var(--pm-color-text-tertiary);
+    --coral: var(--pm-color-accent-primary);
+    --cyan: var(--pm-color-accent-secondary);
+    --grad: var(--pm-gradient-brand);
+    --nav-height: var(--pm-layout-nav-height);
+    --wrap-max: var(--pm-layout-content-max);
+    --wrap-pad: var(--pm-layout-gutter);
+  }
+}

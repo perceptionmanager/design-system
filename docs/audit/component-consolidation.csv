@@ -1,0 +1,56 @@
+proposed component,current selector,pages defining it,distinct variants,declarations today,declarations after (upper bound),action
+pm-footer,.site-footer .wrap,15,2,187,15,2 variants — pick one or make a named modifier
+pm-nav,.nav-links,15,1,60,4,identical on every page — collapse to one rule
+pm-badge,.badge-label,15,1,60,4,identical on every page — collapse to one rule
+pm-nav,.nav-menu-btn,15,1,30,2,identical on every page — collapse to one rule
+pm-badge,.badge-icon,15,1,30,2,identical on every page — collapse to one rule
+pm-nav (case-study variant),.cs-top-nav,12,1,84,7,identical on every page — collapse to one rule
+pm-steps,.step-num,10,1,160,16,identical on every page — collapse to one rule
+pm-checklist,.check,10,2,140,15,2 variants — pick one or make a named modifier
+pm-stat,.stat,10,1,90,9,identical on every page — collapse to one rule
+pm-steps,.step-line,10,1,80,8,identical on every page — collapse to one rule
+pm-steps,.step,10,1,70,7,identical on every page — collapse to one rule
+pm-checklist,.check-row,10,1,70,7,identical on every page — collapse to one rule
+pm-steps,.step p,10,3,63,8,3 variants — pick one or make a named modifier
+pm-stat,.stat span,10,1,30,3,identical on every page — collapse to one rule
+pm-steps,.step h3,10,1,30,3,identical on every page — collapse to one rule
+pm-checklist,.check-row p,10,2,30,4,2 variants — pick one or make a named modifier
+pm-stat,.stat:first-child,10,1,10,1,identical on every page — collapse to one rule
+pm-stat,.stat:last-child,10,1,10,1,identical on every page — collapse to one rule
+pm-steps,.step:last-child,10,1,10,1,identical on every page — collapse to one rule
+pm-checklist,.check-row:last-child,10,1,10,1,identical on every page — collapse to one rule
+pm-steps,.step:last-child .step-line,9,1,9,1,identical on every page — collapse to one rule
+pm-stat,.stat b,8,3,39,7,3 variants — pick one or make a named modifier
+pm-ambient,.blob-cyan-group,8,1,16,2,identical on every page — collapse to one rule
+pm-media-frame,.shot-placeholder,6,4,91,24,4 variants — pick one or make a named modifier
+pm-hero,.hero-sub,6,5,45,13,5 variants — pick one or make a named modifier
+pm-hero,.hero h1,6,6,41,23,6 variants — pick one or make a named modifier
+pm-media-frame,.shot-placeholder span,6,2,31,10,2 variants — pick one or make a named modifier
+pm-media-frame,.shot-placeholder svg,6,1,12,2,identical on every page — collapse to one rule
+pm-media-frame,.shot-img,4,3,32,16,3 variants — pick one or make a named modifier
+pm-card,.visual-grid,4,2,32,9,2 variants — pick one or make a named modifier
+pm-hero (case-study variant),.cs-hero h1,4,3,32,17,3 variants — pick one or make a named modifier
+pm-cta-band,.cs-cta h2,4,2,25,8,2 variants — pick one or make a named modifier
+pm-hero (case-study variant),.cs-hero,4,1,24,6,identical on every page — collapse to one rule
+pm-cta-band,.cs-cta-actions,4,3,24,13,3 variants — pick one or make a named modifier
+pm-section,.cs-outcomes,4,3,22,8,3 variants — pick one or make a named modifier
+pm-quote,.quote-card p,4,3,21,9,3 variants — pick one or make a named modifier
+pm-cta-band,.cs-cta,4,2,21,6,2 variants — pick one or make a named modifier
+pm-cta-band,.cta-actions,4,2,20,6,2 variants — pick one or make a named modifier
+pm-hero (case-study variant),.cs-hero-logo,4,3,16,8,3 variants — pick one or make a named modifier
+pm-section,.cs-outcomes h2,4,2,10,4,2 variants — pick one or make a named modifier
+pm-ambient,.blob-coral-group,4,1,8,2,identical on every page — collapse to one rule
+pm-quote,.testimonial-card,4,4,8,5,4 variants — pick one or make a named modifier
+pm-split,.cs-split,3,1,30,10,identical on every page — collapse to one rule
+pm-hero (case-study variant),.cs-hero-sub,3,1,24,8,identical on every page — collapse to one rule
+pm-stat,.stats-wrap,3,2,18,11,2 variants — pick one or make a named modifier
+pm-cta-band,.cta-heading,3,1,18,6,identical on every page — collapse to one rule
+pm-card,.visual-card p,3,1,18,6,identical on every page — collapse to one rule
+pm-card,.visual-card h3,3,1,15,5,identical on every page — collapse to one rule
+pm-hero,.hero,3,2,12,8,2 variants — pick one or make a named modifier
+pm-split,.cs-split > p,3,2,11,4,2 variants — pick one or make a named modifier
+pm-stat,.cs-stats,3,3,10,6,3 variants — pick one or make a named modifier
+typography roles,.cs-h2-lg,3,1,6,2,identical on every page — collapse to one rule
+typography roles,.cs-h2-md,3,1,6,2,identical on every page — collapse to one rule
+pm-quote,.quote-card,3,2,3,2,2 variants — pick one or make a named modifier
+pm-split,.cs-split h2,3,1,3,1,identical on every page — collapse to one rule

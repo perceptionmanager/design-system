@@ -1,0 +1,258 @@
+category,current value,proposed token,proposed value(s),declarations,declarations that change visually,notes
+color,var(--line),color.border.subtle,var(--pm-color-border-subtle),116,0,
+color,var(--ink-dim),color.text.secondary,var(--pm-color-text-secondary),92,0,
+color,var(--ink-faint),color.text.tertiary,var(--pm-color-text-tertiary),67,67,
+color,var(--coral),color.accent.primary,var(--pm-color-accent-primary),62,0,
+color,var(--ink),color.text.primary,var(--pm-color-text-primary),52,0,
+color,var(--cyan),color.accent.secondary,var(--pm-color-accent-secondary),42,0,
+color,var(--bg-card),color.surface.card,var(--pm-color-surface-card),37,0,
+color,var(--bg),color.surface.page,var(--pm-color-surface-page),34,0,
+color,var(--grad),gradient.brand,var(--pm-gradient-brand),23,0,
+color,"rgba(255,255,255,.22)",color.border.strong,var(--pm-color-border-strong),15,15,
+color,"rgba(255,255,255,.18)",color.alpha.white-a18,var(--pm-color-alpha-white-a18),15,0,
+color,#0A0C10,color.text.on-accent,var(--pm-color-text-on-accent),14,0,
+color,"rgba(255,255,255,.25)",color.border.strong,var(--pm-color-border-strong),6,6,
+color,#4ADE80,color.status.success,var(--pm-color-status-success),5,0,
+color,#fff,color.text.primary,var(--pm-color-text-primary),4,4,#FFF folded into primary text #F3F1EC
+color,"rgba(255, 106, 76, .35)",color.border.accent,var(--pm-color-border-accent),3,0,
+color,var(--bg-panel),color.surface.raised,var(--pm-color-surface-raised),3,0,
+color,"rgba(10,12,16,.97)",color.surface.scrim-strong,var(--pm-color-surface-scrim-strong),3,0,
+color,"rgba(255, 255, 255, .03)",color.surface.tint,var(--pm-color-surface-tint),2,0,
+color,"rgba(255, 106, 76, .22)",color.accent.primary-muted,var(--pm-color-accent-primary-muted),2,2,
+color,"rgba(255,106,76,.35)",color.border.accent,var(--pm-color-border-accent),2,0,
+color,"rgba(255, 255, 255, .22)",color.border.strong,var(--pm-color-border-strong),2,2,
+color,"rgba(255, 255, 255, .25)",color.border.strong,var(--pm-color-border-strong),2,2,
+color,#1c2130,color.surface.raised,var(--pm-color-surface-raised),2,2,
+color,#12151c,color.surface.page,var(--pm-color-surface-page),2,2,
+color,"rgba(255, 106, 76, .55)",color.alpha.coral-a55,var(--pm-color-alpha-coral-a55),1,0,
+color,"rgba(255, 106, 76, .7)",color.alpha.coral-a70,var(--pm-color-alpha-coral-a70),1,0,
+color,"rgba(20, 23, 31, 0)",(transparent stop — keep),"rgba(20, 23, 31, 0)",1,0,
+color,"rgba(69, 224, 255, .18)",color.accent.secondary-subtle,var(--pm-color-accent-secondary-subtle),1,1,
+color,"rgba(255, 156, 91, .2)",color.accent.primary-muted,var(--pm-color-accent-primary-muted),1,1,
+color,"rgba(255, 106, 76, 0)",(transparent stop — keep),"rgba(255, 106, 76, 0)",1,0,
+color,"rgba(69, 224, 255, 0)",(transparent stop — keep),"rgba(69, 224, 255, 0)",1,0,
+color,"rgba(0, 0, 0, .5)",color.alpha.black-a50,var(--pm-color-alpha-black-a50),1,0,
+color,"rgba(255, 106, 76, .12)",color.accent.primary-subtle,var(--pm-color-accent-primary-subtle),1,0,
+color,"rgba(255, 156, 91, .08)",color.accent.primary-subtle,var(--pm-color-accent-primary-subtle),1,1,
+color,"rgba(69, 224, 255, .10)",color.accent.secondary-subtle,var(--pm-color-accent-secondary-subtle),1,1,
+color,"rgba(255, 255, 255, .06)",color.surface.tint-strong,var(--pm-color-surface-tint-strong),1,0,
+color,"rgba(255,106,76,.12)",color.accent.primary-subtle,var(--pm-color-accent-primary-subtle),1,0,
+color,"rgba(255,106,76,.3)",color.border.accent,var(--pm-color-border-accent),1,1,
+color,"rgba(255,255,255,.06)",color.surface.tint-strong,var(--pm-color-surface-tint-strong),1,0,
+color,"rgba(0,0,0,.35)",color.alpha.black-a35,var(--pm-color-alpha-black-a35),1,0,
+color,"rgba(15,17,23,.82)",color.surface.scrim,var(--pm-color-surface-scrim),1,1,
+color,"rgba(8,10,14,.88)",color.surface.scrim,var(--pm-color-surface-scrim),1,1,
+color,"rgba(0,0,0,.6)",color.alpha.black-a60,var(--pm-color-alpha-black-a60),1,0,
+color,"rgba(255,255,255,.75)",color.text.secondary,var(--pm-color-text-secondary),1,1,
+color,"rgba(27,31,41,.9)",color.surface.scrim,var(--pm-color-surface-scrim),1,1,
+color,"rgba(255,255,255,.14)",color.alpha.white-a18,var(--pm-color-alpha-white-a18),1,1,
+color,"rgba(255,255,255,.02)",color.surface.tint,var(--pm-color-surface-tint),1,1,
+color,#EF0402,(data-viz — excluded),#EF0402,1,0,
+color,#5CAD03,(data-viz — excluded),#5CAD03,1,0,
+color,"rgba(255,106,76,.5)",color.alpha.coral-a55,var(--pm-color-alpha-coral-a55),1,1,
+color,#9ACB63,(data-viz — excluded),#9ACB63,1,0,
+color,#6F62FB,(data-viz — excluded),#6F62FB,1,0,
+color,#AE62FB,(data-viz — excluded),#AE62FB,1,0,
+color,#FB62D2,(data-viz — excluded),#FB62D2,1,0,
+font-size,16px,typography.body,16px (desktop end of body) | 16px (mobile end of body),79,0,
+font-size,15px,typography.body,16px (desktop end of body) | 16px (mobile end of body),60,60,tie between two roles — rounded up
+font-size,14px,typography.small,14px (desktop end of small) | 14px (mobile end of small),57,0,
+font-size,12px,typography.caption,12px (desktop end of caption) | 12px (mobile end of caption),49,0,
+font-size,13px,typography.small,14px (desktop end of small) | 14px (mobile end of small),34,34,tie between two roles — rounded up
+font-size,17px,typography.body-lg,18px (desktop end of body-lg),28,28,tie between two roles — rounded up
+font-size,24px,typography.heading-md,24px (mobile end of heading-md),28,0,
+font-size,19px,typography.lead,20px (desktop end of lead),27,27,tie between two roles — rounded up
+font-size,11px,typography.caption,12px (desktop end of caption) | 12px (mobile end of caption),26,26,raised from 11px (legibility floor 12px)
+font-size,17px,typography.lead,17px (mobile end of lead),26,0,
+font-size,34px,typography.heading-md,32px (desktop end of heading-md),26,26,
+font-size,18px,typography.body-lg,18px (desktop end of body-lg) | 18px (mobile end of body-lg),24,0,
+font-size,38px,typography.heading-lg,40px (desktop end of heading-lg),19,19,
+font-size,26px,typography.heading-lg,28px (mobile end of heading-lg),18,18,tie between two roles — rounded up
+font-size,9px,typography.caption,12px (mobile end of caption),17,17,raised from 9px (legibility floor 12px)
+font-size,20px,typography.lead,20px (desktop end of lead),14,0,
+font-size,32px,typography.heading-md,32px (desktop end of heading-md),12,0,
+font-size,24px,typography.heading-sm,24px (desktop end of heading-sm),10,0,
+font-size,34px,typography.display-md,36px (mobile end of display-md),6,6,role by element (h1)
+font-size,56px,typography.display-md,60px (desktop end of display-md),4,4,role by element (h1)
+font-size,19px,typography.heading-sm,20px (mobile end of heading-sm),4,4,tie between two roles — rounded up
+font-size,21px,typography.heading-sm,20px (mobile end of heading-sm),4,4,
+font-size,28px,typography.display-md,36px (mobile end of display-md),3,3,role by element (h1)
+font-size,10px,typography.caption,12px (mobile end of caption),3,3,raised from 10px (legibility floor 12px)
+font-size,64px,typography.display-md,60px (desktop end of display-md),3,3,role by element (h1)
+font-size,30px,typography.heading-md,32px (desktop end of heading-md),3,3,
+font-size,44px,typography.display-md,60px (desktop end of display-md),2,2,role by element (h1)
+font-size,38px,typography.display-md,36px (mobile end of display-md),2,2,role by element (h1)
+font-size,28px,typography.heading-lg,28px (mobile end of heading-lg),2,0,
+font-size,52px,typography.display-md,60px (desktop end of display-md),2,2,role by element (h1)
+font-size,32px,typography.display-md,36px (mobile end of display-md),2,2,role by element (h1)
+font-size,60px,typography.display-md,60px (desktop end of display-md),1,0,role by element (h1)
+font-size,22px,typography.heading-md,24px (mobile end of heading-md),1,1,tie between two roles — rounded up
+font-size,46px,typography.display-md,60px (desktop end of display-md),1,1,role by element (h1)
+font-size,48px,typography.display-md,60px (desktop end of display-md),1,1,role by element (h1)
+font-size,30px,typography.display-md,36px (mobile end of display-md),1,1,role by element (h1)
+font-size,76px,typography.display-lg,76px (desktop end of display-lg),1,0,role by element (h1)
+font-size,42px,typography.display-lg,42px (mobile end of display-lg),1,0,role by element (h1)
+font-size,28px,typography.heading-md,32px (desktop end of heading-md),1,1,tie between two roles — rounded up
+font-size,21px,typography.lead,20px (desktop end of lead),1,1,
+font-size,20px,typography.heading-sm,20px (mobile end of heading-sm),1,0,
+font-size,22px,typography.heading-sm,24px (desktop end of heading-sm),1,1,tie between two roles — rounded up
+font-size,40px,typography.heading-lg,40px (desktop end of heading-lg),1,0,
+font-weight,700,font.weight.bold,700,26,0,
+font-weight,600,font.weight.semibold,600,19,0,
+font-weight,400,font.weight.regular,400,12,0,
+font-weight,500,font.weight.semibold,600,2,2,500 has no role — moved to 600
+letter-spacing,.04em,font.tracking.caps,0.05em,17,17,
+letter-spacing,.05em,font.tracking.caps,0.05em,17,0,
+letter-spacing,.02em,font.tracking.wide,0.02em,17,0,
+letter-spacing,.06em,font.tracking.caps,0.05em,7,7,
+letter-spacing,.03em,font.tracking.caps,0.05em,1,1,
+letter-spacing,.08em,font.tracking.caps,0.05em,1,1,
+line-height,1.6,font.line-height.relaxed,1.65,45,45,
+line-height,1.65,font.line-height.relaxed,1.65,32,0,
+line-height,1.5,font.line-height.normal,1.5,25,0,
+line-height,1.7,font.line-height.relaxed,1.65,20,20,
+line-height,1.3,font.line-height.snug,1.25,15,15,
+line-height,1.2,font.line-height.snug,1.25,14,14,
+line-height,1.25,font.line-height.snug,1.25,9,0,
+line-height,1.12,font.line-height.tight,1.1,9,9,
+line-height,1.18,font.line-height.snug,1.25,7,7,
+line-height,1,font.line-height.none,1,6,0,
+line-height,1.08,font.line-height.tight,1.1,5,5,
+line-height,1.1,font.line-height.tight,1.1,5,0,
+line-height,1.15,font.line-height.tight,1.1,3,3,
+line-height,1.55,font.line-height.normal,1.5,3,3,
+line-height,1.4,font.line-height.normal,1.5,1,1,
+line-height,1.05,font.line-height.tight,1.1,1,1,
+motion,5s,"(ambient/looping — keep, add reduced-motion stop)",5s,26,0,
+motion,.2s,duration.fast,200ms,7,0,
+motion,.25s,duration.fast,200ms,5,5,
+motion,.3s,duration.base,300ms,3,0,
+motion,.35s,duration.base,300ms,3,3,
+motion,2.2s,"(ambient/looping — keep, add reduced-motion stop)",2.2s,2,0,
+motion,1.6s,"(ambient/looping — keep, add reduced-motion stop)",1.6s,1,0,
+motion,.9s,duration.entrance,900ms,1,0,
+motion,.6s,duration.slow,600ms,1,0,
+motion,34s,"(ambient/looping — keep, add reduced-motion stop)",34s,1,0,
+motion,.5s,duration.slow,600ms,1,1,
+motion,.4s,duration.base,300ms,1,1,
+motion,36s,"(ambient/looping — keep, add reduced-motion stop)",36s,1,0,
+motion,26s,"(ambient/looping — keep, add reduced-motion stop)",26s,1,0,
+radius,50%,radius.full,50% (circle — keep),32,0,
+radius,20px,radius.lg,20px,17,0,
+radius,18px,radius.lg,20px,15,15,
+radius,14px,radius.md,12px,15,15,
+radius,999px,radius.full,9999px,6,6,
+radius,var(--pp-shot-radius),(device-frame geometry — excluded),var(--pp-shot-radius),3,0,
+radius,12px,radius.md,12px,2,0,
+radius,2px,radius.xs,2px,2,0,
+radius,10px,radius.md,12px,2,2,
+radius,24px,radius.lg,20px,2,2,
+radius,16px,radius.lg,20px,2,2,
+radius,0,radius.none,0,1,0,
+radius,8px 8px 0 0,radius.sm radius.sm,8px 8px 0 0,1,0,
+radius,6px 6px 0 0,radius.sm radius.sm,8px 8px 0 0,1,1,
+shadow,0 0 12px 2px #4ADE80,shadow.glow-success,var(--pm-shadow-glow-success),1,0,
+shadow,"0 8px 24px -8px rgba(255, 106, 76, .55)",shadow.glow-accent,var(--pm-shadow-glow-accent),1,0,
+shadow,"0 14px 32px -8px rgba(255, 106, 76, .7)",shadow.glow-accent-hover,var(--pm-shadow-glow-accent-hover),1,0,
+shadow,"0 10px 30px -10px rgba(0, 0, 0, .5)",shadow.elevation-1,var(--pm-shadow-elevation-1),1,0,
+shadow,0 0 8px 1px #4ADE80,shadow.glow-success,var(--pm-shadow-glow-success),1,1,
+shadow,0 0 8px 1px var(--coral),(component-specific — keep; swap colors for tokens),0 0 8px 1px var(--coral),1,0,
+shadow,"0 10px 30px rgba(0,0,0,.35)",shadow.elevation-2,var(--pm-shadow-elevation-2),1,0,
+shadow,"0 0 0 2px rgba(255,106,76,.6), 0 10px 30px rgba(0,0,0,.35)",(component-specific — keep; swap colors for tokens),"0 0 0 2px rgba(255,106,76,.6), 0 10px 30px rgba(0,0,0,.35)",1,0,
+shadow,"0 20px 60px rgba(0,0,0,.6)",shadow.elevation-3,var(--pm-shadow-elevation-3),1,0,
+spacing,14px,space.4,16px,98,98,14px tie — rounded up
+spacing,24px,space.6,24px,97,0,
+spacing,20px,space.5,20px,85,0,
+spacing,36px,space.10,40px,58,58,36px tie — rounded up
+spacing,16px,space.4,16px,58,0,
+spacing,8px,space.2,8px,55,0,
+spacing,6px,space.2,8px,55,55,6px tie — rounded up
+spacing,32px,space.8,32px,46,0,
+spacing,100px,space.24,96px,43,43,
+spacing,56px,space.14,56px,42,0,
+spacing,10px,space.3,12px,40,40,10px tie — rounded up
+spacing,12px,space.3,12px,40,0,
+spacing,48px,space.12,48px,27,0,
+spacing,60px,space.16,64px,26,26,60px tie — rounded up
+spacing,18px,space.5,20px,25,25,18px tie — rounded up
+spacing,18px 0,space.5,20px 0,22,22,18px tie — rounded up
+spacing,44px,space.12,48px,20,20,44px tie — rounded up
+spacing,22px,space.6,24px,16,16,22px tie — rounded up
+spacing,40px,space.10,40px,16,0,
+spacing,11px 20px,space.3 space.5,12px 20px,16,16,
+spacing,7px,space.2,8px,16,16,
+spacing,4px,space.1,4px,14,0,
+spacing,20px 24px,space.5 space.6,20px 24px,13,0,
+spacing,0 auto 32px,space.8,0 auto 32px,13,0,
+spacing,4px 20px,space.1 space.5,4px 20px,11,0,
+spacing,120px,space.32,128px,11,11,
+spacing,16px 0,space.4,16px 0,11,0,
+spacing,70px 0,space.16,64px 0,10,10,
+spacing,80px,space.20,80px,9,0,
+spacing,64px,space.16,64px,9,0,
+spacing,48px 0,space.12,48px 0,8,0,
+spacing,28px,space.8,32px,7,7,28px tie — rounded up
+spacing,70px,space.16,64px,5,5,
+spacing,0 0 100px,space.24,0 0 96px,5,5,
+spacing,0 0 56px,space.14,0 0 56px,5,0,
+spacing,24px 0,space.6,24px 0,4,0,
+spacing,32px 0,space.8,32px 0,4,0,
+spacing,0 auto 22px,space.6,0 auto 24px,4,4,22px tie — rounded up
+spacing,8px 2px,space.2 space.0-5,8px 2px,2,0,
+spacing,14px 0,space.4,16px 0,2,2,14px tie — rounded up
+spacing,48px 0 60px,space.12 space.16,48px 0 64px,2,2,60px tie — rounded up
+spacing,0 0 80px,space.20,0 0 80px,2,0,
+spacing,0 0 120px,space.32,0 0 128px,2,2,
+spacing,56px 0,space.14,56px 0,2,0,
+spacing,9px,space.2,8px,2,2,
+spacing,4px 0 0,space.1,4px 0 0,2,0,
+spacing,8px 16px,space.2 space.4,8px 16px,1,0,
+spacing,7px 14px,space.2 space.4,8px 16px,1,1,14px tie — rounded up
+spacing,15px 28px,space.4 space.8,16px 32px,1,1,28px tie — rounded up
+spacing,15px 22px,space.4 space.6,16px 24px,1,1,22px tie — rounded up
+spacing,6px 2px,space.2 space.0-5,8px 2px,1,1,6px tie — rounded up
+spacing,-460px,,-460px,1,0,"460px kept (hairline / layout offset, not spacing)"
+spacing,-260px,,-260px,1,0,"260px kept (hairline / layout offset, not spacing)"
+spacing,9px 14px,space.2 space.4,8px 16px,1,1,14px tie — rounded up
+spacing,10px 18px,space.3 space.5,12px 20px,1,1,10px tie — rounded up
+spacing,9px 16px,space.2 space.4,8px 16px,1,1,
+spacing,10px 14px,space.3 space.4,12px 16px,1,1,10px tie — rounded up
+spacing,4px 10px,space.1 space.3,4px 12px,1,1,10px tie — rounded up
+spacing,4px 9px,space.1 space.2,4px 8px,1,1,
+spacing,0 auto 20px,space.5,0 auto 20px,1,0,
+spacing,14px 16px,space.4 space.4,16px 16px,1,1,14px tie — rounded up
+spacing,24px 0 36px,space.6 space.10,24px 0 40px,1,1,36px tie — rounded up
+spacing,0 0 44px,space.12,0 0 48px,1,1,44px tie — rounded up
+spacing,20px 0 100px,space.5 space.24,20px 0 96px,1,1,
+spacing,0 0 60px,space.16,0 0 64px,1,1,60px tie — rounded up
+spacing,0 0 32px,space.8,0 0 32px,1,0,
+spacing,0 0 64px,space.16,0 0 64px,1,0,
+spacing,100px 0,space.24,96px 0,1,1,
+spacing,4px 48px,space.1 space.12,4px 48px,1,0,
+spacing,4px 22px,space.1 space.6,4px 24px,1,1,22px tie — rounded up
+spacing,24px 0 0,space.6,24px 0 0,1,0,
+spacing,22px 0 0,space.6,24px 0 0,1,1,22px tie — rounded up
+spacing,-1px,,-1px,1,0,"1px kept (hairline / layout offset, not spacing)"
+spacing,10px 0 2px,space.3 space.0-5,12px 0 2px,1,1,10px tie — rounded up
+spacing,9px 0,space.2,8px 0,1,1,
+spacing,28px 0 0,space.8,32px 0 0,1,1,28px tie — rounded up
+spacing,14px 0 0,space.4,16px 0 0,1,1,14px tie — rounded up
+spacing,28px 24px 22px,space.8 space.6 space.6,32px 24px 24px,1,1,28px tie — rounded up
+spacing,18px 0 0,space.5,20px 0 0,1,1,18px tie — rounded up
+spacing,20px 0 0,space.5,20px 0 0,1,0,
+spacing,3px 10px,space.1 space.3,4px 12px,1,1,3px tie — rounded up
+spacing,24px 20px 18px,space.6 space.5 space.5,24px 20px 20px,1,1,18px tie — rounded up
+spacing,16px 20px,space.4 space.5,16px 20px,1,0,
+spacing,0 0 18px,space.5,0 0 20px,1,1,18px tie — rounded up
+spacing,0 0 36px,space.10,0 0 40px,1,1,36px tie — rounded up
+spacing,8px 0 0,space.2,8px 0 0,1,0,
+spacing,44px 64px 14px,space.12 space.16 space.4,48px 64px 16px,1,1,44px tie — rounded up
+spacing,16px -20px 0,space.4 space.5,16px -20px 0,1,0,
+spacing,4px 20px 8px,space.1 space.5 space.2,4px 20px 8px,1,0,
+spacing,60px 12px 16px,space.16 space.3 space.4,64px 12px 16px,1,1,60px tie — rounded up
+spacing,0 0 14px,space.4,0 0 16px,1,1,14px tie — rounded up
+spacing,16px 18px,space.4 space.5,16px 20px,1,1,18px tie — rounded up
+spacing,30px,space.8,32px,1,1,
+spacing,0 0 22px,space.6,0 0 24px,1,1,22px tie — rounded up
+spacing,140px,space.32,128px,1,1,
+spacing,8px 0 40px,space.2 space.10,8px 0 40px,1,0,

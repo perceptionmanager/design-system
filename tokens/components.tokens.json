@@ -1,0 +1,153 @@
+{
+  "$description": "Tier 3 — component tokens. Shared components across portfolio, Role Analyzer, UX Intelligence Engine and Kiro UX Auditor reports.",
+  "button": {
+    "radius": {
+      "$type": "dimension",
+      "$value": "{radius.md}"
+    },
+    "padding-y": {
+      "$type": "dimension",
+      "$value": "{space.4}"
+    },
+    "padding-x": {
+      "$type": "dimension",
+      "$value": "{space.8}"
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.3}"
+    },
+    "min-height": {
+      "$type": "dimension",
+      "$value": "{layout.target-min}"
+    },
+    "primary-bg": {
+      "$type": "gradient",
+      "$value": "{gradient.brand}"
+    },
+    "primary-text": {
+      "$type": "color",
+      "$value": "{color.text.on-accent}"
+    },
+    "primary-shadow": {
+      "$type": "shadow",
+      "$value": "{shadow.glow-accent}"
+    },
+    "primary-shadow-hover": {
+      "$type": "shadow",
+      "$value": "{shadow.glow-accent-hover}"
+    },
+    "ghost-border": {
+      "$type": "color",
+      "$value": "{color.border.subtle}"
+    },
+    "ghost-border-hover": {
+      "$type": "color",
+      "$value": "{color.border.interactive-hover}"
+    }
+  },
+  "card": {
+    "bg": {
+      "$type": "color",
+      "$value": "{color.surface.card}"
+    },
+    "border": {
+      "$type": "color",
+      "$value": "{color.border.subtle}"
+    },
+    "radius": {
+      "$type": "dimension",
+      "$value": "{radius.lg}"
+    },
+    "padding": {
+      "$type": "dimension",
+      "$value": "{space.8}"
+    }
+  },
+  "tag": {
+    "bg": {
+      "$type": "color",
+      "$value": "{color.surface.tint}"
+    },
+    "border": {
+      "$type": "color",
+      "$value": "{color.border.subtle}"
+    },
+    "radius": {
+      "$type": "dimension",
+      "$value": "{radius.full}"
+    },
+    "padding-y": {
+      "$type": "dimension",
+      "$value": "{space.1}"
+    },
+    "padding-x": {
+      "$type": "dimension",
+      "$value": "{space.3}"
+    },
+    "text": {
+      "$type": "color",
+      "$value": "{color.text.secondary}"
+    }
+  },
+  "stat": {
+    "value-typography": {
+      "$type": "typography",
+      "$value": "{typography.heading-md}"
+    },
+    "label-color": {
+      "$type": "color",
+      "$value": "{color.text.tertiary}"
+    }
+  },
+  "step": {
+    "num-size": {
+      "$type": "dimension",
+      "$value": "{space.10}"
+    },
+    "line-color": {
+      "$type": "color",
+      "$value": "{color.border.subtle}"
+    }
+  },
+  "check": {
+    "size": {
+      "$type": "dimension",
+      "$value": "{space.6}"
+    },
+    "bg": {
+      "$type": "color",
+      "$value": "{color.accent.primary}"
+    }
+  },
+  "nav": {
+    "height": {
+      "$type": "dimension",
+      "$value": "{layout.nav-height}"
+    },
+    "link-color": {
+      "$type": "color",
+      "$value": "{color.text.secondary}"
+    },
+    "link-hover": {
+      "$type": "color",
+      "$value": "{color.text.primary}"
+    }
+  },
+  "focus": {
+    "ring-width": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      }
+    },
+    "ring-offset": {
+      "$type": "dimension",
+      "$value": {
+        "value": 2,
+        "unit": "px"
+      }
+    }
+  }
+}
