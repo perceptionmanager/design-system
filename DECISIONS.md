@@ -32,3 +32,8 @@ Changed in Figma by Alex: the Tertiary button looked wrong with the portfolio's 
 - New tokens: `button.tertiary-padding-y` and `button.tertiary-padding-x`, both `{space.2}`, mirrored as Figma variables bound to the Tertiary variants.
 - The Tertiary button is 36px tall. That passes WCAG 2.2 SC 2.5.8 (24px minimum) but is below the system's 44px comfortable target, which is acceptable for low-emphasis inline navigation.
 - The portfolio picks this up when it migrates to the tokens; today's `.btn-tertiary { padding: 8px 2px }` gets replaced.
+
+## 2026-10-07: Buttons are one height regardless of border
+In Figma the Ghost button was 54px and the others 52px: its 1px border counted toward its size. The live site has the same 2px mismatch (`.btn-ghost` adds `border: 1px` and `.btn` has none).
+- **Figma:** borders on every Button variant are now excluded from layout, so Primary and Ghost are both 52px. Tertiary is 36px.
+- **Code (applies when the shared button CSS is written):** a border must not change a button's size. Give every button `border: 1px solid transparent` and subtract 1px from its padding, or draw the Ghost outline with `box-shadow: inset 0 0 0 1px var(--pm-button-ghost-border)`. Either way, Primary and Ghost render at the same height.
