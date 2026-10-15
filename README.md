@@ -44,7 +44,7 @@ For production, pin a release tag instead of `@main` (e.g. `@v0.1.0`) so a token
 
 Product CSS uses **semantic and component tokens**, not primitives. Type sizes are fluid: each role scales between its mobile and desktop size for viewports from 375px to 1280px, so you rarely need breakpoint overrides for text.
 
-**Hosting:** the repo is public, so jsDelivr serves `dist/` directly from GitHub. `vercel.json` is also ready if you'd rather host it on Vercel with your own domain.
+**Hosting:** the repo is public, so jsDelivr serves `dist/` directly from GitHub. `vercel.json` configures the Vercel project, which hosts Storybook (not `dist/`). It still carries the CORS and cache headers for `/dist/`, in case you serve tokens from Vercel later.
 
 ## Figma
 
