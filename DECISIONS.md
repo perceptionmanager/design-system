@@ -54,3 +54,9 @@ Added Storybook (HTML + Vite) with Foundations stories for colors and typography
 - **Deployment:** Vercel builds with `npm run build-storybook` and publishes `storybook-static`. The dashboard overrides did not apply to the first builds, so the settings are in `vercel.json`, which also keeps the original `/dist/` CORS and cache headers.
 - **Left out:** Vitest, Chromatic and Playwright were added by the installer and removed. Visual regression can come back when components exist.
 - **Scope:** this is my own design system across my own products. It is not evidence of organizational adoption.
+## 2026-10-15: Shared component CSS (v0.2.0, draft)
+Source is `components/components.css`; `npm run build` copies it to `dist/components.css`. Classes are namespaced `.pm-*` so they can sit beside the portfolio's `.btn`, `.card` and so on while it migrates.
+- Covers button (primary, ghost, tertiary), card, pill, tag, stat, step and check item. Header and footer are left out: they are page structure, and the Figma library has no component for them yet.
+- Uses semantic and component tokens only. A border never changes a button's height: Primary and Ghost render at 52px, Tertiary at 36px (no border, 8px padding).
+- `[data-state="hover|focus"]` mirrors the pseudo-classes so Storybook can show every state; products never need it.
+- Storybook has one story per component with default, hover, focus and disabled where they apply.

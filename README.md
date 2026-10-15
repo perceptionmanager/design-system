@@ -13,6 +13,7 @@ tokens/                    ← source of truth (W3C Design Tokens Format 2025.10
   components.tokens.json     button, card, tag, stat, step, check, nav, focus
 dist/                      ← generated, committed so products can load it directly
   tokens.css                 --pm-* custom properties in @layer tokens, reduced-motion rule, .pm-text-* classes
+  components.css             shared component CSS (.pm-* classes), copied from components/
   legacy-aliases.css         old portfolio names (--bg, --ink-dim, …) → tokens, for gradual migration
   tokens.resolved.json       every token fully resolved, for Figma sync and other tools
 scripts/                   ← zero-dependency Node build and validator
@@ -88,6 +89,7 @@ CI runs `npm run check` on every push and pull request. It also fails if `dist/`
 - [x] Audit and approved foundations
 - [x] Tokens, build, validation, CI
 - [x] Figma library built from these tokens (variables → text styles → components)
-- [ ] Shared component CSS (`dist/components.css`) built from the portfolio's per-page copies
+- [x] Shared component CSS (`dist/components.css`): button, card, pill, tag, stat, step, check item. Header and footer are still per-repo.
+- [ ] Migrate the portfolio from its own component CSS to `dist/components.css`
 - [ ] Migrate perceptionmanager.com, then Role Analyzer, UX Intelligence Engine and Kiro UX Auditor
 - [ ] Light mode (deferred — see DECISIONS.md)

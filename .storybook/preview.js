@@ -1,4 +1,5 @@
 import '../dist/tokens.css';
+import '../dist/components.css';
 import './preview.css';
 
 /** @type { import('@storybook/html-vite').Preview } */
