@@ -1,8 +1,9 @@
 // Generates dist/ from tokens/*.tokens.json (DTCG 2025.10). No dependencies.
 //   dist/tokens.css          CSS custom properties (--pm-*), reduced-motion rule, type utility classes
 //   dist/legacy-aliases.css  old portfolio variable names -> tokens (delete once migration is done)
+//   dist/components.css      copied from components/components.css
 //   dist/tokens.resolved.json  every token fully resolved (for Figma sync and other tools)
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadTokens, isRef, refPath, resolve, cssVar, fmt, toPx, fluid } from './lib.mjs';
@@ -139,5 +140,6 @@ const dist = join(root, 'dist');
 mkdirSync(dist, { recursive: true });
 writeFileSync(join(dist, 'tokens.css'), lines.join('\n'));
 writeFileSync(join(dist, 'legacy-aliases.css'), legacy.join('\n'));
+writeFileSync(join(dist, 'components.css'), readFileSync(join(root, 'components', 'components.css'), 'utf8').replace(/\r\n/g, '\n'));
 writeFileSync(join(dist, 'tokens.resolved.json'), JSON.stringify(resolved, null, 2) + '\n');
-console.log(`Built ${tokens.size} tokens → dist/tokens.css, dist/legacy-aliases.css, dist/tokens.resolved.json`);
+console.log(`Built ${tokens.size} tokens → dist/tokens.css, dist/legacy-aliases.css, dist/components.css, dist/tokens.resolved.json`);
