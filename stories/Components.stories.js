@@ -49,3 +49,14 @@ export const CheckItem = {
   render: () => wrap(`<div style="max-width:480px">${['A border never changes a button’s height.', '44px minimum touch targets.']
     .map((t) => `<div class="pm-check-row"><div class="pm-check" aria-hidden="true">✓</div><p>${t}</p></div>`).join('')}</div>`),
 };
+
+const ext = '<svg class="pm-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>';
+
+export const Links = {
+  render: () => wrap(
+    row('Text link: default, hover, focus', `<p style="margin:0;color:var(--pm-color-text-secondary)">Read the <a class="pm-link" href="#">decision log</a>, a <a class="pm-link" href="#" data-state="hover">hovered link</a> and a <a class="pm-link" href="#" data-state="focus">focused link</a>.</p>`) +
+    row('External link (opens in a new window)', `<a class="pm-link" href="#" target="_blank" rel="noopener">Storybook${ext}<span class="pm-visually-hidden"> (opens in a new window)</span></a>`) +
+    row('Nav link: default, hover, current page, focus', `<a class="pm-nav-link" href="#">Work</a><a class="pm-nav-link" href="#" data-state="hover">Lab</a><a class="pm-nav-link" href="#" aria-current="page">About</a><a class="pm-nav-link" href="#" data-state="focus">Contact</a>`) +
+    row('Skip link (shown here in its focused state; off-screen until tabbed to)', `<div style="position:relative;height:72px;width:100%"><a class="pm-skip-link" href="#main" data-state="focus">Skip to main content</a></div>`),
+  ),
+};

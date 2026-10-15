@@ -63,6 +63,13 @@
     .pm-btn--primary:hover:not(:disabled), .pm-btn--primary[data-state="hover"] { transform: translateY(-3px) scale(1.02); }
   }
 
+  /* Phones (860px and narrower): buttons fill the row and lose the hover lift; Tertiary stays compact. */
+  @media (max-width: 860px) {
+    .pm-btn { width: 100%; padding: calc(var(--pm-button-padding-y) - 1px) calc(var(--pm-space-6) - 1px); }
+    .pm-btn--primary:hover, .pm-btn--primary[data-state="hover"] { transform: none; }
+    .pm-btn--tertiary { width: auto; padding: var(--pm-button-tertiary-padding-y) var(--pm-button-tertiary-padding-x); }
+  }
+
   /* ---- Card ---- */
   .pm-card {
     background: var(--pm-card-bg);
@@ -85,6 +92,7 @@
     font-size: var(--pm-type-small-size);
     letter-spacing: var(--pm-font-tracking-caps);
   }
+  @media (max-width: 860px) { .pm-pill { font-size: var(--pm-type-caption-size); letter-spacing: 0; } }
   .pm-pill__dot {
     width: 6px; height: 6px; border-radius: 50%;
     background: var(--pm-color-status-success);
@@ -118,16 +126,33 @@
   }
   .pm-stat__label { font-size: var(--pm-type-small-size); color: var(--pm-stat-label-color); }
 
+  /* Stat bar: stats side by side with dividers; stacked with rules between on phones. */
+  .pm-stat-bar {
+    display: flex;
+    border: 1px solid var(--pm-color-border-subtle);
+    border-radius: var(--pm-radius-lg);
+    background: var(--pm-color-surface-card);
+  }
+  .pm-stat-bar > .pm-stat { flex: 1; padding: var(--pm-space-5) var(--pm-space-6); border-left: 1px solid var(--pm-color-border-subtle); }
+  .pm-stat-bar > .pm-stat:first-child { border-left: none; }
+  @media (max-width: 860px) {
+    .pm-stat-bar { display: block; padding: var(--pm-space-1) var(--pm-space-5); }
+    .pm-stat-bar > .pm-stat { padding: var(--pm-space-5) 0; border-left: none; border-bottom: 1px solid var(--pm-color-border-subtle); }
+    .pm-stat-bar > .pm-stat:last-child { border-bottom: none; }
+    .pm-stat__value { font-size: var(--pm-type-heading-lg-size); }
+    .pm-stat__label { font-size: var(--pm-type-caption-size); }
+  }
+
   /* ---- Step ---- */
-  .pm-step { display: flex; gap: var(--pm-space-6); align-items: flex-start; position: relative; padding-bottom: var(--pm-space-12); }
+  .pm-step { --_num: var(--pm-step-num-size); display: flex; gap: var(--pm-space-6); align-items: flex-start; position: relative; padding-bottom: var(--pm-space-12); }
   .pm-step:last-child { padding-bottom: 0; }
   .pm-step__line {
-    position: absolute; left: calc(var(--pm-step-num-size) / 2 - 1px); top: var(--pm-step-num-size); bottom: 0;
+    position: absolute; left: calc(var(--_num) / 2 - 1px); top: var(--_num); bottom: 0;
     width: 2px; background: var(--pm-step-line-color);
   }
   .pm-step:last-child .pm-step__line { display: none; }
   .pm-step__num {
-    width: var(--pm-step-num-size); height: var(--pm-step-num-size); flex-shrink: 0;
+    width: var(--_num); height: var(--_num); flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
     border-radius: 50%;
     background: var(--pm-color-surface-card);
@@ -139,6 +164,9 @@
   }
   .pm-step__title { margin: 0 0 var(--pm-space-1); font: var(--pm-type-heading-sm-weight) var(--pm-type-heading-sm-size)/var(--pm-type-heading-sm-line-height) var(--pm-type-heading-sm-family); color: var(--pm-color-text-primary); }
   .pm-step__body { margin: 0; color: var(--pm-color-text-secondary); }
+  @media (max-width: 860px) {
+    .pm-step { --_num: var(--pm-space-10); gap: var(--pm-space-4); padding-bottom: var(--pm-space-8); }
+  }
 
   /* ---- Check item ---- */
   .pm-check-row { display: flex; gap: var(--pm-space-4); align-items: center; padding: var(--pm-space-5) 0; border-bottom: 1px solid var(--pm-color-border-subtle); }
@@ -150,7 +178,60 @@
     border-radius: 50%;
     background: var(--pm-check-bg);
     color: var(--pm-color-text-on-accent);
-    font-size: var(--pm-type-small-size);
+    font-size: var(--pm-type-body-lg-size);
     font-weight: var(--pm-font-weight-bold);
   }
+  @media (max-width: 860px) {
+    .pm-check-row { padding: var(--pm-space-4) 0; }
+    .pm-check { font-size: var(--pm-type-body-size); }
+  }
+
+  /* ---- Links ---- */
+  /* Text link: for links inside running text. Underlined as well as coloured, so colour is never the only cue (SC 1.4.1). */
+  .pm-link {
+    color: var(--pm-color-text-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: color var(--pm-duration-fast) ease;
+  }
+  .pm-link:hover, .pm-link[data-state="hover"] { color: var(--pm-color-text-interactive-hover); text-decoration-thickness: 2px; }
+  .pm-link:focus-visible, .pm-link[data-state="focus"],
+  .pm-nav-link:focus-visible, .pm-nav-link[data-state="focus"],
+  .pm-skip-link:focus-visible, .pm-skip-link[data-state="focus"] {
+    outline: var(--pm-focus-ring-width) solid var(--pm-color-focus-ring);
+    outline-offset: var(--pm-focus-ring-offset);
+  }
+  /* External link: put .pm-link__icon (an svg) and a .pm-visually-hidden "(opens in a new window)" inside the link. */
+  .pm-link__icon { width: 0.875em; height: 0.875em; margin-inline-start: var(--pm-space-1); vertical-align: -0.1em; flex-shrink: 0; }
+  .pm-visually-hidden {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* Nav link: header and section navigation. aria-current="page" marks where you are. */
+  .pm-nav-link {
+    display: inline-flex; align-items: center;
+    min-height: var(--pm-layout-target-min);
+    color: var(--pm-nav-link-color);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color var(--pm-duration-fast) ease;
+  }
+  .pm-nav-link:hover, .pm-nav-link[data-state="hover"] { color: var(--pm-nav-link-hover); }
+  .pm-nav-link[aria-current="page"] { color: var(--pm-nav-link-hover); border-bottom-color: var(--pm-color-accent-primary); }
+
+  /* Skip link: first focusable element on a page; off-screen until it receives focus. */
+  .pm-skip-link {
+    position: absolute; left: var(--pm-space-4); top: calc(-1 * var(--pm-layout-target-min) - var(--pm-space-8));
+    z-index: var(--pm-z-toast);
+    padding: var(--pm-space-3) var(--pm-space-5);
+    background: var(--pm-color-surface-card);
+    border: 1px solid var(--pm-color-border-accent);
+    border-radius: var(--pm-button-radius);
+    color: var(--pm-color-text-primary);
+    font-weight: var(--pm-font-weight-semibold);
+    text-decoration: none;
+  }
+  .pm-skip-link:focus, .pm-skip-link[data-state="focus"] { top: var(--pm-space-4); }
 }
