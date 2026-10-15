@@ -5,8 +5,13 @@
   "private": true,
   "type": "module",
   "license": "UNLICENSED",
-  "engines": { "node": ">=20" },
-  "files": ["dist", "tokens"],
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist",
+    "tokens"
+  ],
   "exports": {
     "./tokens.css": "./dist/tokens.css",
     "./legacy-aliases.css": "./dist/legacy-aliases.css",
@@ -15,6 +20,14 @@
   "scripts": {
     "validate": "node scripts/validate.mjs",
     "build": "node scripts/validate.mjs && node scripts/build.mjs",
-    "check": "npm run build && git diff --exit-code -- dist"
+    "check": "npm run build && git diff --exit-code -- dist",
+    "storybook": "npm run build && storybook dev -p 6006",
+    "build-storybook": "npm run build && storybook build"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "^10.6.2",
+    "@storybook/addon-docs": "^10.6.2",
+    "@storybook/html-vite": "^10.6.2",
+    "storybook": "^10.6.2"
   }
 }

@@ -1,0 +1,4 @@
+body {
+  background: var(--pm-color-surface-page);
+  color: var(--pm-color-text-primary);
+}
