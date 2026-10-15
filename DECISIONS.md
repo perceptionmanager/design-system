@@ -46,7 +46,7 @@ Needed by the Kiro UX Auditor (audit severity) and useful for any product that s
 - Severity is never shown by color alone: badges always carry the text label (SC 1.4.1).
 
 ## 2026-10-14: Storybook for documentation and component states
-Added Storybook (HTML + Vite) with Foundations stories for colors and typography. Live at https://design-system-nu-ten.vercel.app.
+Added Storybook (HTML + Vite) with Foundations stories for colors and typography. Live at https://storybook.perceptionmanager.com.
 - **Why now:** the tokens are validated and stable, and v0.2.0 will add shared components that need a place to show every state (default, hover, focus, disabled, error). Documenting tokens first gave the setup something real to render.
 - **Cost:** Storybook is a devDependency only. `npm run build` and `dist/` remain zero-dependency. A `package-lock.json` is now committed because Vercel installs from it.
 - **Scripts:** `storybook` and `build-storybook` run `npm run build` first, so the docs always render the current tokens.

@@ -48,7 +48,7 @@ Product CSS uses **semantic and component tokens**, not primitives. Type sizes a
 
 ## Storybook
 
-Live: https://design-system-nu-ten.vercel.app
+Live: https://storybook.perceptionmanager.com
 
 Storybook documents the system. v0.1.0 covers the foundations only: every color token, and the 10 type roles with their fluid scaling. Component stories (button, card, header, footer, each in every state) arrive with the shared components in v0.2.0.
 
