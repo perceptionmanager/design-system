@@ -44,3 +44,13 @@ Needed by the Kiro UX Auditor (audit severity) and useful for any product that s
 - New semantic roles under `color.status`: `critical`, `high`, `medium`, `low`, `error` (same hue as critical) and `warning` (same hue as medium). Each has `-subtle` (badge background) and `-border` variants.
 - All pass WCAG AA on every surface, and on their own 12% tint over a card (lowest: critical 4.83:1). `npm run validate` now checks them.
 - Severity is never shown by color alone: badges always carry the text label (SC 1.4.1).
+
+## 2026-10-14: Storybook for documentation and component states
+Added Storybook (HTML + Vite) with Foundations stories for colors and typography. Live at https://design-system-nu-ten.vercel.app.
+- **Why now:** the tokens are validated and stable, and v0.2.0 will add shared components that need a place to show every state (default, hover, focus, disabled, error). Documenting tokens first gave the setup something real to render.
+- **Cost:** Storybook is a devDependency only. `npm run build` and `dist/` remain zero-dependency. A `package-lock.json` is now committed because Vercel installs from it.
+- **Scripts:** `storybook` and `build-storybook` run `npm run build` first, so the docs always render the current tokens.
+- **Accessibility:** the a11y addon (axe) is on. It checks rendered stories; the validator still owns token contrast.
+- **Deployment:** Vercel builds with `npm run build-storybook` and publishes `storybook-static`. The dashboard overrides did not apply to the first builds, so the settings are in `vercel.json`, which also keeps the original `/dist/` CORS and cache headers.
+- **Left out:** Vitest, Chromatic and Playwright were added by the installer and removed. Visual regression can come back when components exist.
+- **Scope:** this is my own design system across my own products. It is not evidence of organizational adoption.

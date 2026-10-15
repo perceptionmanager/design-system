@@ -46,6 +46,19 @@ Product CSS uses **semantic and component tokens**, not primitives. Type sizes a
 
 **Hosting:** the repo is public, so jsDelivr serves `dist/` directly from GitHub. `vercel.json` configures the Vercel project, which hosts Storybook (not `dist/`). It still carries the CORS and cache headers for `/dist/`, in case you serve tokens from Vercel later.
 
+## Storybook
+
+Live: https://design-system-nu-ten.vercel.app
+
+Storybook documents the system. v0.1.0 covers the foundations only: every color token, and the 10 type roles with their fluid scaling. Component stories (button, card, header, footer, each in every state) arrive with the shared components in v0.2.0.
+
+```
+npm run storybook          # build tokens, then run Storybook at localhost:6006
+npm run build-storybook    # build tokens, then write the static site to storybook-static/
+```
+
+Storybook is a devDependency. The token build and the `dist/` files stay zero-dependency, and products that load `tokens.css` are unaffected. The accessibility addon (axe) checks rendered stories. It complements the contrast validator and does not replace it.
+
 ## Figma
 
 The Figma library mirrors these tokens: [perceptionmanager design system](https://www.figma.com/design/OjKldfSUdETPYRFhlJ2PkU). It has 189 variables (with the CSS variable name as each one's code syntax), 12 text styles, 6 shadow styles, a gradient paint style, and 7 components. Primitives are hidden from pickers, so designers only see roles. Type sizes switch between the Responsive collection's Desktop and Mobile modes.
