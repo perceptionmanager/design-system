@@ -25,6 +25,19 @@ A component is ready to ship when all of these are true:
 - [ ] It respects `prefers-reduced-motion`.
 - [ ] It has a matching component in the Figma library, or the gap is noted in the README.
 
+## Adding an icon
+
+Icons live in `icons/`, one SVG per file, and are built into `dist/icons.svg` and `dist/icons.json`. `npm run check` enforces the rules marked (checked).
+
+- Name: lowercase kebab-case, describing the picture, not the use (`external-link`, not `new-window`). (checked)
+- Grid: `viewBox="0 0 24 24"`. (checked)
+- Colour: `currentColor` only, never a fixed colour, so the icon follows its button or text. (checked)
+- Style: outlined, 2px stroke, round caps and joins. Filled icons are the exception and need a reason.
+- No scripts, styles, images or text inside the file. (checked)
+- Add it to the Storybook gallery by saving the file. The gallery builds from the folder.
+- Decorative icons are hidden from screen readers (`aria-hidden="true"`). An icon that stands alone is a button or link with an `aria-label`.
+- Brand logos (Figma, GitHub, Vercel and so on) are not part of this set. They have fixed colours and shapes and belong in their own file.
+
 ## Versioning
 
 Releases are git tags (`v0.1.0`, `v0.2.0`). Products pin a tag, never `@main`, so a change reaches a product only when its owner chooses to upgrade. The system is pre-1.0: minor versions may include breaking changes, and each one is listed in the changelog.

@@ -10,7 +10,7 @@ Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.
 
 Based on a comparison with GitHub Primer, the GOV.UK Design System and IBM Carbon (October 2026). Each version is tagged only when its components are in Storybook and meet the checklist in `CONTRIBUTING.md`.
 
-- **v0.2.0:** responsive rules for the existing components, stat bar, text link, external link, nav link and skip link. Then the portfolio migrates onto it.
+- **v0.2.0:** responsive rules for the existing components, stat bar, card accent bar, interactive pill, text link, external link, nav link, skip link, buttons with icons, and a shared icon set (12 icons). Then the portfolio migrates onto it.
 - **v0.3.0:** form controls (text input, textarea, select, checkbox, radio, toggle, form field with label, hint and error) and feedback (status badge, banner, inline message).
 - **v0.4.0:** tabs, table and accordion.
 - **Later, only when a product needs them:** modal, tooltip, progress and loading, breadcrumbs, pagination.
