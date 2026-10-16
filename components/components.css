@@ -219,14 +219,14 @@
     color: var(--pm-color-text-accent);
     text-decoration: underline;
     text-decoration-thickness: 1px;
-    text-underline-offset: 0.15em;
+    text-underline-offset: 0.1em;
     border-radius: 2px;
     transition: color var(--pm-duration-fast) ease;
   }
   .pm-link:hover, .pm-link[data-state="hover"] { color: var(--pm-color-text-interactive-hover); text-decoration-thickness: 2px; }
   .pm-link:focus-visible, .pm-link[data-state="focus"] {
     outline: var(--pm-focus-ring-width) solid var(--pm-color-focus-ring);
-    outline-offset: var(--pm-space-1); /* clear of the underline, which sits just below the text */
+    outline-offset: 0; /* hugs the text so it stays clear of neighbouring lines; the underline sits inside it */
   }
   .pm-nav-link:focus-visible, .pm-nav-link[data-state="focus"],
   .pm-skip-link:focus-visible, .pm-skip-link[data-state="focus"] {

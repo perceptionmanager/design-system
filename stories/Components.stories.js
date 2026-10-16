@@ -70,7 +70,7 @@ const ext = '<svg class="pm-link__icon" viewBox="0 0 24 24" fill="none" stroke="
 
 export const Links = {
   render: () => wrap(
-    row('Text link: default, hover, focus', `<p style="margin:0;color:var(--pm-color-text-secondary)">Read the <a class="pm-link" href="#">decision log</a>, a <a class="pm-link" href="#" data-state="hover">hovered link</a> and a <a class="pm-link" href="#" data-state="focus">focused link</a>.</p>`) +
+    row('Text link: default, hover, focus', `<p style="margin:0;max-width:300px;line-height:var(--pm-font-line-height-normal);color:var(--pm-color-text-secondary)">Read the <a class="pm-link" href="#">decision log</a>, a <a class="pm-link" href="#" data-state="hover">hovered link</a> and a <a class="pm-link" href="#" data-state="focus">focused link</a>.</p>`) +
     row('External link (opens in a new window)', `<a class="pm-link" href="#" target="_blank" rel="noopener">Storybook${ext}<span class="pm-visually-hidden"> (opens in a new window)</span></a>`) +
     row('Nav link: default, hover, current page, focus', `<a class="pm-nav-link" href="#">Work</a><a class="pm-nav-link" href="#" data-state="hover">Lab</a><a class="pm-nav-link" href="#" aria-current="page">About</a><a class="pm-nav-link" href="#" data-state="focus">Contact</a>`) +
     row('Skip link (shown here in its focused state; off-screen until tabbed to)', `<div style="position:relative;height:72px;width:100%"><a class="pm-skip-link" href="#main" data-state="focus">Skip to main content</a></div>`),
