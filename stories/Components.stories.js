@@ -24,15 +24,31 @@ export const Buttons = {
 };
 
 export const Card = {
-  render: () => wrap(`<article class="pm-card" style="max-width:360px"><h3 style="margin:0 0 var(--pm-space-2);font:var(--pm-type-heading-sm-weight) var(--pm-type-heading-sm-size)/var(--pm-type-heading-sm-line-height) var(--pm-type-heading-sm-family)">Card</h3><p style="margin:0;color:var(--pm-color-text-secondary)">24px padding, card surface, subtle border.</p></article>`),
+  render: () => {
+    const card = (cls, title, body) => `<article class="pm-card ${cls}" style="width:280px;align-self:stretch"><h3 style="margin:0 0 var(--pm-space-2);font:var(--pm-type-heading-sm-weight) var(--pm-type-heading-sm-size)/var(--pm-type-heading-sm-line-height) var(--pm-type-heading-sm-family)">${title}</h3><p style="margin:0;color:var(--pm-color-text-secondary)">${body}</p></article>`;
+    return wrap(row('Card, then with a primary or secondary accent bar on the top edge',
+      card('', 'Default', '24px padding, card surface, subtle border.') +
+      card('pm-card--accent-primary', 'Primary accent', 'Coral bar along the top edge.') +
+      card('pm-card--accent-secondary', 'Secondary accent', 'Cyan bar along the top edge.')));
+  },
 };
 
 export const PillAndTag = {
   name: 'Pill and Tag',
-  render: () => wrap(
-    row('Pill', '<span class="pm-pill"><span class="pm-pill__dot"></span>Live</span>') +
-    row('Tag', '<span class="pm-tag">Tokens</span><span class="pm-tag">WCAG 2.2</span>'),
-  ),
+  render: () => {
+    const pill = (label, attrs, count) => `<button type="button" class="pm-pill pm-pill--interactive"${attrs}>${label}${count ? ` <span class="pm-pill__count">${count}</span>` : ''}</button>`;
+    const col = (name, html) => `<div style="display:flex;flex-direction:column;gap:var(--pm-space-2);align-items:flex-start">${html}<span style="font-size:var(--pm-type-caption-size);color:var(--pm-color-text-tertiary)">${name}</span></div>`;
+    return wrap(
+      row('Status pill', '<span class="pm-pill"><span class="pm-pill__dot"></span>Live</span>') +
+      row('Interactive pill (filter): default, hover, selected, focus, disabled',
+        col('Default', pill('Tooling and AI', ' aria-pressed="false"', 1)) +
+        col('Hover', pill('Tooling and AI', ' aria-pressed="false" data-state="hover"', 1)) +
+        col('Selected', pill('Product discovery', ' aria-pressed="true"', 1)) +
+        col('Focus', pill('Ops and strategy', ' aria-pressed="false" data-state="focus"', 1)) +
+        col('Disabled', pill('Archived', ' aria-pressed="false" disabled', 0))) +
+      row('Tag', '<span class="pm-tag">Tokens</span><span class="pm-tag">WCAG 2.2</span>'),
+    );
+  },
 };
 
 export const Stat = {

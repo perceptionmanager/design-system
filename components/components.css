@@ -78,6 +78,9 @@
     padding: var(--pm-card-padding);
     color: var(--pm-color-text-primary);
   }
+  /* Accent bar: a 2px coloured line along the top edge, following the corner radius. Drawn inside the card (inset shadow), so it never changes the card's size. */
+  .pm-card--accent-primary { box-shadow: inset 0 2px 0 var(--pm-color-accent-primary); }
+  .pm-card--accent-secondary { box-shadow: inset 0 2px 0 var(--pm-color-accent-secondary); }
 
   /* ---- Pill (status) ---- */
   .pm-pill {
@@ -92,6 +95,30 @@
     font-size: var(--pm-type-small-size);
     letter-spacing: var(--pm-font-tracking-caps);
   }
+  /* Interactive pill (filters and toggles): a <button> with aria-pressed. Hover and selected use the secondary accent. */
+  .pm-pill--interactive {
+    min-height: var(--pm-layout-target-min);
+    font-family: var(--pm-font-family-sans);
+    cursor: pointer;
+    transition: border-color var(--pm-duration-fast) ease, background-color var(--pm-duration-fast) ease, color var(--pm-duration-fast) ease;
+  }
+  .pm-pill--interactive:hover, .pm-pill--interactive[data-state="hover"] {
+    border-color: var(--pm-color-accent-secondary);
+    color: var(--pm-color-text-primary);
+  }
+  .pm-pill--interactive[aria-pressed="true"], .pm-pill--interactive[aria-selected="true"] {
+    border-color: var(--pm-color-accent-secondary);
+    background: var(--pm-color-accent-secondary-subtle);
+    color: var(--pm-color-text-interactive-hover);
+  }
+  .pm-pill--interactive:focus-visible, .pm-pill--interactive[data-state="focus"] {
+    outline: var(--pm-focus-ring-width) solid var(--pm-color-focus-ring);
+    outline-offset: var(--pm-focus-ring-offset);
+  }
+  .pm-pill--interactive:disabled { opacity: .45; cursor: not-allowed; }
+  .pm-pill__count { color: var(--pm-color-text-tertiary); font-variant-numeric: tabular-nums; }
+  /* tertiary text is under 4.5:1 on the selected tint, so the count steps up to secondary there */
+  .pm-pill--interactive[aria-pressed="true"] .pm-pill__count, .pm-pill--interactive[aria-selected="true"] .pm-pill__count { color: var(--pm-color-text-secondary); }
   @media (max-width: 860px) { .pm-pill { font-size: var(--pm-type-caption-size); letter-spacing: 0; } }
   .pm-pill__dot {
     width: 6px; height: 6px; border-radius: 50%;
