@@ -54,6 +54,21 @@ for (const [fg, bg, min, sc] of gates) {
   if (ratio < min) errors.push(`contrast ${ratio.toFixed(2)}:1 < ${min}:1 — ${fg} on ${bg}`);
 }
 
+// ---- Text on the brand gradient (primary button). Automated checkers can't evaluate gradients, so sample it here.
+if (tokens.has('gradient.brand') && tokens.has('color.text.on-accent')) {
+  const stops = tokens.get('gradient.brand').$value.map((st) => ({ pos: st.position, col: resolve(tokens, st.color) }));
+  const at = (t) => {
+    const hi = stops.findIndex((st) => st.pos >= t);
+    const b = stops[Math.max(hi, 1)], a = stops[Math.max(hi, 1) - 1];
+    const k = Math.min(1, Math.max(0, (t - a.pos) / (b.pos - a.pos)));
+    return { colorSpace: 'srgb', components: a.col.components.map((v, i) => v + (b.col.components[i] - v) * k) };
+  };
+  let worst = Infinity;
+  for (let i = 0; i <= 100; i++) worst = Math.min(worst, contrast(c('color.text.on-accent'), at(i / 100)));
+  report.push(`${worst >= 4.5 ? '✓' : '✗'} ${worst.toFixed(2).padStart(6)}:1  color.text.on-accent on gradient.brand, worst of 101 samples  (≥4.5, SC 1.4.3 text)`);
+  if (worst < 4.5) errors.push(`contrast ${worst.toFixed(2)}:1 < 4.5:1 — color.text.on-accent somewhere on gradient.brand`);
+}
+
 console.log(`${tokens.size} tokens checked (${Object.keys(RANK).map((k) => `${[...tokens.values()].filter((t) => t.tier === k).length} ${k}`).join(', ')})`);
 console.log(report.join('\n'));
 if (errors.length) { console.error(`\n✗ ${errors.length} problem(s):\n  ` + errors.join('\n  ')); process.exit(1); }

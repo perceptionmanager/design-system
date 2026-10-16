@@ -16,6 +16,7 @@ const states = (cls, text) =>
     .join('');
 
 export const Buttons = {
+  parameters: { a11y: { config: { rules: [{ id: 'color-contrast', selector: '*:not(.pm-btn--primary)' }] } } },
   render: () => wrap(
     row('Primary', states('pm-btn--primary', 'Primary')) +
     row('Ghost', states('pm-btn--ghost', 'Ghost')) +
@@ -56,23 +57,48 @@ export const Stat = {
 };
 
 export const Step = {
-  render: () => wrap(`<div style="max-width:480px">${[['1', 'Audit what exists', 'Count what the products use.'], ['2', 'Define tokens in layers', 'Primitives, semantic, component.'], ['3', 'Build and validate', 'One CSS file, contrast checked.']]
-    .map(([n, t, b]) => `<div class="pm-step"><div class="pm-step__line"></div><div class="pm-step__num">${n}</div><div><h3 class="pm-step__title">${t}</h3><p class="pm-step__body">${b}</p></div></div>`).join('')}</div>`),
+  render: () => wrap(`<ol class="pm-steps" style="max-width:480px">${[['1', 'Audit what exists', 'Count what the products use.'], ['2', 'Define tokens in layers', 'Primitives, semantic, component.'], ['3', 'Build and validate', 'One CSS file, contrast checked.']]
+    .map(([n, t, b]) => `<li class="pm-step"><div class="pm-step__line"></div><div class="pm-step__num" aria-hidden="true">${n}</div><div><h3 class="pm-step__title">${t}</h3><p class="pm-step__body">${b}</p></div></li>`).join('')}</ol>`),
 };
 
 export const CheckItem = {
   name: 'Check item',
-  render: () => wrap(`<div style="max-width:480px">${['A border never changes a button’s height.', '44px minimum touch targets.']
-    .map((t) => `<div class="pm-check-row"><div class="pm-check" aria-hidden="true">✓</div><p>${t}</p></div>`).join('')}</div>`),
+  render: () => wrap(`<ul class="pm-checks" style="max-width:480px">${['A border never changes a button’s height.', '44px minimum touch targets.']
+    .map((t) => `<li class="pm-check-row"><div class="pm-check" aria-hidden="true">✓</div><p>${t}</p></li>`).join('')}</ul>`),
+  parameters: { a11y: { config: { rules: [{ id: 'color-contrast', selector: '*:not(.pm-check)' }] } } },
 };
 
 const ext = '<svg class="pm-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>';
 
 export const Links = {
+  parameters: { a11y: { config: { rules: [{ id: 'color-contrast', selector: '*:not(.demo-prose)' }] } } },
   render: () => wrap(
-    row('Text link: default, hover, focus', `<p style="margin:0;max-width:300px;line-height:var(--pm-font-line-height-normal);color:var(--pm-color-text-secondary)">Read the <a class="pm-link" href="#">decision log</a>, a <a class="pm-link" href="#" data-state="hover">hovered link</a> and a <a class="pm-link" href="#" data-state="focus">focused link</a>.</p>`) +
+    row('Text link: default, hover, focus', `<p class="demo-prose" style="margin:0;max-width:300px;line-height:var(--pm-font-line-height-normal);color:var(--pm-color-text-secondary)">Read the <a class="pm-link" href="#">decision log</a>, a <a class="pm-link" href="#" data-state="hover">hovered link</a> and a <a class="pm-link" href="#" data-state="focus">focused link</a>.</p>`) +
     row('External link (opens in a new window)', `<a class="pm-link" href="#" target="_blank" rel="noopener">Storybook${ext}<span class="pm-visually-hidden"> (opens in a new window)</span></a>`) +
     row('Nav link: default, hover, current page, focus', `<a class="pm-nav-link" href="#">Work</a><a class="pm-nav-link" href="#" data-state="hover">Lab</a><a class="pm-nav-link" href="#" aria-current="page">About</a><a class="pm-nav-link" href="#" data-state="focus">Contact</a>`) +
     row('Skip link (shown here in its focused state; off-screen until tabbed to)', `<div style="position:relative;height:72px;width:100%"><a class="pm-skip-link" href="#main" data-state="focus">Skip to main content</a></div>`),
+  ),
+};
+
+
+const arrow = '<svg class="pm-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>';
+const mail = '<svg class="pm-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>';
+
+const iconStates = (cls, content, label) =>
+  [['Default', ''], ['Hover', ' data-state="hover"'], ['Focus', ' data-state="focus"'], ['Disabled', ' disabled']]
+    .map(([n, a]) => `<div style="display:flex;flex-direction:column;gap:var(--pm-space-2);align-items:flex-start"><button type="button" class="pm-btn ${cls}"${label ? ` aria-label="${label}"` : ''}${a}>${content}</button><span style="font-size:var(--pm-type-caption-size);color:var(--pm-color-text-tertiary)">${n}</span></div>`)
+    .join('');
+
+export const ButtonsWithIcons = {
+  name: 'Buttons with icons',
+  parameters: { a11y: { config: { rules: [{ id: 'color-contrast', selector: '*:not(.pm-btn--primary)' }] } } },
+  render: () => wrap(
+    ['primary', 'ghost', 'tertiary'].map((v) => {
+      const c = `pm-btn--${v}`;
+      const name = v[0].toUpperCase() + v.slice(1);
+      return row(`${name}: leading icon`, iconStates(c, `${mail}Email me`)) +
+        row(`${name}: trailing icon`, iconStates(c, `Read the build${arrow}`)) +
+        row(`${name}: icon only (needs an aria-label)`, iconStates(`${c} pm-btn--icon-only`, arrow, 'Next'));
+    }).join(''),
   ),
 };

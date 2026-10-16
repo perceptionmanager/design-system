@@ -63,11 +63,24 @@
     .pm-btn--primary:hover:not(:disabled), .pm-btn--primary[data-state="hover"] { transform: translateY(-3px) scale(1.02); }
   }
 
+  /* Icons: an svg with .pm-btn__icon, before the label (leading) or after it (trailing). The icon is as tall as the text
+     (1em), takes the button's text colour, and does not change the button's height. Mark the svg aria-hidden. */
+  .pm-btn__icon { width: 1em; height: 1em; flex-shrink: 0; }
+  /* Icon-only: a square the same height as a regular button. Needs an aria-label on the button. */
+  .pm-btn--icon-only {
+    --_h: calc(var(--pm-type-body-size) * var(--pm-font-line-height-snug) + 2 * var(--pm-button-padding-y));
+    width: var(--_h); height: var(--_h); padding: 0;
+  }
+  .pm-btn--icon-only.pm-btn--tertiary {
+    --_h: calc(var(--pm-type-body-size) * var(--pm-font-line-height-snug) + 2 * var(--pm-button-tertiary-padding-y));
+  }
+
   /* Phones (860px and narrower): buttons fill the row and lose the hover lift; Tertiary stays compact. */
   @media (max-width: 860px) {
     .pm-btn { width: 100%; padding: calc(var(--pm-button-padding-y) - 1px) calc(var(--pm-space-6) - 1px); }
     .pm-btn--primary:hover, .pm-btn--primary[data-state="hover"] { transform: none; }
     .pm-btn--tertiary { width: auto; padding: var(--pm-button-tertiary-padding-y) var(--pm-button-tertiary-padding-x); }
+    .pm-btn--icon-only, .pm-btn--icon-only.pm-btn--tertiary { width: var(--_h); padding: 0; }
   }
 
   /* ---- Card ---- */
@@ -171,6 +184,7 @@
   }
 
   /* ---- Step ---- */
+  ol.pm-steps, ul.pm-checks { list-style: none; margin: 0; padding: 0; }
   .pm-step { --_num: var(--pm-step-num-size); display: flex; gap: var(--pm-space-6); align-items: flex-start; position: relative; padding-bottom: var(--pm-space-12); }
   .pm-step:last-child { padding-bottom: 0; }
   .pm-step__line {
@@ -275,4 +289,13 @@
     text-decoration: none;
   }
   .pm-skip-link:focus, .pm-skip-link[data-state="focus"] { top: var(--pm-space-4); }
+
+  /* Windows high-contrast mode drops colours and shadows, so state cues are redrawn with system colours. */
+  @media (forced-colors: active) {
+    .pm-pill--interactive[aria-pressed="true"], .pm-pill--interactive[aria-selected="true"] { outline: 2px solid Highlight; outline-offset: -2px; }
+    .pm-pill--interactive:focus-visible, .pm-pill--interactive[data-state="focus"] { outline-color: Highlight; outline-offset: var(--pm-focus-ring-offset); }
+    .pm-nav-link[aria-current="page"]::after { background: Highlight; }
+    .pm-card--accent-primary, .pm-card--accent-secondary { border-top: 2px solid CanvasText; }
+    .pm-check { border: 1px solid CanvasText; }
+  }
 }
