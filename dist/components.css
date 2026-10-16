@@ -192,11 +192,15 @@
     color: var(--pm-color-text-accent);
     text-decoration: underline;
     text-decoration-thickness: 1px;
-    text-underline-offset: 0.2em;
+    text-underline-offset: 0.15em;
+    border-radius: 2px;
     transition: color var(--pm-duration-fast) ease;
   }
   .pm-link:hover, .pm-link[data-state="hover"] { color: var(--pm-color-text-interactive-hover); text-decoration-thickness: 2px; }
-  .pm-link:focus-visible, .pm-link[data-state="focus"],
+  .pm-link:focus-visible, .pm-link[data-state="focus"] {
+    outline: var(--pm-focus-ring-width) solid var(--pm-color-focus-ring);
+    outline-offset: var(--pm-space-1); /* clear of the underline, which sits just below the text */
+  }
   .pm-nav-link:focus-visible, .pm-nav-link[data-state="focus"],
   .pm-skip-link:focus-visible, .pm-skip-link[data-state="focus"] {
     outline: var(--pm-focus-ring-width) solid var(--pm-color-focus-ring);
@@ -211,15 +215,22 @@
 
   /* Nav link: header and section navigation. aria-current="page" marks where you are. */
   .pm-nav-link {
+    position: relative;
     display: inline-flex; align-items: center;
     min-height: var(--pm-layout-target-min);
+    padding-inline: var(--pm-space-3);
+    border-radius: var(--pm-radius-sm);
     color: var(--pm-nav-link-color);
     text-decoration: none;
-    border-bottom: 2px solid transparent;
     transition: color var(--pm-duration-fast) ease;
   }
   .pm-nav-link:hover, .pm-nav-link[data-state="hover"] { color: var(--pm-nav-link-hover); }
-  .pm-nav-link[aria-current="page"] { color: var(--pm-nav-link-hover); border-bottom-color: var(--pm-color-accent-primary); }
+  .pm-nav-link[aria-current="page"] { color: var(--pm-nav-link-hover); }
+  /* current-page marker: a straight bar under the label, drawn inside the link so it never shifts the label */
+  .pm-nav-link[aria-current="page"]::after {
+    content: ""; position: absolute; left: var(--pm-space-3); right: var(--pm-space-3); bottom: 0;
+    height: 2px; background: var(--pm-color-accent-primary);
+  }
 
   /* Skip link: first focusable element on a page; off-screen until it receives focus. */
   .pm-skip-link {
