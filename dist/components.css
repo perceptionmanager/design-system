@@ -66,6 +66,11 @@
   /* Icons: an svg with .pm-btn__icon, before the label (leading) or after it (trailing). The icon is as tall as the text
      (1em), takes the button's text colour, and does not change the button's height. Mark the svg aria-hidden. */
   .pm-btn__icon { width: 1em; height: 1em; flex-shrink: 0; }
+
+  /* ---- Icon ---- */
+  /* An svg from the shared set (dist/icons.svg): <svg class="pm-icon" aria-hidden="true"><use href="icons.svg#pm-icon-mail"/></svg>.
+     As tall as the surrounding text, coloured by it. Decorative by default; give a standalone icon a role="img" and aria-label instead. */
+  .pm-icon { display: inline-block; width: 1em; height: 1em; flex-shrink: 0; vertical-align: -0.125em; }
   /* Icon-only: a square the same height as a regular button. Needs an aria-label on the button. */
   .pm-btn--icon-only {
     --_h: calc(var(--pm-type-body-size) * var(--pm-font-line-height-snug) + 2 * var(--pm-button-padding-y));

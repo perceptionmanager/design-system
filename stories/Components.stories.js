@@ -1,5 +1,7 @@
 // Shared components (v0.2.0). One story per component; each shows every state.
 // data-state mirrors :hover / :focus-visible so the states can be shown side by side.
+import { icon } from './icon.js';
+
 export default {
   title: 'Components/All',
   parameters: { layout: 'padded' },
@@ -68,7 +70,7 @@ export const CheckItem = {
   parameters: { a11y: { config: { rules: [{ id: 'color-contrast', selector: '*:not(.pm-check)' }] } } },
 };
 
-const ext = '<svg class="pm-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>';
+const ext = icon('external-link', 'pm-link__icon');
 
 export const Links = {
   parameters: { a11y: { config: { rules: [{ id: 'color-contrast', selector: '*:not(.demo-prose)' }] } } },
@@ -81,8 +83,8 @@ export const Links = {
 };
 
 
-const arrow = '<svg class="pm-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>';
-const mail = '<svg class="pm-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>';
+const arrow = icon('arrow-right', 'pm-btn__icon');
+const mail = icon('mail', 'pm-btn__icon');
 
 const iconStates = (cls, content, label) =>
   [['Default', ''], ['Hover', ' data-state="hover"'], ['Focus', ' data-state="focus"'], ['Disabled', ' disabled']]

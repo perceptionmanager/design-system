@@ -2,6 +2,7 @@
 // Exits non-zero on any failure so it can gate CI and pull requests.
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readdirSync, readFileSync } from 'node:fs';
 import { loadTokens, refsIn, resolve, contrast, fmt } from './lib.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -52,6 +53,16 @@ for (const [fg, bg, min, sc] of gates) {
   try { ratio = contrast(c(fg), c(bg)); } catch (e) { errors.push(`contrast gate ${fg} on ${bg}: ${e.message}`); continue; }
   report.push(`${ratio >= min ? "✓" : "✗"} ${ratio.toFixed(2).padStart(6)}:1  ${fg} on ${bg}  (≥${min}, SC ${sc})`);
   if (ratio < min) errors.push(`contrast ${ratio.toFixed(2)}:1 < ${min}:1 — ${fg} on ${bg}`);
+}
+
+// ---- Icons: one drawing per file, on the shared 24px grid, coloured only by the surrounding text colour
+for (const f of readdirSync(join(root, 'icons')).filter((x) => x.endsWith('.svg'))) {
+  const src = readFileSync(join(root, 'icons', f), 'utf8');
+  if (!/^[a-z0-9]+(-[a-z0-9]+)*\.svg$/.test(f)) errors.push(`icons/${f}: name must be lowercase kebab-case`);
+  if (!/viewBox="0 0 24 24"/.test(src)) errors.push(`icons/${f}: viewBox must be "0 0 24 24"`);
+  if (!/currentColor/.test(src)) errors.push(`icons/${f}: must use currentColor`);
+  if (/#[0-9a-fA-F]{3,8}\b|rgb\(|hsl\(/.test(src)) errors.push(`icons/${f}: no fixed colours; use currentColor`);
+  if (/<(script|style|image|text)\b/i.test(src)) errors.push(`icons/${f}: contains a disallowed element`);
 }
 
 // ---- Text on the brand gradient (primary button). Automated checkers can't evaluate gradients, so sample it here.
