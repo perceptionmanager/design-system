@@ -220,13 +220,16 @@
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 0.1em;
-    border-radius: 2px;
+    border-radius: var(--pm-space-1);
+    /* side room for the focus ring; the negative margin cancels it, so the text never moves */
+    padding-inline: var(--pm-space-1);
+    margin-inline: calc(-1 * var(--pm-space-1));
     transition: color var(--pm-duration-fast) ease;
   }
   .pm-link:hover, .pm-link[data-state="hover"] { color: var(--pm-color-text-interactive-hover); text-decoration-thickness: 2px; }
   .pm-link:focus-visible, .pm-link[data-state="focus"] {
     outline: var(--pm-focus-ring-width) solid var(--pm-color-focus-ring);
-    outline-offset: 0; /* hugs the text so it stays clear of neighbouring lines; the underline sits inside it */
+    outline-offset: -1px; /* ring sits mostly inside the link's box: short, and clear of neighbouring lines and of the underline */
   }
   .pm-nav-link:focus-visible, .pm-nav-link[data-state="focus"],
   .pm-skip-link:focus-visible, .pm-skip-link[data-state="focus"] {
