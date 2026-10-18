@@ -64,6 +64,10 @@ Storybook is a devDependency. The token build and the `dist/` files stay zero-de
 
 The Figma library mirrors these tokens: [perceptionmanager design system](https://www.figma.com/design/OjKldfSUdETPYRFhlJ2PkU). It has 189 variables (with the CSS variable name as each one's code syntax), 12 text styles, 6 shadow styles, a gradient paint style, and 7 components. Primitives are hidden from pickers, so designers only see roles. Type sizes switch between the Responsive collection's Desktop and Mobile modes.
 
+## Contributing
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for how changes are made and versioned, the checklist a new component must meet, and the deprecation rules. Releases are listed in [`CHANGELOG.md`](CHANGELOG.md).
+
 ## Change a token
 
 1. Edit `tokens/*.tokens.json`.
