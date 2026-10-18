@@ -68,3 +68,7 @@ Added `CONTRIBUTING.md` and `CHANGELOG.md`. The system serves four products, so 
 - Releases are tags and products pin them. Pre-1.0, minor versions may be breaking, and each one is marked in the changelog.
 - Anything removed is deprecated for at least one minor release first.
 - The changelog marks component CSS as unreleased until its responsive rules exist (see the migration work).
+
+## 2026-10-18: Check icon stays 24px; selected pill uses color only
+- **Check icon:** the `check` size token stays at 24px. Portfolio checks are 28px on desktop today, so the migration makes them 4px smaller. This is an intended change, not a regression.
+- **Selected pill:** no check mark. The selected state is exposed through `aria-pressed` / `aria-selected`, and the color change is covered by the contrast gate.
