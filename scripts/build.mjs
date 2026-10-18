@@ -2,8 +2,9 @@
 //   dist/tokens.css          CSS custom properties (--pm-*), reduced-motion rule, type utility classes
 //   dist/legacy-aliases.css  old portfolio variable names -> tokens (delete once migration is done)
 //   dist/components.css      copied from components/components.css
+//   dist/icons.svg, icons.json  built from icons/*.svg
 //   dist/tokens.resolved.json  every token fully resolved (for Figma sync and other tools)
-import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadTokens, isRef, refPath, resolve, cssVar, fmt, toPx, fluid } from './lib.mjs';
@@ -142,4 +143,19 @@ writeFileSync(join(dist, 'tokens.css'), lines.join('\n'));
 writeFileSync(join(dist, 'legacy-aliases.css'), legacy.join('\n'));
 writeFileSync(join(dist, 'components.css'), readFileSync(join(root, 'components', 'components.css'), 'utf8').replace(/\r\n/g, '\n'));
 writeFileSync(join(dist, 'tokens.resolved.json'), JSON.stringify(resolved, null, 2) + '\n');
-console.log(`Built ${tokens.size} tokens → dist/tokens.css, dist/legacy-aliases.css, dist/components.css, dist/tokens.resolved.json`);
+// ---------------------------------------------------------------- icons
+// icons/*.svg (24px grid, currentColor) -> dist/icons.svg (sprite, <symbol id="pm-icon-NAME">) and dist/icons.json (for Storybook and tools)
+const iconNames = readdirSync(join(root, 'icons')).filter((f) => f.endsWith('.svg')).map((f) => f.slice(0, -4)).sort();
+const iconData = {};
+const symbols = iconNames.map((name) => {
+  const src = readFileSync(join(root, 'icons', `${name}.svg`), 'utf8').replace(/\r\n/g, '\n').trim();
+  const m = src.match(/^<svg\b([^>]*)>([\s\S]*)<\/svg>$/);
+  if (!m) throw new Error(`icons/${name}.svg is not a single <svg> element`);
+  const attrs = m[1].replace(/\s*xmlns="[^"]*"/, '').trim();
+  iconData[name] = { attrs, inner: m[2].trim() };
+  return `  <symbol id="pm-icon-${name}" ${attrs}>${m[2].trim()}</symbol>`;
+});
+writeFileSync(join(dist, 'icons.svg'), `<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">\n${symbols.join('\n')}\n</svg>\n`);
+writeFileSync(join(dist, 'icons.json'), JSON.stringify(iconData, null, 2) + '\n');
+
+console.log(`Built ${tokens.size} tokens → dist/tokens.css, dist/legacy-aliases.css, dist/components.css, dist/icons.svg, dist/icons.json, dist/tokens.resolved.json`);
