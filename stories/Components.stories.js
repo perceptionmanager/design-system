@@ -1,4 +1,4 @@
-// Shared components (v0.2.0). One story per component; each shows every state.
+// Shared components. One story per component; each shows every state.
 // data-state mirrors :hover / :focus-visible so the states can be shown side by side.
 import { icon } from './icon.js';
 
@@ -56,7 +56,7 @@ export const PillAndTag = {
 };
 
 export const Stat = {
-  render: () => wrap(`<div style="display:flex;gap:var(--pm-space-12)"><div class="pm-stat"><span class="pm-stat__value">207</span><span class="pm-stat__label">Design tokens</span></div><div class="pm-stat"><span class="pm-stat__value">31 → 10</span><span class="pm-stat__label">Type sizes</span></div></div>`, 'card'),
+  render: () => wrap(`<div style="display:flex;gap:var(--pm-space-12)"><div class="pm-stat"><span class="pm-stat__value">236</span><span class="pm-stat__label">Design tokens</span></div><div class="pm-stat"><span class="pm-stat__value">31 → 10</span><span class="pm-stat__label">Type sizes</span></div></div>`, 'card'),
 };
 
 export const Step = {

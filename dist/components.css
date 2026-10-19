@@ -1,4 +1,4 @@
-/* Shared component CSS (v0.2.0). Uses semantic and component tokens only; load tokens.css first.
+/* Shared component CSS. Uses semantic and component tokens only; load tokens.css first.
    Classes are namespaced .pm-* so they can sit beside a product's own CSS during migration.
    [data-state="hover|focus"] mirrors :hover / :focus-visible so Storybook can show each state;
    products never need it. */
