@@ -163,6 +163,7 @@
     --pm-color-text-tertiary: var(--pm-color-neutral-500);
     --pm-color-text-on-accent: var(--pm-color-neutral-950);
     --pm-color-text-accent: var(--pm-color-coral-500);
+    --pm-color-text-accent-secondary: var(--pm-color-cyan-400);
     --pm-color-text-interactive-hover: var(--pm-color-cyan-400);
     /* color.border */
     --pm-color-border-subtle: var(--pm-color-alpha-white-a10);
@@ -335,6 +336,7 @@
     --pm-color-text-secondary: var(--pm-color-neutral-700);
     --pm-color-text-tertiary: var(--pm-color-neutral-600);
     --pm-color-text-accent: var(--pm-color-coral-700);
+    --pm-color-text-accent-secondary: var(--pm-color-cyan-800);
     --pm-color-text-interactive-hover: var(--pm-color-cyan-800);
     --pm-color-border-subtle: var(--pm-color-alpha-ink-a12);
     --pm-color-border-strong: var(--pm-color-alpha-ink-a28);

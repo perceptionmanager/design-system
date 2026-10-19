@@ -4,7 +4,7 @@ Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.
 
 ## Unreleased
 
-- **Light theme:** set `data-theme="light"` on `<html>` and the semantic color and shadow tokens switch to a light set (cool blue-gray surfaces, ink text). Dark stays the default; nothing follows the operating system setting by itself, so each product decides when to opt in. Accent colors, the brand gradient, type, spacing and motion are shared by both themes. Coral text uses `color.text.accent` (a darker step in light), because the vivid coral is only about 2.9:1 on a light page.
+- **Light theme:** set `data-theme="light"` on `<html>` and the semantic color and shadow tokens switch to a light set (cool blue-gray surfaces, ink text). Dark stays the default; nothing follows the operating system setting by itself, so each product decides when to opt in. Accent colors, the brand gradient, type, spacing and motion are shared by both themes. Coral text uses `color.text.accent` and cyan text uses the new `color.text.accent-secondary` (both darker in light), because the vivid colors are only about 2.9:1 and 1.6:1 on a light page. Use `color.focus.ring` for focus outlines.
 - **Icons:** `sun` and `moon`, for a theme switch (14 icons in total).
 - **Validation:** the contrast gates now run for every theme, and a theme may only override existing semantic tokens of the same type.
 - **Build:** `tokens/light.tokens.json` is a mode file; `dist/tokens.css` gets a `:root[data-theme="light"]` block and `dist/tokens.resolved.json` gets a `$modes` section. 28 new primitives (light neutrals, darker accent steps, ink and tinted alphas).

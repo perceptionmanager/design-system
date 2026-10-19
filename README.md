@@ -61,7 +61,7 @@ Dark is the default. Set `data-theme="light"` on `<html>` to switch the semantic
 </script>
 ```
 
-Use `color.text.accent` for coral text (it is darker in light); the vivid `color.accent.primary` is for fills and lines. Storybook has a Theme switch in its toolbar.
+Use `color.text.accent` for coral text and `color.text.accent-secondary` for cyan text (both are darker in light), and `color.focus.ring` for focus outlines; the vivid `color.accent.primary` and `color.accent.secondary` are for fills and lines. Storybook has a Theme switch in its toolbar.
 
 ## Storybook
 

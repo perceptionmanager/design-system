@@ -1541,6 +1541,20 @@
     },
     "aliasOf": "color.coral.500"
   },
+  "color.text.accent-secondary": {
+    "type": "color",
+    "tier": "semantic",
+    "value": {
+      "colorSpace": "srgb",
+      "components": [
+        0.2706,
+        0.8784,
+        1
+      ],
+      "hex": "#45e0ff"
+    },
+    "aliasOf": "color.cyan.400"
+  },
   "color.text.interactive-hover": {
     "type": "color",
     "tier": "semantic",
@@ -3418,6 +3432,19 @@
           "hex": "#c43a1c"
         },
         "aliasOf": "color.coral.700"
+      },
+      "color.text.accent-secondary": {
+        "type": "color",
+        "value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.0314,
+            0.4118,
+            0.498
+          ],
+          "hex": "#08697f"
+        },
+        "aliasOf": "color.cyan.800"
       },
       "color.text.interactive-hover": {
         "type": "color",

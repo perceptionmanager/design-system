@@ -42,6 +42,9 @@
         "$value": "{color.coral.700}",
         "$description": "Coral for text. The vivid coral (accent.primary) is only about 2.9:1 on a light page, so text uses this darker step."
       },
+      "accent-secondary": {
+        "$value": "{color.cyan.800}"
+      },
       "interactive-hover": {
         "$value": "{color.cyan.800}"
       }

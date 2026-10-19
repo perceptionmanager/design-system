@@ -58,7 +58,7 @@ const SURFACES = ['color.surface.page', 'color.surface.raised', 'color.surface.c
 for (const [modeName, view] of [['dark', tokens], ...[...modes].map(([m, o]) => [m, withMode(tokens, o)])]) {
   const cv = (p) => resolve(view, `{${p}}`);
   const gates = [];
-  for (const text of ['color.text.primary', 'color.text.secondary', 'color.text.tertiary', 'color.text.accent', 'color.text.interactive-hover', 'color.status.success', 'color.status.critical', 'color.status.high', 'color.status.medium', 'color.status.low', 'color.status.error', 'color.status.warning']) {
+  for (const text of ['color.text.primary', 'color.text.secondary', 'color.text.tertiary', 'color.text.accent', 'color.text.accent-secondary', 'color.text.interactive-hover', 'color.status.success', 'color.status.critical', 'color.status.high', 'color.status.medium', 'color.status.low', 'color.status.error', 'color.status.warning']) {
     for (const s of SURFACES) gates.push([text, s, 4.5, '1.4.3 text']);
   }
   gates.push(['color.text.on-accent', 'color.accent.primary', 4.5, '1.4.3 text']);
