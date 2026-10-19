@@ -29,7 +29,7 @@ integrations/              ← Kiro steering rules to copy into each product rep
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/perceptionmanager/design-system@main/dist/legacy-aliases.css">
 ```
 
-For production, pin a release tag instead of `@main` (e.g. `@v0.1.0`) so a token change never reaches a product until you bump the version.
+For production, pin a release tag instead of `@main` (e.g. `@v0.4.0`) so a token change never reaches a product until you bump the version.
 
 ```css
 @layer tokens, base, components, product;
@@ -67,7 +67,7 @@ Use `color.text.accent` for coral text and `color.text.accent-secondary` for cya
 
 Live: https://storybook.perceptionmanager.com
 
-Storybook documents the system. v0.1.0 covers the foundations only: every color token, and the 10 type roles with their fluid scaling. Component stories (button, card, header, footer, each in every state) arrive with the shared components in v0.2.0.
+Storybook documents the system: the foundations (every color token in dark and light, the 10 type roles with their fluid scaling) and the shared components, each in every state. Use the theme toggle in the toolbar to switch between dark and light.
 
 ```
 npm run storybook          # build tokens, then run Storybook at localhost:6006
