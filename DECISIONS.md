@@ -19,6 +19,13 @@ Found while building the Figma library: four component tokens in the approved pr
 - `tag.bg`: surface.tint (white 3%) → **surface.tint-strong (white 6%)**, matching `.cs-tag`.
 - `tag.text`: text.secondary → **text.tertiary**, matching `.cs-tag` (`--ink-faint`).
 
+## 2026-10-18: Figma library synced to v0.4.0
+Reason: the library still described v0.1 (dark only, Fraunces display font), so designers would have seen values the code no longer uses.
+- **Light mode:** the Color collection has a second mode, Light, with all 43 semantic roles aliased to primitives exactly as `tokens/light.tokens.json` does. Foundations shows both modes.
+- **Display font:** the `font/family/display` variable and the five Display and Heading text styles now use IBM Plex Serif instead of Fraunces (changed in v0.3.0).
+- **New variables:** 28 primitives (the light-theme neutrals, 700-weight accents and ink and tinted alpha values) and `color/text/accent-secondary`. 218 variables in total, up from 189.
+- **Not in Figma:** shadows and glows are effect styles, which Figma cannot switch by mode, so they keep the dark values. Components were not rebuilt; they bind to the variables, so they follow the mode set on a frame.
+
 ## 2026-10-07: Figma library v0.1
 File: https://www.figma.com/design/OjKldfSUdETPYRFhlJ2PkU
 - 160 variables in 5 collections: Primitives (hidden from pickers), Color (Dark), Dimension, Responsive (Desktop/Mobile), Component. Every variable's WEB code syntax is its `var(--pm-*)` name.
