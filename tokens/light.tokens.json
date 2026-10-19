@@ -1,0 +1,239 @@
+{
+  "$description": "Light theme. Overrides semantic tokens when <html data-theme=\"light\">. Same paths as semantic.tokens.json; anything not listed here keeps its dark value (accent colors, gradient, on-accent text, layout, type, motion).",
+  "color": {
+    "$type": "color",
+    "surface": {
+      "page": {
+        "$value": "{color.neutral.150}"
+      },
+      "raised": {
+        "$value": "{color.neutral.100}"
+      },
+      "card": {
+        "$value": "{color.neutral.0}"
+      },
+      "sunken": {
+        "$value": "{color.neutral.200}"
+      },
+      "tint": {
+        "$value": "{color.alpha.ink-a3}"
+      },
+      "tint-strong": {
+        "$value": "{color.alpha.ink-a6}"
+      },
+      "scrim": {
+        "$value": "{color.alpha.neutral-150-a88}"
+      },
+      "scrim-strong": {
+        "$value": "{color.alpha.neutral-150-a97}"
+      }
+    },
+    "text": {
+      "primary": {
+        "$value": "{color.neutral.900}"
+      },
+      "secondary": {
+        "$value": "{color.neutral.700}"
+      },
+      "tertiary": {
+        "$value": "{color.neutral.600}"
+      },
+      "accent": {
+        "$value": "{color.coral.700}",
+        "$description": "Coral for text. The vivid coral (accent.primary) is only about 2.9:1 on a light page, so text uses this darker step."
+      },
+      "accent-secondary": {
+        "$value": "{color.cyan.800}"
+      },
+      "interactive-hover": {
+        "$value": "{color.cyan.800}"
+      }
+    },
+    "border": {
+      "subtle": {
+        "$value": "{color.alpha.ink-a12}"
+      },
+      "strong": {
+        "$value": "{color.alpha.ink-a28}"
+      },
+      "accent": {
+        "$value": "{color.alpha.coral-700-a40}"
+      },
+      "interactive-hover": {
+        "$value": "{color.cyan.800}"
+      }
+    },
+    "status": {
+      "success": {
+        "$value": "{color.green.700}"
+      },
+      "critical": {
+        "$value": "{color.rose.700}"
+      },
+      "critical-subtle": {
+        "$value": "{color.alpha.rose-700-a10}"
+      },
+      "critical-border": {
+        "$value": "{color.alpha.rose-700-a35}"
+      },
+      "high": {
+        "$value": "{color.orange.700}"
+      },
+      "high-subtle": {
+        "$value": "{color.alpha.orange-700-a10}"
+      },
+      "high-border": {
+        "$value": "{color.alpha.orange-700-a35}"
+      },
+      "medium": {
+        "$value": "{color.amber.700}"
+      },
+      "medium-subtle": {
+        "$value": "{color.alpha.amber-700-a10}"
+      },
+      "medium-border": {
+        "$value": "{color.alpha.amber-700-a35}"
+      },
+      "low": {
+        "$value": "{color.neutral.700}"
+      },
+      "low-subtle": {
+        "$value": "{color.alpha.ink-a6}"
+      },
+      "low-border": {
+        "$value": "{color.alpha.ink-a12}"
+      },
+      "error": {
+        "$value": "{color.rose.700}"
+      },
+      "error-subtle": {
+        "$value": "{color.alpha.rose-700-a10}"
+      },
+      "error-border": {
+        "$value": "{color.alpha.rose-700-a35}"
+      },
+      "warning": {
+        "$value": "{color.amber.700}"
+      },
+      "warning-subtle": {
+        "$value": "{color.alpha.amber-700-a10}"
+      },
+      "warning-border": {
+        "$value": "{color.alpha.amber-700-a35}"
+      }
+    },
+    "focus": {
+      "ring": {
+        "$value": "{color.cyan.800}"
+      }
+    }
+  },
+  "shadow": {
+    "$type": "shadow",
+    "elevation-1": {
+      "$value": {
+        "color": "{color.alpha.ink-a18}",
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 10,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 30,
+          "unit": "px"
+        },
+        "spread": {
+          "value": -12,
+          "unit": "px"
+        }
+      }
+    },
+    "elevation-2": {
+      "$value": {
+        "color": "{color.alpha.ink-a12}",
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 10,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 30,
+          "unit": "px"
+        },
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    },
+    "elevation-3": {
+      "$value": {
+        "color": "{color.alpha.ink-a18}",
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 20,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 60,
+          "unit": "px"
+        },
+        "spread": {
+          "value": 0,
+          "unit": "px"
+        }
+      }
+    },
+    "glow-accent": {
+      "$value": {
+        "color": "{color.alpha.coral-700-a45}",
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 8,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 24,
+          "unit": "px"
+        },
+        "spread": {
+          "value": -10,
+          "unit": "px"
+        }
+      }
+    },
+    "glow-accent-hover": {
+      "$value": {
+        "color": "{color.alpha.coral-700-a55}",
+        "offsetX": {
+          "value": 0,
+          "unit": "px"
+        },
+        "offsetY": {
+          "value": 14,
+          "unit": "px"
+        },
+        "blur": {
+          "value": 32,
+          "unit": "px"
+        },
+        "spread": {
+          "value": -10,
+          "unit": "px"
+        }
+      }
+    }
+  }
+}

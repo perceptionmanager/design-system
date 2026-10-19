@@ -84,3 +84,17 @@ Decided by Alex while previewing a light theme for the portfolio. The warm serif
 - Every heading, stat value and step number changes face. Products need the font loaded: IBM Plex Serif 400, 500 and 600 (and 400 italic if used).
 - Figma text styles still use Fraunces and need the same change.
 - The chromatic red and cyan text fringe on page titles was removed from the portfolio at the same time. It was page markup, not part of the system, so nothing changes in the tokens for it.
+
+## 2026-10-18: Light theme
+Alex asked for a dark and light switch on the portfolio. This reverses the 2026-10-07 "dark only" decision (item 6) now that a second mode is needed; the semantic tier was built for it.
+- **Mechanism:** `<html data-theme="light">` overrides semantic tokens. Dark remains the default and the only mode if the attribute is absent, so products that do not opt in see no change. The system does not read `prefers-color-scheme`; each product decides (the portfolio will follow the visitor's setting and remember their choice).
+- **Palette:** cool blue-gray surfaces (`#f1f4f9` page, white cards), not a warm cream. A warm cream with serif type and a terracotta accent reads as generic generated design. Text keeps the cool ink from the dark theme.
+- **Accents:** the vivid coral and cyan stay as fills, lines and the gradient. Coral text uses `color.text.accent`, which is `coral.700` (`#c43a1c`) in light. Complementing the whole palette (rotating every hue 180 degrees) was tried and rejected: the complement of the dark coral is a light teal with 2.55:1 contrast, and it dropped the signature coral.
+- **Contrast:** `npm run validate` now checks every text role, the focus ring and `on-accent` against the three surfaces in both themes. It caught `orange.700` at 4.45:1 on the light page, so it was darkened to `#ad4d08` (4.96:1).
+- **Shadows:** black shadows become low-opacity ink shadows; the coral glow under the primary button is a darker coral at 45 to 55% alpha.
+- **Not in the tokens:** the portfolio's decorative backdrop (blobs, engraved lines, grain) is site-specific and handled in the portfolio.
+- **Figma:** the library needs a "Color (Light)" mode to match. Not done yet.
+
+
+## 2026-10-18: Disabled controls are inert
+A disabled button or interactive pill takes no pointer events. Reason: hover rules for the primary and ghost buttons had equal specificity to the disabled rule and came later, so a disabled button still showed hover styling, which reads as clickable. Keyboard focus is unchanged for `aria-disabled` buttons, which stay focusable.

@@ -29,7 +29,8 @@
     outline: var(--pm-focus-ring-width) solid var(--pm-color-focus-ring);
     outline-offset: var(--pm-focus-ring-offset);
   }
-  .pm-btn:disabled, .pm-btn[aria-disabled="true"] { opacity: .45; cursor: not-allowed; box-shadow: none; transform: none; }
+  /* Disabled is inert: no pointer events, so no hover, press or lift, and no hover shadow or colour change. */
+  .pm-btn:disabled, .pm-btn[aria-disabled="true"] { opacity: .45; pointer-events: none; box-shadow: none; transform: none; transition: none; }
 
   .pm-btn--primary {
     background: var(--pm-button-primary-bg);
@@ -135,7 +136,7 @@
     outline: var(--pm-focus-ring-width) solid var(--pm-color-focus-ring);
     outline-offset: var(--pm-focus-ring-offset);
   }
-  .pm-pill--interactive:disabled { opacity: .45; cursor: not-allowed; }
+  .pm-pill--interactive:disabled { opacity: .45; pointer-events: none; transition: none; }
   .pm-pill__count { color: var(--pm-color-text-tertiary); font-variant-numeric: tabular-nums; }
   /* tertiary text is under 4.5:1 on the selected tint, so the count steps up to secondary there */
   .pm-pill--interactive[aria-pressed="true"] .pm-pill__count, .pm-pill--interactive[aria-selected="true"] .pm-pill__count { color: var(--pm-color-text-secondary); }

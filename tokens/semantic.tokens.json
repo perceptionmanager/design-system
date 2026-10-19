@@ -45,6 +45,10 @@
       "accent": {
         "$value": "{color.coral.500}"
       },
+      "accent-secondary": {
+        "$value": "{color.cyan.400}",
+        "$description": "Cyan for text and icons. Use this, not accent.secondary, wherever cyan is read as text; the light theme darkens it."
+      },
       "interactive-hover": {
         "$value": "{color.cyan.400}"
       }
