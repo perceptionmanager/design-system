@@ -661,8 +661,7 @@
     "type": "fontFamily",
     "tier": "primitives",
     "value": [
-      "Fraunces",
-      "Iowan Old Style",
+      "IBM Plex Serif",
       "Georgia",
       "serif"
     ]
@@ -1863,8 +1862,7 @@
     "tier": "semantic",
     "value": {
       "fontFamily": [
-        "Fraunces",
-        "Iowan Old Style",
+        "IBM Plex Serif",
         "Georgia",
         "serif"
       ],
@@ -1904,8 +1902,7 @@
     "tier": "semantic",
     "value": {
       "fontFamily": [
-        "Fraunces",
-        "Iowan Old Style",
+        "IBM Plex Serif",
         "Georgia",
         "serif"
       ],
@@ -1945,8 +1942,7 @@
     "tier": "semantic",
     "value": {
       "fontFamily": [
-        "Fraunces",
-        "Iowan Old Style",
+        "IBM Plex Serif",
         "Georgia",
         "serif"
       ],
@@ -1986,8 +1982,7 @@
     "tier": "semantic",
     "value": {
       "fontFamily": [
-        "Fraunces",
-        "Iowan Old Style",
+        "IBM Plex Serif",
         "Georgia",
         "serif"
       ],
@@ -2027,8 +2022,7 @@
     "tier": "semantic",
     "value": {
       "fontFamily": [
-        "Fraunces",
-        "Iowan Old Style",
+        "IBM Plex Serif",
         "Georgia",
         "serif"
       ],
@@ -2752,8 +2746,7 @@
     "tier": "components",
     "value": {
       "fontFamily": [
-        "Fraunces",
-        "Iowan Old Style",
+        "IBM Plex Serif",
         "Georgia",
         "serif"
       ],

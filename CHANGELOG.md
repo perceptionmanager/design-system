@@ -4,6 +4,7 @@ Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.
 
 ## Unreleased
 
+- **Typography (visible change):** `font.family.display` is now IBM Plex Serif (was Fraunces), so headings, stat values and step numbers change face in every product. Load IBM Plex Serif 400, 500 and 600 where Fraunces was loaded. Sizes, weights and line heights are unchanged.
 - **Card:** `pm-card--accent-gradient`, a 3px brand-gradient bar along the top edge. Found while migrating the portfolio: its patient-portal scenario cards used a custom gradient bar the card did not cover.
 
 ## v0.2.0 (2026-10-18)

@@ -73,7 +73,7 @@
     --pm-radius-lg: 1.25rem;
     --pm-radius-full: 9999px;
     /* font */
-    --pm-font-family-display: Fraunces, 'Iowan Old Style', Georgia, serif;
+    --pm-font-family-display: 'IBM Plex Serif', Georgia, serif;
     --pm-font-family-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
     --pm-font-weight-regular: 400;
     --pm-font-weight-semibold: 600;

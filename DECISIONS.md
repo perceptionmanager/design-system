@@ -77,3 +77,10 @@ Added `CONTRIBUTING.md` and `CHANGELOG.md`. The system serves four products, so 
 The portfolio migration found a custom card (patient-portal scenarios) with a 3px brand-gradient bar on top, which the solid 2px accent bars could not cover.
 - **Variant:** `pm-card--accent-gradient` draws the bar as a background layer inside the border, so it never changes the card's size.
 - **Why 3px, not 2px:** it matches the existing portfolio card, so the migration changes nothing visually. Whether all accent bars should share one thickness is open.
+
+## 2026-10-18: Display font is IBM Plex Serif (was Fraunces)
+Decided by Alex while previewing a light theme for the portfolio. The warm serif and sans pairing read as a generic, generated look, in both themes.
+- `font.family.display`: Fraunces, Iowan Old Style, Georgia, serif → **IBM Plex Serif, Georgia, serif**. Body text stays IBM Plex Sans, so the system now uses one type family.
+- Every heading, stat value and step number changes face. Products need the font loaded: IBM Plex Serif 400, 500 and 600 (and 400 italic if used).
+- Figma text styles still use Fraunces and need the same change.
+- The chromatic red and cyan text fringe on page titles was removed from the portfolio at the same time. It was page markup, not part of the system, so nothing changes in the tokens for it.

@@ -595,8 +595,7 @@
       "$type": "fontFamily",
       "display": {
         "$value": [
-          "Fraunces",
-          "Iowan Old Style",
+          "IBM Plex Serif",
           "Georgia",
           "serif"
         ]
