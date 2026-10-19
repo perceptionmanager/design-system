@@ -95,3 +95,6 @@ Alex asked for a dark and light switch on the portfolio. This reverses the 2026-
 - **Not in the tokens:** the portfolio's decorative backdrop (blobs, engraved lines, grain) is site-specific and handled in the portfolio.
 - **Figma:** the library needs a "Color (Light)" mode to match. Not done yet.
 
+
+## 2026-10-18: Disabled controls are inert
+A disabled button or interactive pill takes no pointer events. Reason: hover rules for the primary and ghost buttons had equal specificity to the disabled rule and came later, so a disabled button still showed hover styling, which reads as clickable. Keyboard focus is unchanged for `aria-disabled` buttons, which stay focusable.

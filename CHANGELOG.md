@@ -4,6 +4,7 @@ Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.
 
 ## Unreleased
 
+- **Disabled buttons and interactive pills are inert:** `pointer-events: none`, so no hover shadow, colour change or lift, and no transition. Previously a disabled primary button still picked up the hover shadow and a disabled ghost button changed border and text colour on hover. The not-allowed cursor is gone with it, since an inert element no longer reports a cursor.
 - **Light theme:** set `data-theme="light"` on `<html>` and the semantic color and shadow tokens switch to a light set (cool blue-gray surfaces, ink text). Dark stays the default; nothing follows the operating system setting by itself, so each product decides when to opt in. Accent colors, the brand gradient, type, spacing and motion are shared by both themes. Coral text uses `color.text.accent` and cyan text uses the new `color.text.accent-secondary` (both darker in light), because the vivid colors are only about 2.9:1 and 1.6:1 on a light page. Use `color.focus.ring` for focus outlines.
 - **Icons:** `sun` and `moon`, for a theme switch (14 icons in total).
 - **Validation:** the contrast gates now run for every theme, and a theme may only override existing semantic tokens of the same type.
