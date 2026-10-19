@@ -72,3 +72,8 @@ Added `CONTRIBUTING.md` and `CHANGELOG.md`. The system serves four products, so 
 ## 2026-10-18: Check icon stays 24px; selected pill uses color only
 - **Check icon:** the `check` size token stays at 24px. Portfolio checks are 28px on desktop today, so the migration makes them 4px smaller. This is an intended change, not a regression.
 - **Selected pill:** no check mark. The selected state is exposed through `aria-pressed` / `aria-selected`, and the color change is covered by the contrast gate.
+
+## 2026-10-18: Card gets a gradient accent variant
+The portfolio migration found a custom card (patient-portal scenarios) with a 3px brand-gradient bar on top, which the solid 2px accent bars could not cover.
+- **Variant:** `pm-card--accent-gradient` draws the bar as a background layer inside the border, so it never changes the card's size.
+- **Why 3px, not 2px:** it matches the existing portfolio card, so the migration changes nothing visually. Whether all accent bars should share one thickness is open.

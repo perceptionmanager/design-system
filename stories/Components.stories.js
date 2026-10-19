@@ -29,10 +29,11 @@ export const Buttons = {
 export const Card = {
   render: () => {
     const card = (cls, title, body) => `<article class="pm-card ${cls}" style="width:280px;align-self:stretch"><h3 style="margin:0 0 var(--pm-space-2);font:var(--pm-type-heading-sm-weight) var(--pm-type-heading-sm-size)/var(--pm-type-heading-sm-line-height) var(--pm-type-heading-sm-family)">${title}</h3><p style="margin:0;color:var(--pm-color-text-secondary)">${body}</p></article>`;
-    return wrap(row('Card, then with a primary or secondary accent bar on the top edge',
+    return wrap(row('Card, then with a primary, secondary or gradient accent bar on the top edge',
       card('', 'Default', '24px padding, card surface, subtle border.') +
       card('pm-card--accent-primary', 'Primary accent', 'Coral bar along the top edge.') +
-      card('pm-card--accent-secondary', 'Secondary accent', 'Cyan bar along the top edge.')));
+      card('pm-card--accent-secondary', 'Secondary accent', 'Cyan bar along the top edge.') +
+      card('pm-card--accent-gradient', 'Gradient accent', 'Brand gradient bar along the top edge.')));
   },
 };
 

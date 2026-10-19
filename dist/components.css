@@ -99,6 +99,8 @@
   /* Accent bar: a 2px coloured line along the top edge, following the corner radius. Drawn inside the card (inset shadow), so it never changes the card's size. */
   .pm-card--accent-primary { box-shadow: inset 0 2px 0 var(--pm-color-accent-primary); }
   .pm-card--accent-secondary { box-shadow: inset 0 2px 0 var(--pm-color-accent-secondary); }
+  /* Gradient accent: a 3px brand-gradient bar along the top edge, drawn as a background layer inside the border so it follows the corners and never changes the card's size. */
+  .pm-card--accent-gradient { background: var(--pm-gradient-brand) 0 0 / 100% 3px no-repeat var(--pm-card-bg); }
 
   /* ---- Pill (status) ---- */
   .pm-pill {
