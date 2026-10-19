@@ -47,6 +47,22 @@ Product CSS uses **semantic and component tokens**, not primitives. Type sizes a
 
 **Hosting:** the repo is public, so jsDelivr serves `dist/` directly from GitHub. `vercel.json` configures the Vercel project, which hosts Storybook (not `dist/`). It still carries the CORS and cache headers for `/dist/`, in case you serve tokens from Vercel later.
 
+## Themes
+
+Dark is the default. Set `data-theme="light"` on `<html>` to switch the semantic color and shadow tokens to the light set; remove it (or set `dark`) to go back. The system does not follow the operating system setting on its own, so a product decides:
+
+```html
+<script>
+  // in <head>, before the stylesheets, so the page never flashes the wrong theme
+  try {
+    var t = localStorage.getItem('pm-theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+</script>
+```
+
+Use `color.text.accent` for coral text (it is darker in light); the vivid `color.accent.primary` is for fills and lines. Storybook has a Theme switch in its toolbar.
+
 ## Storybook
 
 Live: https://storybook.perceptionmanager.com
@@ -96,4 +112,5 @@ CI runs `npm run check` on every push and pull request. It also fails if `dist/`
 - [x] Shared component CSS (`dist/components.css`): button, card, pill, tag, stat, step, check item. Header and footer are still per-repo.
 - [ ] Migrate the portfolio from its own component CSS to `dist/components.css`
 - [ ] Migrate perceptionmanager.com, then Role Analyzer, UX Intelligence Engine and Kiro UX Auditor
-- [ ] Light mode (deferred — see DECISIONS.md)
+- [x] Light theme (`data-theme="light"`, see DECISIONS.md)
+- [ ] Figma library: add a light color mode

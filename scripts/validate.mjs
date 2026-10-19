@@ -3,12 +3,13 @@
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readdirSync, readFileSync } from 'node:fs';
-import { loadTokens, refsIn, resolve, contrast, fmt } from './lib.mjs';
+import { loadTokens, loadModes, withMode, refsIn, resolve, contrast, fmt } from './lib.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const errors = [];
 let tokens;
-try { tokens = loadTokens(join(root, 'tokens')); } catch (e) { console.error(`✗ ${e.message}`); process.exit(1); }
+let modes;
+try { tokens = loadTokens(join(root, 'tokens')); modes = loadModes(join(root, 'tokens')); } catch (e) { console.error(`✗ ${e.message}`); process.exit(1); }
 
 const TYPES = new Set(['color', 'dimension', 'fontFamily', 'fontWeight', 'duration', 'cubicBezier', 'number', 'strokeStyle', 'border', 'transition', 'shadow', 'gradient', 'typography']);
 const RANK = { primitives: 0, semantic: 1, components: 2 };
@@ -35,24 +36,41 @@ for (const [path, t] of tokens) {
   if (t.$type === 'duration' && !['ms', 's'].includes(v.unit)) errors.push(`${path}: duration unit must be ms or s`);
 }
 
-// ---- WCAG 2.2 contrast gates (opaque colors only)
-const c = (p) => resolve(tokens, `{${p}}`);
-const gates = [];
-const SURFACES = ['color.surface.page', 'color.surface.raised', 'color.surface.card'];
-for (const text of ['color.text.primary', 'color.text.secondary', 'color.text.tertiary', 'color.text.accent', 'color.text.interactive-hover', 'color.status.success', 'color.status.critical', 'color.status.high', 'color.status.medium', 'color.status.low', 'color.status.error', 'color.status.warning']) {
-  for (const s of SURFACES) gates.push([text, s, 4.5, '1.4.3 text']);
+// ---- Modes (light): every override must replace an existing semantic token of the same type and may only reference primitives or semantic tokens
+for (const [mode, overrides] of modes) {
+  for (const [path, t] of overrides) {
+    const base = tokens.get(path);
+    if (!base) { errors.push(`${mode}: ${path} overrides a token that does not exist`); continue; }
+    if (base.tier !== 'semantic') errors.push(`${mode}: ${path} is a ${base.tier} token; modes override semantic tokens only`);
+    if (base.$type !== t.$type) errors.push(`${mode}: ${path} changes type ${base.$type} → ${t.$type}`);
+    for (const r of refsIn(t.$value)) {
+      const target = tokens.get(r);
+      if (!target) errors.push(`${mode}: ${path} has unresolved reference {${r}}`);
+      else if (RANK[target.tier] > RANK.semantic) errors.push(`${mode}: ${path} must not reference a ${target.tier} token {${r}}`);
+    }
+  }
 }
-gates.push(['color.text.on-accent', 'color.accent.primary', 4.5, '1.4.3 text']);
-gates.push(['color.text.on-accent', 'color.accent.secondary', 4.5, '1.4.3 text']);
-for (const s of SURFACES) gates.push(['color.focus.ring', s, 3, '1.4.11 non-text']);
 
+// ---- WCAG 2.2 contrast gates (opaque colors only), run once per mode
+const c = (p) => resolve(tokens, `{${p}}`);
 const report = [];
-for (const [fg, bg, min, sc] of gates) {
-  if (!tokens.has(fg) || !tokens.has(bg)) { errors.push(`contrast gate references missing token ${fg} / ${bg}`); continue; }
-  let ratio;
-  try { ratio = contrast(c(fg), c(bg)); } catch (e) { errors.push(`contrast gate ${fg} on ${bg}: ${e.message}`); continue; }
-  report.push(`${ratio >= min ? "✓" : "✗"} ${ratio.toFixed(2).padStart(6)}:1  ${fg} on ${bg}  (≥${min}, SC ${sc})`);
-  if (ratio < min) errors.push(`contrast ${ratio.toFixed(2)}:1 < ${min}:1 — ${fg} on ${bg}`);
+const SURFACES = ['color.surface.page', 'color.surface.raised', 'color.surface.card'];
+for (const [modeName, view] of [['dark', tokens], ...[...modes].map(([m, o]) => [m, withMode(tokens, o)])]) {
+  const cv = (p) => resolve(view, `{${p}}`);
+  const gates = [];
+  for (const text of ['color.text.primary', 'color.text.secondary', 'color.text.tertiary', 'color.text.accent', 'color.text.interactive-hover', 'color.status.success', 'color.status.critical', 'color.status.high', 'color.status.medium', 'color.status.low', 'color.status.error', 'color.status.warning']) {
+    for (const s of SURFACES) gates.push([text, s, 4.5, '1.4.3 text']);
+  }
+  gates.push(['color.text.on-accent', 'color.accent.primary', 4.5, '1.4.3 text']);
+  gates.push(['color.text.on-accent', 'color.accent.secondary', 4.5, '1.4.3 text']);
+  for (const s of SURFACES) gates.push(['color.focus.ring', s, 3, '1.4.11 non-text']);
+  for (const [fg, bg, min, sc] of gates) {
+    if (!view.has(fg) || !view.has(bg)) { errors.push(`contrast gate references missing token ${fg} / ${bg}`); continue; }
+    let ratio;
+    try { ratio = contrast(cv(fg), cv(bg)); } catch (e) { errors.push(`contrast gate ${fg} on ${bg} (${modeName}): ${e.message}`); continue; }
+    report.push(`${ratio >= min ? "✓" : "✗"} ${ratio.toFixed(2).padStart(6)}:1  [${modeName}] ${fg} on ${bg}  (≥${min}, SC ${sc})`);
+    if (ratio < min) errors.push(`contrast ${ratio.toFixed(2)}:1 < ${min}:1 — ${fg} on ${bg} (${modeName})`);
+  }
 }
 
 // ---- Icons: one drawing per file, on the shared 24px grid, coloured only by the surrounding text colour

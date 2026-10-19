@@ -5,8 +5,11 @@ import { join } from 'node:path';
 export const ROOT_PX = 16;
 export const TIERS = ['primitives', 'semantic', 'components']; // load order = tier order
 
+/** Mode files hold overrides of semantic tokens (same paths) and are loaded separately by loadModes(). */
+export const MODES = ['light'];
+
 export function loadTokens(dir) {
-  const files = readdirSync(dir).filter((f) => f.endsWith('.tokens.json'));
+  const files = readdirSync(dir).filter((f) => f.endsWith('.tokens.json') && !MODES.includes(f.replace('.tokens.json', '')));
   const ordered = TIERS.map((t) => `${t}.tokens.json`).filter((f) => files.includes(f));
   const extra = files.filter((f) => !ordered.includes(f)).sort();
   const tokens = new Map(); // path -> { $value, $type, $description?, $extensions?, tier, file }
@@ -15,6 +18,24 @@ export function loadTokens(dir) {
     flatten(tree, [], undefined, file.replace('.tokens.json', ''), file, tokens);
   }
   return tokens;
+}
+
+/** Returns Map(modeName -> Map(path -> token)). Each mode token overrides the semantic token with the same path. */
+export function loadModes(dir) {
+  const out = new Map();
+  for (const mode of MODES) {
+    const tokens = new Map();
+    flatten(JSON.parse(readFileSync(join(dir, `${mode}.tokens.json`), 'utf8')), [], undefined, 'semantic', `${mode}.tokens.json`, tokens);
+    out.set(mode, tokens);
+  }
+  return out;
+}
+
+/** The token set as seen in a mode: base tokens with the mode's overrides applied. */
+export function withMode(tokens, overrides) {
+  const merged = new Map(tokens);
+  for (const [path, t] of overrides) merged.set(path, { ...tokens.get(path), ...t });
+  return merged;
 }
 
 function flatten(node, path, inheritedType, tier, file, out) {

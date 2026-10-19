@@ -7,10 +7,11 @@
 import { mkdirSync, writeFileSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadTokens, isRef, refPath, resolve, cssVar, fmt, toPx, fluid } from './lib.mjs';
+import { loadTokens, loadModes, withMode, isRef, refPath, resolve, cssVar, fmt, toPx, fluid } from './lib.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const tokens = loadTokens(join(root, 'tokens'));
+const modes = loadModes(join(root, 'tokens'));
 const FLUID = 'com.perceptionmanager.fluid';
 const CSSX = 'com.perceptionmanager.css';
 const SKIP_IN_CSS = new Set(['breakpoint']); // custom properties can't be used inside @media
@@ -99,7 +100,14 @@ for (const [path, t] of tokens) {
   for (const [n, val] of declarations(path, t)) lines.push(`    ${n}: ${val};`);
 }
 const durations = [...tokens.keys()].filter((p) => tokens.get(p).$type === 'duration');
-lines.push('  }', '', '  @media (prefers-reduced-motion: reduce) {', '    :root {');
+lines.push('  }');
+// modes: the same custom properties with other values, switched by <html data-theme="NAME">. Products opt in; nothing follows the OS setting by itself.
+for (const [mode, overrides] of modes) {
+  lines.push('', `  /* ===== mode: ${mode} (set data-theme="${mode}" on <html>) ===== */`, `  :root[data-theme="${mode}"] {`, `    color-scheme: ${mode};`);
+  for (const [path, t] of overrides) for (const [n, val] of declarations(path, withMode(tokens, overrides).get(path))) lines.push(`    ${n}: ${val};`);
+  lines.push('  }');
+}
+lines.push('', '  @media (prefers-reduced-motion: reduce) {', '    :root {');
 for (const p of durations) lines.push(`      ${cssVar(p)}: 0ms;`);
 lines.push('    }', '  }', '}', '');
 
@@ -136,6 +144,13 @@ const resolved = {};
 for (const [path, t] of tokens) {
   resolved[path] = { type: t.$type, tier: t.tier, value: resolve(tokens, t.$value), ...(isRef(t.$value) ? { aliasOf: refPath(t.$value) } : {}), ...(t.$extensions ? { extensions: t.$extensions } : {}) };
 }
+
+const resolvedModes = {};
+for (const [mode, overrides] of modes) {
+  const view = withMode(tokens, overrides);
+  resolvedModes[mode] = Object.fromEntries([...overrides.keys()].map((path) => [path, { type: view.get(path).$type, value: resolve(view, view.get(path).$value), ...(isRef(view.get(path).$value) ? { aliasOf: refPath(view.get(path).$value) } : {}) }]));
+}
+if (modes.size) resolved.$modes = resolvedModes;
 
 const dist = join(root, 'dist');
 mkdirSync(dist, { recursive: true });
