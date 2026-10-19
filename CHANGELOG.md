@@ -4,7 +4,7 @@ Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.
 
 ## Unreleased
 
-Nothing yet.
+- **Card:** `pm-card--accent-gradient`, a 3px brand-gradient bar along the top edge. Found while migrating the portfolio: its patient-portal scenario cards used a custom gradient bar the card did not cover.
 
 ## v0.2.0 (2026-10-18)
 
