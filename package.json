@@ -1,7 +1,7 @@
 {
   "name": "@perceptionmanager/design-system",
-  "version": "0.1.0",
-  "description": "Shared design tokens for perceptionmanager.com, Role Analyzer, UX Intelligence Engine and Kiro UX Auditor.",
+  "version": "0.5.0",
+  "description": "Shared design tokens, components and page shell for perceptionmanager.com, Role Analyzer, UX Intelligence Engine and Kiro UX Auditor.",
   "private": true,
   "type": "module",
   "license": "UNLICENSED",
@@ -14,6 +14,11 @@
   ],
   "exports": {
     "./tokens.css": "./dist/tokens.css",
+    "./components.css": "./dist/components.css",
+    "./shell.css": "./dist/shell.css",
+    "./shell.js": "./dist/shell.js",
+    "./icons.svg": "./dist/icons.svg",
+    "./logos.svg": "./dist/logos.svg",
     "./legacy-aliases.css": "./dist/legacy-aliases.css",
     "./tokens.json": "./dist/tokens.resolved.json"
   },

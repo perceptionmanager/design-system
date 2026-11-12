@@ -14,22 +14,30 @@ tokens/                    ← source of truth (W3C Design Tokens Format 2025.10
 dist/                      ← generated, committed so products can load it directly
   tokens.css                 --pm-* custom properties in @layer tokens, reduced-motion rule, .pm-text-* classes
   components.css             shared component CSS (.pm-* classes), copied from components/
+  shell.css, shell.js        page shell: skip link, header, mobile menu, footer, backdrop (markup in docs/shell.md)
+  icons.svg, logos.svg       icon sprite and the footer's tool-logo sprite
   legacy-aliases.css         old portfolio names (--bg, --ink-dim, …) → tokens, for gradual migration
   tokens.resolved.json       every token fully resolved, for Figma sync and other tools
 scripts/                   ← zero-dependency Node build and validator
 docs/audit/                ← the audit report and the CSV evidence behind it
+docs/shell.md              ← page shell markup and how to load it
 integrations/              ← Kiro steering rules to copy into each product repo
 ```
 
 ## Use it in a product
 
+Every page loads the tokens, the components and the page shell. See [`docs/shell.md`](docs/shell.md) for the header, menu, footer and backdrop markup.
+
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/perceptionmanager/design-system@main/dist/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/perceptionmanager/design-system@main/dist/components.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/perceptionmanager/design-system@main/dist/shell.css">
+<script src="https://cdn.jsdelivr.net/gh/perceptionmanager/design-system@main/dist/shell.js" defer></script>
 <!-- portfolio only, while migrating: -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/perceptionmanager/design-system@main/dist/legacy-aliases.css">
 ```
 
-For production, pin a release tag instead of `@main` (e.g. `@v0.4.0`) so a token change never reaches a product until you bump the version.
+For production, pin a release tag instead of `@main` (e.g. `@v0.5.0`) so a token change never reaches a product until you bump the version.
 
 ```css
 @layer tokens, base, components, product;
@@ -109,8 +117,9 @@ CI runs `npm run check` on every push and pull request. It also fails if `dist/`
 - [x] Audit and approved foundations
 - [x] Tokens, build, validation, CI
 - [x] Figma library built from these tokens (variables → text styles → components)
-- [x] Shared component CSS (`dist/components.css`): button, card, pill, tag, stat, step, check item. Header and footer are still per-repo.
-- [ ] Migrate the portfolio from its own component CSS to `dist/components.css`
-- [ ] Migrate perceptionmanager.com, then Role Analyzer, UX Intelligence Engine and Kiro UX Auditor
+- [x] Shared component CSS (`dist/components.css`): button, card, pill, tag, stat, step, check item
+- [x] Page shell (`dist/shell.css`, `dist/shell.js`): header, mobile menu, footer, backdrop (v0.5.0)
+- [x] Migrate perceptionmanager.com, Role Analyzer, UX Intelligence Engine and Kiro UX Auditor to the components and the shell
+- [ ] Form field, alert, status badge, loading indicator and meter (needed by the Lab tools)
 - [x] Light theme (`data-theme="light"`, see DECISIONS.md)
 - [ ] Figma library: add a light color mode

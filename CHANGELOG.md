@@ -2,6 +2,13 @@
 
 Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.md`.
 
+## v0.5.0 (2026-11-12)
+
+- **Page shell (new):** `dist/shell.css` and `dist/shell.js`, with the markup in `docs/shell.md`. Covers the skip link, site header (name, NN/g credential, nav with current-page marker, theme switch, menu button, reading-progress bar), full-screen mobile menu, footer with tool logos, and the backdrop (grain, aura, drifting glows, engraved line pattern). Taken from the portfolio, where it was built; the portfolio and the Lab tools now load the same files instead of keeping copies.
+- **Logos:** `dist/logos.svg`, a sprite of the footer's tool logos (`pm-logo-figma`, `-claude`, `-github`, `-vercel`, `-human`).
+- **Package exports:** `components.css`, `shell.css`, `shell.js`, `icons.svg` and `logos.svg` are now exported, so a bundled app can import them by version instead of keeping a copy. Package version is 0.5.0 (it had stayed at 0.1.0).
+- **Storybook:** a Shell section with the header (desktop and phone), the open mobile menu, the footer and the backdrop.
+
 ## v0.4.0 (2026-10-18)
 
 - **Disabled buttons and interactive pills are inert:** `pointer-events: none`, so no hover shadow, colour change or lift, and no transition. Previously a disabled primary button still picked up the hover shadow and a disabled ghost button changed border and text colour on hover. The not-allowed cursor is gone with it, since an inert element no longer reports a cursor.
