@@ -6,6 +6,21 @@
    The backdrop values (blur radii, opacities, sizes, the noise images) are carried over unchanged from the
    portfolio, where they were tuned by eye. They are recorded as an exception in DECISIONS.md (2026-11-12)
    instead of being turned into one-off tokens. */
+/* ---- Base: the reset every product page shares. In the base layer, so any component or product rule wins. ---- */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+  html { background: var(--pm-color-surface-page); }
+  body { margin: 0; background: var(--pm-color-surface-page); color: var(--pm-color-text-primary); font-family: var(--pm-font-family-sans); }
+  h1, h2, h3 { margin: 0; font-family: var(--pm-font-family-display); font-weight: var(--pm-font-weight-regular); }
+  a { color: inherit; text-decoration: none; }
+  a, button { -webkit-tap-highlight-color: transparent; }
+  :focus:not(:focus-visible) { outline: none; }
+  a:focus-visible, button:focus-visible { outline: var(--pm-focus-ring-width) solid var(--pm-color-focus-ring); outline-offset: var(--pm-focus-ring-offset); }
+  /* images carry width and height attributes to reserve space; CSS sets the rendered size */
+  img { height: auto; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+}
+
 @layer components {
 
   /* ---- Page wrapper: holds the backdrop and clips the glows at the page edge.
@@ -448,4 +463,53 @@
   /* stat values and step numbers whose color follows the glows (pmShell.colorSlots) fade between colors */
   [data-color-slot] { transition: color 5s ease-in-out; }
 
+}
+
+/* ---- Page layout: the content patterns of a Lab tool page (and any page built like one).
+   .pm-wrap centers content; .pm-hero opens the page; .pm-section is a titled block; .pm-split puts a heading
+   beside its content; .pm-fade-in and .pm-split-word are the entrance animations. Markup: docs/layout.md. ---- */
+@layer components {
+  .pm-wrap { max-width: var(--pm-layout-content-max); margin: 0 auto; padding: 0 var(--pm-layout-gutter); }
+
+  .pm-hero { position: relative; z-index: var(--pm-z-content); padding-top: var(--pm-space-12); padding-bottom: var(--pm-space-16); }
+  .pm-hero h1 { max-width: 820px; margin-top: var(--pm-space-6); font-size: var(--pm-type-display-md-size); line-height: var(--pm-font-line-height-tight); text-wrap: balance; }
+  .pm-hero__sub { max-width: 660px; margin: var(--pm-space-5) 0 0; font-size: var(--pm-type-lead-size); line-height: var(--pm-font-line-height-relaxed); color: var(--pm-color-text-secondary); }
+  .pm-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--pm-space-4) var(--pm-space-6); margin-top: var(--pm-space-8); }
+
+  /* the stat bar right under the hero */
+  .pm-section--stats { position: relative; z-index: var(--pm-z-content); padding-bottom: var(--pm-space-20); }
+
+  .pm-section { position: relative; z-index: var(--pm-z-content); padding-top: var(--pm-space-5); padding-bottom: var(--pm-space-24); }
+  .pm-section > h2 { max-width: 760px; font-size: var(--pm-type-heading-lg-size); line-height: var(--pm-font-line-height-snug); }
+  .pm-section__desc { max-width: 720px; margin: var(--pm-space-5) 0 0; font-size: var(--pm-type-body-size); line-height: var(--pm-font-line-height-relaxed); color: var(--pm-color-text-secondary); }
+
+  /* heading in a 280px column beside the content (the "How it works" block) */
+  .pm-split { position: relative; z-index: var(--pm-z-content); display: grid; grid-template-columns: 280px 1fr; gap: var(--pm-space-16); padding-bottom: var(--pm-space-24); }
+  .pm-split[hidden] { display: none; }
+  .pm-split > h2 { font-size: var(--pm-type-heading-md-size); }
+  .pm-split p { margin: 0; }
+  .pm-split .pm-split__intro { margin-bottom: var(--pm-space-10); font-size: var(--pm-type-body-lg-size); line-height: var(--pm-font-line-height-relaxed); color: var(--pm-color-text-secondary); }
+  .pm-split .pm-split__note { margin-top: var(--pm-space-4); font-size: var(--pm-type-small-size); color: var(--pm-color-text-tertiary); }
+
+  @media (max-width: 860px) {
+    .pm-wrap { max-width: none; }
+    .pm-hero { padding-top: var(--pm-space-6); padding-bottom: var(--pm-space-10); }
+    .pm-hero__sub { max-width: none; margin-top: var(--pm-space-4); }
+    .pm-hero__actions { flex-direction: column; align-items: stretch; margin-top: var(--pm-space-6); }
+    .pm-section--stats { padding-bottom: var(--pm-space-12); }
+    .pm-section { padding-top: 0; padding-bottom: var(--pm-space-14); }
+    .pm-section > h2 { max-width: none; font-size: var(--pm-type-heading-md-size); }
+    .pm-section__desc { max-width: none; margin-top: var(--pm-space-4); }
+    .pm-split { display: block; padding-bottom: var(--pm-space-14); }
+    .pm-split > h2 { margin-bottom: var(--pm-space-5); }
+  }
+
+  /* entrance: blocks fade up, title words rise; set animation-delay inline to stagger them. Off with reduced motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .pm-fade-in { opacity: 0; animation: pm-fade-up var(--pm-duration-entrance) var(--pm-easing-emphasized) forwards; }
+    .pm-split-word { display: inline-block; opacity: 0; transform: translateY(60%) rotate(3deg); animation: pm-word-up var(--pm-duration-slow) var(--pm-easing-emphasized) forwards; }
+  }
+  @keyframes pm-fade-up { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+  @keyframes pm-word-up { to { opacity: 1; transform: none; } }
+  @media (max-width: 860px) { @keyframes pm-fade-up { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } } }
 }
