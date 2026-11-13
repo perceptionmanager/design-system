@@ -76,7 +76,7 @@
   "tag": {
     "bg": {
       "$type": "color",
-      "$value": "{color.surface.tint-strong}"
+      "$value": "{color.surface.page}"
     },
     "border": {
       "$type": "color",

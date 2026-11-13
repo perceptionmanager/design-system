@@ -111,7 +111,8 @@
     padding: var(--pm-space-2) var(--pm-space-4);
     border: 1px solid var(--pm-color-border-subtle);
     border-radius: var(--pm-radius-full);
-    background: var(--pm-color-surface-tint);
+    /* solid page color, not a see-through tint: pills sit over the backdrop glows and must not let them show through */
+    background: var(--pm-color-surface-page);
     color: var(--pm-color-text-secondary);
     font-size: var(--pm-type-small-size);
     letter-spacing: var(--pm-font-tracking-caps);
@@ -129,7 +130,8 @@
   }
   .pm-pill--interactive[aria-pressed="true"], .pm-pill--interactive[aria-selected="true"] {
     border-color: var(--pm-color-accent-secondary);
-    background: var(--pm-color-accent-secondary-subtle);
+    /* the secondary accent's subtle tint, mixed onto the page color so it stays opaque */
+    background: color-mix(in srgb, var(--pm-color-accent-secondary) 12%, var(--pm-color-surface-page));
     color: var(--pm-color-text-interactive-hover);
   }
   .pm-pill--interactive:focus-visible, .pm-pill--interactive[data-state="focus"] {

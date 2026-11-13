@@ -105,3 +105,17 @@ Alex asked for a dark and light switch on the portfolio. This reverses the 2026-
 
 ## 2026-10-18: Disabled controls are inert
 A disabled button or interactive pill takes no pointer events. Reason: hover rules for the primary and ghost buttons had equal specificity to the disabled rule and came later, so a disabled button still showed hover styling, which reads as clickable. Keyboard focus is unchanged for `aria-disabled` buttons, which stay focusable.
+
+## 2026-11-12: Page shell joins the system (v0.5.0)
+Reason: the header, mobile menu, footer and backdrop were copied from the portfolio into each Lab tool, and every portfolio change left the tools behind (they still had Fraunces, no theme switch and no nav).
+- **Scope:** skip link, site header (name, NN/g credential, nav, theme switch, menu button, reading-progress bar), mobile menu, footer and backdrop now ship as `dist/shell.css` and `dist/shell.js`. Markup lives in `docs/shell.md`, not in a template engine, so static pages and the Next.js app can share it.
+- **Backdrop values stay raw:** the blur radii, opacities, sizes and noise images were tuned by eye on the portfolio. They are carried over unchanged instead of becoming one-off component tokens that nothing else would use. This is the one exception to "tokens only" in `components/`.
+- **Current page:** products set `aria-current="page"` in the markup. The shell does not guess it from the URL, because the Lab tools live on other domains and always mark Lab.
+- **Logos:** tool and brand logos (Figma, Claude, GitHub, Vercel, human) are a separate sprite, `dist/logos.svg`, not icons, per CONTRIBUTING.
+- **Reduced motion:** the aura spin and noise flicker now stop too (the portfolio kept them running).
+
+## 2026-11-12: Pills and tags are opaque
+Reason: pills and tags sit over the backdrop glows, and their see-through tints let the glow show through, so the same pill looked different depending on where the glow drifted. The portfolio had already overridden both to the page color (as its homepage suggestion chips are); the system now does the same, so every product gets it.
+- `pm-pill` background: `color.surface.tint` → `color.surface.page`.
+- `tag.bg`: `color.surface.tint-strong` → `color.surface.page` (supersedes the 2026-10-07 correction).
+- Selected interactive pill: the secondary accent's tint mixed onto the page color (`color-mix(in srgb, accent.secondary 12%, surface.page)`), the same look as before but opaque.

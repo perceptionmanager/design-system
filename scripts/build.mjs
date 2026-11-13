@@ -2,6 +2,8 @@
 //   dist/tokens.css          CSS custom properties (--pm-*), reduced-motion rule, type utility classes
 //   dist/legacy-aliases.css  old portfolio variable names -> tokens (delete once migration is done)
 //   dist/components.css      copied from components/components.css
+//   dist/shell.css, shell.js  copied from components/ (page shell: header, menu, footer, backdrop)
+//   dist/logos.svg           copied from logos/logos.svg (tool and brand logos for the footer)
 //   dist/icons.svg, icons.json  built from icons/*.svg
 //   dist/tokens.resolved.json  every token fully resolved (for Figma sync and other tools)
 import { mkdirSync, writeFileSync, readFileSync, readdirSync } from 'node:fs';
@@ -157,6 +159,9 @@ mkdirSync(dist, { recursive: true });
 writeFileSync(join(dist, 'tokens.css'), lines.join('\n'));
 writeFileSync(join(dist, 'legacy-aliases.css'), legacy.join('\n'));
 writeFileSync(join(dist, 'components.css'), readFileSync(join(root, 'components', 'components.css'), 'utf8').replace(/\r\n/g, '\n'));
+// page shell: CSS and behavior copied as-is; tool and brand logos (fixed artwork, not icons) as their own sprite
+for (const f of ['shell.css', 'shell.js']) writeFileSync(join(dist, f), readFileSync(join(root, 'components', f), 'utf8').replace(/\r\n/g, '\n'));
+writeFileSync(join(dist, 'logos.svg'), readFileSync(join(root, 'logos', 'logos.svg'), 'utf8').replace(/\r\n/g, '\n'));
 writeFileSync(join(dist, 'tokens.resolved.json'), JSON.stringify(resolved, null, 2) + '\n');
 // ---------------------------------------------------------------- icons
 // icons/*.svg (24px grid, currentColor) -> dist/icons.svg (sprite, <symbol id="pm-icon-NAME">) and dist/icons.json (for Storybook and tools)
@@ -173,4 +178,4 @@ const symbols = iconNames.map((name) => {
 writeFileSync(join(dist, 'icons.svg'), `<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">\n${symbols.join('\n')}\n</svg>\n`);
 writeFileSync(join(dist, 'icons.json'), JSON.stringify(iconData, null, 2) + '\n');
 
-console.log(`Built ${tokens.size} tokens → dist/tokens.css, dist/legacy-aliases.css, dist/components.css, dist/icons.svg, dist/icons.json, dist/tokens.resolved.json`);
+console.log(`Built ${tokens.size} tokens → dist/tokens.css, dist/legacy-aliases.css, dist/components.css, dist/shell.css, dist/shell.js, dist/logos.svg, dist/icons.svg, dist/icons.json, dist/tokens.resolved.json`);

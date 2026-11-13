@@ -2,3 +2,11 @@ body {
   background: var(--pm-color-surface-page);
   color: var(--pm-color-text-primary);
 }
+/* docs pages: headings in the display face, like every product page */
+.sbdocs.sbdocs-content h1,
+.sbdocs.sbdocs-content h2,
+.sbdocs.sbdocs-content h3 {
+  font-family: var(--pm-font-family-display);
+  font-weight: var(--pm-font-weight-regular);
+}
+.sbdocs.sbdocs-wrapper { background: var(--pm-color-surface-page); }
