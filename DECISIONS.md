@@ -19,6 +19,14 @@ Found while building the Figma library: four component tokens in the approved pr
 - `tag.bg`: surface.tint (white 3%) → **surface.tint-strong (white 6%)**, matching `.cs-tag`.
 - `tag.text`: text.secondary → **text.tertiary**, matching `.cs-tag` (`--ink-faint`).
 
+## 2026-11-13: Figma library synced to v0.6.0
+Reason: the library had none of v0.6.0's tokens or components.
+- **Variables (254, up from 218):** `color/neutral/550` and `color/border/control`, the success tint, `font/family/mono` (IBM Plex Mono stands in for the code's system monospace stack), and the `field/*`, `control/*`, `meter/*` and `spinner/*` component variables, each with its CSS name as code syntax.
+- **Text style:** `Label/field` (14px semibold), the form field label.
+- **New pages:** Forms (text field and dropdown with Default, Hover, Focus, Invalid and Disabled; text area Plain and Code; checkbox and radio), Feedback (status badge, status line, alert, spinner, meter) and Modal (image modal, panel modal, close button). The interactive pill (Default, Hover, Focus, Selected, Disabled) is on Pill & Tag.
+- **Links to code:** every component links to its Storybook story. Code Connect needs a Figma Organization or Enterprise plan, which this library isn't on, so the Storybook link stands in for it.
+- **Not in Figma:** the focus ring's 2px offset (the field ring sits on the edge, as in code), motion, and the light-theme ink mix on badges and alert titles; the component descriptions say so. Effect styles keep their dark values; each description now lists the light value.
+
 ## 2026-11-13: Status text on a tint, light theme
 Reason: an accessibility scan of the new badges and alerts found the light theme's success, warning, high and medium colors at 4.0–4.4:1 on their own tints, under AA. The Kiro UX Auditor's severity badges have the same problem in production today.
 - Text on a status tint (badges, alert titles) is mixed 78% status color, 22% text color in the light theme only. The hue is kept; every tone now passes 4.5:1 on page, raised and card. The dark theme is unchanged; it already passed.
