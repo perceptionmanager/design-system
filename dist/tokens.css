@@ -279,6 +279,7 @@
     --pm-layout-gutter: clamp(1.25rem, 0.5249rem + 3.0939vw, 3rem);
     --pm-layout-section-y: clamp(3.5rem, 2.4641rem + 4.4199vw, 6rem);
     --pm-layout-nav-height: clamp(5rem, 4.5856rem + 1.768vw, 6rem);
+    --pm-layout-hero-top: clamp(2.5rem, 1.3605rem + 4.8619vw, 5.25rem);
     --pm-layout-target-min: 2.75rem;
 
     /* ===== components ===== */

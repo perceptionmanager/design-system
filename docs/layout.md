@@ -36,7 +36,7 @@ The content patterns of a Lab tool page, in `dist/shell.css` with the rest of th
 | Class | What it is |
 |---|---|
 | `.pm-wrap` | Centers content at the content width with the page gutter. |
-| `.pm-hero`, `.pm-hero__sub`, `.pm-hero__actions` | The page opening: eyebrow pill, title, lead sentence, optional buttons (stacked full width on phones). |
+| `.pm-hero`, `.pm-hero__sub`, `.pm-hero__actions` | The page opening: eyebrow pill, title, lead sentence, optional buttons (stacked full width on phones). Its first line sits `layout.hero-top` under the header: 84px on a laptop, 40px on a phone. |
 | `.pm-section--stats` | Spacing for the stat bar under the hero. |
 | `.pm-section`, `.pm-section__desc` | A titled block: heading-lg title (heading-md on phones) and a description. |
 | `.pm-split`, `.pm-split__intro`, `.pm-split__note` | Heading in a 280px column beside its content; stacks on phones. |

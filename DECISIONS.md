@@ -19,6 +19,12 @@ Found while building the Figma library: four component tokens in the approved pr
 - `tag.bg`: surface.tint (white 3%) → **surface.tint-strong (white 6%)**, matching `.cs-tag`.
 - `tag.text`: text.secondary → **text.tertiary**, matching `.cs-tag` (`--ink-faint`).
 
+## 2026-11-13: One hero spacing for every product
+Reason: the space between the header and the hero was set in three places (the portfolio's top-level pages, `.pm-hero` in the Lab tools, and each case study), so it drifted, and it was too large on phones.
+- `layout.hero-top`: 84px on a laptop (the portfolio's existing value), 40px on a phone (chosen 2026-11-13), fluid in between like the other layout tokens. In Figma it is a Responsive variable.
+- `.pm-hero` and the portfolio's top-level pages (Home, Case Studies, Lab, About, 404) use it, measured to the first line of the hero.
+- Case studies are left as they are: their hero starts under the Previous/Next bar, not under the header, so the same 84px would push them down by about 30px on a laptop.
+
 ## 2026-11-13: Figma library synced to v0.6.0
 Reason: the library had none of v0.6.0's tokens or components.
 - **Variables (254, up from 218):** `color/neutral/550` and `color/border/control`, the success tint, `font/family/mono` (IBM Plex Mono stands in for the code's system monospace stack), and the `field/*`, `control/*`, `meter/*` and `spinner/*` component variables, each with its CSS name as code syntax.
