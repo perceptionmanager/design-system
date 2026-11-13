@@ -593,6 +593,27 @@ window.pmShell = (function () {
     window.addEventListener('resize', update);
   }
 
+  // ---- Standard footer ----
+  // Every product uses the same footer, written here so it changes in one place. Put
+  // <footer class="pm-site-footer" data-pm-footer></footer> on the page; this fills it in. The logos are inlined
+  // (the build copies them from logos/logos.svg), so a product needs no sprite copy for the footer.
+  var FOOTER_LOGOS = /*__PM_LOGOS__*/{};
+  function footerLogo(name, extra) {
+    var l = FOOTER_LOGOS[name];
+    if (!l) return '';
+    return '<svg class="pm-site-footer__logo' + (extra ? ' ' + extra : '') + '" viewBox="' + l.viewBox + '" aria-hidden="true" focusable="false">' + l.inner + '</svg>';
+  }
+  function initFooter() {
+    document.querySelectorAll('footer[data-pm-footer]').forEach(function (f) {
+      f.classList.add('pm-site-footer');
+      f.innerHTML = '<div class="pm-site-footer__inner">' +
+        '<span>\u00a9 Alex Grinyayev \u00b7 ' + new Date().getFullYear() + '</span>' +
+        '<span>Built with ' + footerLogo('figma') + ' Figma and ' + footerLogo('claude') + ' Claude, source on ' + footerLogo('github') +
+        ' GitHub, deployed on ' + footerLogo('vercel') + ' Vercel. Validated by ' + footerLogo('human', 'pm-site-footer__logo--human') + ' human.</span>' +
+        '</div>';
+    });
+  }
+
   // ---- Image modal ----
   // Buttons with data-modal-src open the picture in a shared <dialog class="pm-modal"> (data-modal-alt is its alt text).
   // showModal() gives the focus trap, Escape, the inert page and focus return; a click on the dim backdrop also closes.
@@ -639,6 +660,7 @@ window.pmShell = (function () {
   function init() {
     if (started) return;
     started = true;
+    initFooter();
     initMobileMenu();
     initThemeToggle();
     initScrollProgress();

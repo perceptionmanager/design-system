@@ -160,7 +160,18 @@ writeFileSync(join(dist, 'tokens.css'), lines.join('\n'));
 writeFileSync(join(dist, 'legacy-aliases.css'), legacy.join('\n'));
 writeFileSync(join(dist, 'components.css'), readFileSync(join(root, 'components', 'components.css'), 'utf8').replace(/\r\n/g, '\n'));
 // page shell: CSS and behavior copied as-is; tool and brand logos (fixed artwork, not icons) as their own sprite
-for (const f of ['shell.css', 'shell.js']) writeFileSync(join(dist, f), readFileSync(join(root, 'components', f), 'utf8').replace(/\r\n/g, '\n'));
+// shell.js gets the footer logos inlined from logos/logos.svg, so the standard footer needs no sprite on the page
+const logoSrc = readFileSync(join(root, 'logos', 'logos.svg'), 'utf8');
+const footerLogos = {};
+for (const m of logoSrc.matchAll(/<symbol id="pm-logo-([a-z]+)" viewBox="([^"]+)"[^>]*>([\s\S]*?)<\/symbol>/g)) footerLogos[m[1]] = { viewBox: m[2], inner: m[3].trim() };
+for (const f of ['shell.css', 'shell.js']) {
+  let src = readFileSync(join(root, 'components', f), 'utf8').replace(/\r\n/g, '\n');
+  if (f === 'shell.js') {
+    if (!src.includes('/*__PM_LOGOS__*/{}')) throw new Error('shell.js: footer logo placeholder missing');
+    src = src.replace('/*__PM_LOGOS__*/{}', JSON.stringify(footerLogos));
+  }
+  writeFileSync(join(dist, f), src);
+}
 writeFileSync(join(dist, 'logos.svg'), readFileSync(join(root, 'logos', 'logos.svg'), 'utf8').replace(/\r\n/g, '\n'));
 writeFileSync(join(dist, 'tokens.resolved.json'), JSON.stringify(resolved, null, 2) + '\n');
 // ---------------------------------------------------------------- icons
