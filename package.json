@@ -1,6 +1,6 @@
 {
   "name": "@perceptionmanager/design-system",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Shared design tokens, components and page shell for perceptionmanager.com, Role Analyzer, UX Intelligence Engine and Kiro UX Auditor.",
   "private": true,
   "type": "module",
