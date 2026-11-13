@@ -9,6 +9,9 @@
 /* ---- Base: the reset every product page shares. In the base layer, so any component or product rule wins. ---- */
 @layer base {
   *, *::before, *::after { box-sizing: border-box; }
+  /* the hidden attribute always hides, even on an element a component gives a display value (important in the lowest
+     layer outranks every normal rule in the higher ones) */
+  [hidden] { display: none !important; }
   html { background: var(--pm-color-surface-page); }
   body { margin: 0; background: var(--pm-color-surface-page); color: var(--pm-color-text-primary); font-family: var(--pm-font-family-sans); }
   h1, h2, h3 { margin: 0; font-family: var(--pm-font-family-display); font-weight: var(--pm-font-weight-regular); }
