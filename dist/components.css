@@ -562,8 +562,9 @@
     overflow: visible;
   }
   .pm-modal::backdrop { background: var(--pm-color-surface-scrim-strong); }
-  .pm-modal__body { position: relative; }
-  .pm-modal__img { display: block; width: 100%; height: auto; max-height: 82vh; object-fit: contain; border-radius: var(--pm-radius-md); }
+  .pm-modal__body { position: relative; display: flex; justify-content: center; }
+  /* the image box matches the picture (no letterboxing), so its rounded corners and any entrance effect sit on its real edge */
+  .pm-modal__img { display: block; width: auto; max-width: 100%; height: auto; max-height: 82vh; border-radius: var(--pm-radius-md); }
   .pm-modal__close {
     position: absolute;
     top: 0;
