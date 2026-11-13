@@ -493,6 +493,9 @@
   .pm-split p { margin: 0; }
   .pm-split .pm-split__intro { margin-bottom: var(--pm-space-10); font-size: var(--pm-type-body-lg-size); line-height: var(--pm-font-line-height-relaxed); color: var(--pm-color-text-secondary); }
   .pm-split .pm-split__note { margin-top: var(--pm-space-4); font-size: var(--pm-type-small-size); color: var(--pm-color-text-tertiary); }
+  /* method steps inside a split: a smaller title than the stand-alone step, plain h3 and p */
+  .pm-split .pm-step h3 { margin-top: var(--pm-space-2); font-size: var(--pm-type-body-lg-size); line-height: var(--pm-font-line-height-snug); }
+  .pm-split .pm-step p { margin-top: var(--pm-space-2); font-size: var(--pm-type-body-size); line-height: var(--pm-font-line-height-relaxed); color: var(--pm-color-text-secondary); }
 
   @media (max-width: 860px) {
     .pm-wrap { max-width: none; }
