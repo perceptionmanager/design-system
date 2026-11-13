@@ -19,6 +19,13 @@ Found while building the Figma library: four component tokens in the approved pr
 - `tag.bg`: surface.tint (white 3%) → **surface.tint-strong (white 6%)**, matching `.cs-tag`.
 - `tag.text`: text.secondary → **text.tertiary**, matching `.cs-tag` (`--ink-faint`).
 
+## 2026-11-12: Figma library synced to v0.5.0
+Reason: the library had no page shell and still drew pills and tags as see-through, so it no longer matched the code or Storybook.
+- **Opaque pills and tags:** `tag/bg` now aliases `color/surface/page`, and the Pill fill is bound to `color/surface/page` at full opacity, matching `components.css` and the portfolio home page.
+- **New Page shell page:** Site header (Type=Full for the portfolio, Compact for the Lab tools, Phone), Mobile menu, Site footer, Theme toggle (Dark/Light), Menu button, Header CTA (Label, Show label and an icon swap for LinkedIn or mail) and Nav link (Default/Hover/Current). All are bound to variables; the Phone variant and the Mobile menu are set to the Responsive collection's Mobile mode.
+- **Assets:** the sun, moon, mail and LinkedIn icons, the five footer logos, and the NN/g badge are components on the same page.
+- **Not in Figma:** the motion (title and figure pop-in, drifting glows, glow-tinted numbers, the sliding nav underline) and the backdrop. Component descriptions say where shell.js adds each.
+
 ## 2026-10-18: Figma library synced to v0.4.0
 Reason: the library still described v0.1 (dark only, Fraunces display font), so designers would have seen values the code no longer uses.
 - **Light mode:** the Color collection has a second mode, Light, with all 43 semantic roles aliased to primitives exactly as `tokens/light.tokens.json` does. Foundations shows both modes.
