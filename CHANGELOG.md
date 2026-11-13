@@ -4,6 +4,7 @@ Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.
 
 ## v0.5.0 (2026-11-12)
 
+- **Pills and tags are opaque (visible change):** `pm-pill`, `pm-tag` and the selected interactive pill now use the page color instead of a see-through tint, so the backdrop glows no longer show through them. Matches what the portfolio already did with an override.
 - **Page shell (new):** `dist/shell.css` and `dist/shell.js`, with the markup in `docs/shell.md`. Covers the skip link, site header (name, NN/g credential, nav with current-page marker, theme switch, menu button, reading-progress bar), full-screen mobile menu, footer with tool logos, and the backdrop (grain, aura, drifting glows, engraved line pattern). Taken from the portfolio, where it was built; the portfolio and the Lab tools now load the same files instead of keeping copies. One fix on the way: between 861px and 1140px the header was wider than the window and pushed the theme switch off the right edge; there the links now close up and the credential shows only its ID.
 - **Compact header:** `.pm-site-header__cta` for headers with only the name, credential, one button and the theme switch (the Lab tools). The button stays on phones and turns icon-only below 600px.
 - **Type motion:** the portfolio's title pop-in (every `h1` in `.pm-page`), a figure pop-in (automatic on every `.pm-stat-bar`, or `pmShell.numPop` for other figures) and glow-tinted stat and step numbers (`<body data-color-slots>` with `data-color-slot` on the figures), plus `pmShell.mixColor` for page scripts.

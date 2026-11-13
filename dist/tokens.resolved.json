@@ -3070,14 +3070,13 @@
     "value": {
       "colorSpace": "srgb",
       "components": [
-        1,
-        1,
-        1
+        0.0784,
+        0.0902,
+        0.1216
       ],
-      "hex": "#ffffff",
-      "alpha": 0.06
+      "hex": "#14171f"
     },
-    "aliasOf": "color.surface.tint-strong"
+    "aliasOf": "color.surface.page"
   },
   "tag.border": {
     "type": "color",

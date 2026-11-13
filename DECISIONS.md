@@ -113,3 +113,9 @@ Reason: the header, mobile menu, footer and backdrop were copied from the portfo
 - **Current page:** products set `aria-current="page"` in the markup. The shell does not guess it from the URL, because the Lab tools live on other domains and always mark Lab.
 - **Logos:** tool and brand logos (Figma, Claude, GitHub, Vercel, human) are a separate sprite, `dist/logos.svg`, not icons, per CONTRIBUTING.
 - **Reduced motion:** the aura spin and noise flicker now stop too (the portfolio kept them running).
+
+## 2026-11-12: Pills and tags are opaque
+Reason: pills and tags sit over the backdrop glows, and their see-through tints let the glow show through, so the same pill looked different depending on where the glow drifted. The portfolio had already overridden both to the page color (as its homepage suggestion chips are); the system now does the same, so every product gets it.
+- `pm-pill` background: `color.surface.tint` → `color.surface.page`.
+- `tag.bg`: `color.surface.tint-strong` → `color.surface.page` (supersedes the 2026-10-07 correction).
+- Selected interactive pill: the secondary accent's tint mixed onto the page color (`color-mix(in srgb, accent.secondary 12%, surface.page)`), the same look as before but opaque.

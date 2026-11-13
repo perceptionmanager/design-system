@@ -293,7 +293,7 @@
     --pm-card-radius: var(--pm-radius-lg);
     --pm-card-padding: var(--pm-space-6);
     /* tag */
-    --pm-tag-bg: var(--pm-color-surface-tint-strong);
+    --pm-tag-bg: var(--pm-color-surface-page);
     --pm-tag-border: var(--pm-color-border-subtle);
     --pm-tag-radius: var(--pm-radius-full);
     --pm-tag-padding-y: var(--pm-space-1);
