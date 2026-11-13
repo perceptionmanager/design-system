@@ -4,6 +4,7 @@ Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.
 
 ## v0.6.0 (2026-11-13)
 
+- **Check item:** the checkmark is now drawn (the Figma library's 10×7 mark, 2px stroke) instead of a ✓ text glyph, which every font drew differently. Existing markup with ✓ inside `.pm-check` keeps working; the glyph is hidden.
 - **Standard footer:** `shell.js` fills any `<footer data-pm-footer>` with the one footer every product shows (copyright with the current year; built with Figma and Claude, source on GitHub, deployed on Vercel, validated by human; logos inlined). Products no longer write their own footer text.
 - **Tokens:** `color.border.control` (control edges at 3:1 or more in both themes), `field.*`, `control.*`, `meter.*`, `spinner.*`, `font.family.mono`, and `color.status.success-subtle` / `-border`. New contrast gates for controls. Inventory behind them: `docs/inventory-v0.6.md`.
 - **Form fields (new):** `.pm-field` with label, helper, error and character count; `.pm-input`, `.pm-textarea` (+ `--code`), `.pm-select`, `.pm-checkbox`, `.pm-radio`, `.pm-choice` and `.pm-fieldset`. Markup in `docs/forms.md`.
