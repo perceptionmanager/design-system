@@ -543,6 +543,75 @@
   .pm-meter[data-level="moderate"] .pm-meter__fill { background: var(--pm-color-status-warning); }
   @media (prefers-reduced-motion: no-preference) { .pm-meter__fill { transition: width 1s var(--pm-easing-emphasized); } }
 
+  /* ---- Modal ----
+     A native <dialog> opened with showModal(): the browser traps focus inside, makes the page behind inert, closes
+     on Escape and returns focus to the control that opened it. Give it aria-labelledby (or aria-label).
+     Image modal: buttons with data-modal-src (and data-modal-alt) open a shared one; shell.js builds it.
+     Panel modal: .pm-modal__panel holds text and actions, for a confirmation or a short form. */
+  .pm-modal {
+    box-sizing: border-box;
+    width: min(1000px, 100% - 2 * var(--pm-space-8));
+    max-width: none;
+    max-height: none;
+    margin: auto;
+    padding: var(--pm-space-14) 0 0;  /* room for the close button above the content */
+    border: 0;
+    background: transparent;
+    color: var(--pm-color-text-primary);
+    font-family: var(--pm-font-family-sans);
+    overflow: visible;
+  }
+  .pm-modal::backdrop { background: var(--pm-color-surface-scrim-strong); }
+  .pm-modal__body { position: relative; }
+  .pm-modal__img { display: block; width: 100%; height: auto; max-height: 82vh; object-fit: contain; border-radius: var(--pm-radius-md); }
+  .pm-modal__close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: var(--pm-layout-target-min);
+    height: var(--pm-layout-target-min);
+    padding: 0;
+    border: 1px solid var(--pm-color-border-strong);
+    border-radius: var(--pm-radius-full);
+    background: var(--pm-color-surface-card);
+    color: var(--pm-color-text-primary);
+    cursor: pointer;
+    transition: border-color var(--pm-motion-hover), color var(--pm-motion-hover);
+  }
+  .pm-modal__close svg { width: 18px; height: 18px; }
+  .pm-modal__close:hover, .pm-modal__close[data-state="hover"] { border-color: var(--pm-color-border-interactive-hover); color: var(--pm-color-text-interactive-hover); }
+  .pm-modal__close:focus-visible, .pm-modal__close[data-state="focus"] { outline: var(--pm-focus-ring-width) solid var(--pm-color-focus-ring); outline-offset: var(--pm-focus-ring-offset); }
+  .pm-modal__panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pm-space-4);
+    max-width: var(--pm-layout-measure-narrow);
+    margin: 0 auto;
+    padding: var(--pm-space-8);
+    border: 1px solid var(--pm-card-border);
+    border-radius: var(--pm-card-radius);
+    background: var(--pm-card-bg);
+    box-shadow: var(--pm-shadow-elevation-3);
+  }
+  .pm-modal--panel { width: min(var(--pm-layout-measure-narrow), 100% - 2 * var(--pm-space-5)); padding: 0; }
+  .pm-modal__title { margin: 0; font-family: var(--pm-type-heading-sm-family); font-size: var(--pm-type-heading-sm-size); font-weight: var(--pm-type-heading-sm-weight); line-height: var(--pm-type-heading-sm-line-height); }
+  .pm-modal__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--pm-space-3); margin-top: var(--pm-space-2); }
+  /* the page behind does not scroll while a modal is open */
+  :root:has(.pm-modal[open]) { overflow: hidden; }
+  @media (max-width: 860px) {
+    .pm-modal { width: calc(100% - 2 * var(--pm-space-4)); }
+    .pm-modal__panel { padding: var(--pm-space-5); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .pm-modal, .pm-modal::backdrop { transition: opacity var(--pm-duration-base) ease, overlay var(--pm-duration-base) allow-discrete, display var(--pm-duration-base) allow-discrete; opacity: 0; }
+    .pm-modal[open], .pm-modal[open]::backdrop { opacity: 1; }
+    @starting-style { .pm-modal[open], .pm-modal[open]::backdrop { opacity: 0; } }
+  }
+
   /* Windows high-contrast mode drops colours and shadows, so state cues are redrawn with system colours. */
   @media (forced-colors: active) {
     .pm-pill--interactive[aria-pressed="true"], .pm-pill--interactive[aria-selected="true"] { outline: 2px solid Highlight; outline-offset: -2px; }
@@ -559,5 +628,6 @@
     .pm-status__dot, .pm-meter__fill { background: CanvasText; forced-color-adjust: none; }
     .pm-meter { border: 1px solid CanvasText; }
     .pm-spinner { border-color: GrayText; border-top-color: CanvasText; }
+    .pm-modal__close, .pm-modal__panel { border-color: CanvasText; }
   }
 }

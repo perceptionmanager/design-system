@@ -7,6 +7,7 @@ Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.
 - **Tokens:** `color.border.control` (control edges at 3:1 or more in both themes), `field.*`, `control.*`, `meter.*`, `spinner.*`, `font.family.mono`, and `color.status.success-subtle` / `-border`. New contrast gates for controls. Inventory behind them: `docs/inventory-v0.6.md`.
 - **Form fields (new):** `.pm-field` with label, helper, error and character count; `.pm-input`, `.pm-textarea` (+ `--code`), `.pm-select`, `.pm-checkbox`, `.pm-radio`, `.pm-choice` and `.pm-fieldset`. Markup in `docs/forms.md`.
 - **Feedback (new):** status badge (`.pm-badge`, severity and result tones), status line (`.pm-status`), alert (`.pm-alert`, error, warning, success, neutral, inline), loading indicator (`.pm-spinner`, `.pm-loading`, spinner in an `aria-busy` button) and meter (`.pm-meter`). Markup in `docs/feedback.md`.
+- **Modal (new):** `.pm-modal` on a native `<dialog>` (focus trap, Escape, inert page and focus return from the browser). Image modal wired by `shell.js` for any `data-modal-src` button, plus `pmShell.openImage()`; panel modal for confirmations and short forms. Markup in `docs/modal.md`.
 
 ## v0.5.0 (2026-11-12)
 
