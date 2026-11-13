@@ -35,11 +35,12 @@ Not used anywhere yet: checkbox, radio. Built in v0.6.0 so the next form doesn't
 
 | Product | Element | Current styling | Becomes |
 |---|---|---|---|
-| Role Analyzer, Briefing, Kiro UX Auditor | `.modal-overlay`, `.modal-card`, `.modal-img`, `.modal-close` | Identical copies: strong scrim, 1000px card, round close button above the image | Modal (image) |
+| Portfolio (7 case studies, 2 of them gated) | `.modal-overlay`, `.modal-card`, `.modal-img`, `.modal-close` + a script per page | A plain div: strong scrim, 1000px card, 36px round close button above the image. Focus stays on the page behind and isn't returned | Modal (image), on a native `<dialog>` |
+| Role Analyzer, Briefing, Kiro UX Auditor | The same CSS | Copied in with the portfolio styles, never used | Deleted |
 
 ## Lab page layout
 
-About 340 lines repeated in each tool's `site.css`: `.wrap`, `.sec-hero`, `.hero-title`, `.hero-desc`, `.sec-challenge`, `.sec-stats`, `.sec-visual`, `.visual-grid`, `.visual-card`, `.visual-title`, `.visual-desc`, `.shot-btn`, `.shot-img`, `.sec-outcomes`, `.outcomes-title`, `.sec-learning`, `.sec-cta`, `.cta-heading`, `.cta-actions`, `.fade-in`, `.cs-*` and the glow helpers. Becomes the Lab page layout (step 5).
+About 340 lines repeated in each tool's `site.css`, copied from the portfolio. Only the wrapper, hero, section, split block and the two entrance animations were used; the rest was case-study styles the tools never rendered: `.wrap`, `.sec-hero`, `.hero-title`, `.hero-desc`, `.sec-challenge`, `.sec-stats`, `.sec-visual`, `.visual-grid`, `.visual-card`, `.visual-title`, `.visual-desc`, `.shot-btn`, `.shot-img`, `.sec-outcomes`, `.outcomes-title`, `.sec-learning`, `.sec-cta`, `.cta-heading`, `.cta-actions`, `.fade-in`, `.cs-*` and the glow helpers. Becomes the Lab page layout (step 5).
 
 ## Problems found
 
