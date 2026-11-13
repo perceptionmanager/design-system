@@ -14,10 +14,10 @@ The shell is everything a page shares around its own content: skip link, site he
 SVG `<use>` only reads sprites from the page's own origin, so copy `icons.svg` and `logos.svg` into the product and point `<use href>` at the copies. The CSS and JS can load from the CDN:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/perceptionmanager/design-system@v0.5.0/dist/tokens.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/perceptionmanager/design-system@v0.5.0/dist/components.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/perceptionmanager/design-system@v0.5.0/dist/shell.css">
-<script src="https://cdn.jsdelivr.net/gh/perceptionmanager/design-system@v0.5.0/dist/shell.js" defer></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/perceptionmanager/design-system@v0.6.0/dist/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/perceptionmanager/design-system@v0.6.0/dist/components.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/perceptionmanager/design-system@v0.6.0/dist/shell.css">
+<script src="https://cdn.jsdelivr.net/gh/perceptionmanager/design-system@v0.6.0/dist/shell.js" defer></script>
 ```
 
 In a bundled app (Next.js), import the CSS from the package before any app CSS, so the layer order `tokens, base, components, product` is declared first, and serve `shell.js` from the app's public folder.

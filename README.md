@@ -21,6 +21,10 @@ dist/                      ← generated, committed so products can load it dire
 scripts/                   ← zero-dependency Node build and validator
 docs/audit/                ← the audit report and the CSV evidence behind it
 docs/shell.md              ← page shell markup and how to load it
+docs/forms.md              ← form field markup
+docs/feedback.md           ← badge, status, alert, loading and meter markup
+docs/modal.md              ← image and panel modal
+docs/layout.md             ← base reset and Lab page layout
 integrations/              ← Kiro steering rules to copy into each product repo
 ```
 
@@ -120,6 +124,5 @@ CI runs `npm run check` on every push and pull request. It also fails if `dist/`
 - [x] Shared component CSS (`dist/components.css`): button, card, pill, tag, stat, step, check item
 - [x] Page shell (`dist/shell.css`, `dist/shell.js`): header, mobile menu, footer, backdrop (v0.5.0)
 - [x] Migrate perceptionmanager.com, Role Analyzer, UX Intelligence Engine and Kiro UX Auditor to the components and the shell
-- [ ] Form field, alert, status badge, loading indicator and meter (needed by the Lab tools)
+- [x] Form fields, feedback (badge, status, alert, loading, meter), modal and Lab page layout (v0.6.0)
 - [x] Light theme (`data-theme="light"`, see DECISIONS.md)
-- [ ] Figma library: add a light color mode

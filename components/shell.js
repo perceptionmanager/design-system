@@ -593,6 +593,48 @@ window.pmShell = (function () {
     window.addEventListener('resize', update);
   }
 
+  // ---- Image modal ----
+  // Buttons with data-modal-src open the picture in a shared <dialog class="pm-modal"> (data-modal-alt is its alt text).
+  // showModal() gives the focus trap, Escape, the inert page and focus return; a click on the dim backdrop also closes.
+  // The page can keep its own dialog: give it id="pmImageModal" with an img.pm-modal__img and a .pm-modal__close.
+  var imageModal = null;
+  function getImageModal() {
+    if (imageModal) return imageModal;
+    var dlg = document.getElementById('pmImageModal');
+    if (!dlg) {
+      dlg = document.createElement('dialog');
+      dlg.id = 'pmImageModal';
+      dlg.className = 'pm-modal';
+      dlg.setAttribute('aria-label', 'Enlarged image');
+      dlg.innerHTML = '<button type="button" class="pm-modal__close" aria-label="Close">' +
+        '<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>' +
+        '<div class="pm-modal__body"><img class="pm-modal__img" alt=""></div>';
+      document.body.appendChild(dlg);
+    }
+    var close = dlg.querySelector('.pm-modal__close');
+    if (close) close.addEventListener('click', function () { dlg.close(); });
+    // a click outside the picture (on the backdrop or the empty dialog area) closes it
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+    imageModal = dlg;
+    return dlg;
+  }
+  function openImage(src, alt) {
+    var dlg = getImageModal();
+    var img = dlg.querySelector('.pm-modal__img');
+    img.src = src;
+    img.alt = alt || '';
+    if (alt) dlg.setAttribute('aria-label', alt);
+    if (!dlg.open) dlg.showModal();
+  }
+  function initImageModal() {
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest && e.target.closest('[data-modal-src]');
+      if (!btn) return;
+      e.preventDefault();
+      openImage(btn.getAttribute('data-modal-src'), btn.getAttribute('data-modal-alt'));
+    });
+  }
+
   var started = false;
   function init() {
     if (started) return;
@@ -605,6 +647,7 @@ window.pmShell = (function () {
     initMailtoCopy();
     initBackdropLines();
     initTitlePop();
+    initImageModal();
     // the shared stat bar's figures pop in when it scrolls into view; a page that fills them later marks the bar
     // data-num-pop="manual" and calls pmShell.numPop(bar, '.pm-stat__value') once the numbers are in
     document.querySelectorAll('.pm-page .pm-stat-bar:not([data-num-pop="manual"])').forEach(function (bar) { numPop(bar, '.pm-stat__value'); });
@@ -614,5 +657,5 @@ window.pmShell = (function () {
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
 
-  return { init: init, rand: rand, mixColor: mixColor, numPop: numPop, colorSlots: colorSlots };
+  return { init: init, rand: rand, mixColor: mixColor, numPop: numPop, colorSlots: colorSlots, openImage: openImage };
 })();

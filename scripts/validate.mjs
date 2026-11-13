@@ -64,6 +64,16 @@ for (const [modeName, view] of [['dark', tokens], ...[...modes].map(([m, o]) => 
   gates.push(['color.text.on-accent', 'color.accent.primary', 4.5, '1.4.3 text']);
   gates.push(['color.text.on-accent', 'color.accent.secondary', 4.5, '1.4.3 text']);
   for (const s of SURFACES) gates.push(['color.focus.ring', s, 3, '1.4.11 non-text']);
+  // form controls: the edge and the checked state must read against every surface, including the sunken code field
+  for (const s of [...SURFACES, 'color.surface.sunken']) {
+    gates.push(['field.border', s, 3, '1.4.11 non-text']);
+    gates.push(['control.checked-bg', s, 3, '1.4.11 non-text']);
+    gates.push(['field.border-invalid', s, 3, '1.4.11 non-text']);
+  }
+  gates.push(['control.checked-mark', 'control.checked-bg', 3, '1.4.11 non-text']);
+  for (const text of ['field.text', 'field.placeholder', 'field.label', 'field.help', 'field.error']) {
+    for (const s of ['field.bg', 'field.bg-code', ...SURFACES]) gates.push([text, s, 4.5, '1.4.3 text']);
+  }
   for (const [fg, bg, min, sc] of gates) {
     if (!view.has(fg) || !view.has(bg)) { errors.push(`contrast gate references missing token ${fg} / ${bg}`); continue; }
     let ratio;

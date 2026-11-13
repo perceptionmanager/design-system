@@ -67,6 +67,12 @@
       "success": {
         "$value": "{color.green.700}"
       },
+      "success-subtle": {
+        "$value": "{color.alpha.green-700-a10}"
+      },
+      "success-border": {
+        "$value": "{color.alpha.green-700-a35}"
+      },
       "critical": {
         "$value": "{color.rose.700}"
       },

@@ -19,6 +19,20 @@ Found while building the Figma library: four component tokens in the approved pr
 - `tag.bg`: surface.tint (white 3%) → **surface.tint-strong (white 6%)**, matching `.cs-tag`.
 - `tag.text`: text.secondary → **text.tertiary**, matching `.cs-tag` (`--ink-faint`).
 
+## 2026-11-13: Status text on a tint, light theme
+Reason: an accessibility scan of the new badges and alerts found the light theme's success, warning, high and medium colors at 4.0–4.4:1 on their own tints, under AA. The Kiro UX Auditor's severity badges have the same problem in production today.
+- Text on a status tint (badges, alert titles) is mixed 78% status color, 22% text color in the light theme only. The hue is kept; every tone now passes 4.5:1 on page, raised and card. The dark theme is unchanged; it already passed.
+- Done in the component, not by darkening the status tokens, because the full-strength status colors still pass on plain surfaces and are used there (status line, inline alert rule).
+
+## 2026-11-13: Tokens for forms, feedback and loading (v0.6.0 foundations)
+Reason: v0.6.0 adds form fields, alerts, status badges, a meter and a loading indicator. Their tokens are settled first so no component is restyled later. Inventory: `docs/inventory-v0.6.md`.
+- **Control border:** new primitive `color.neutral.550` (#727a89) and semantic `color.border.control`. The fields in the products use `border.subtle` or `border.strong` as their edge, which is 1.3–2.2:1, under the 3:1 WCAG 1.4.11 asks of a control's boundary. The new border is 3.6:1 or more on every surface in both themes, from one value.
+- **Fields:** `field.*` tokens. One height (the 44px target) and one radius (md) for every field; the Role Analyzer's 40px, radius-sm inputs move up to match the buttons. Multiline fields that take code use the sunken fill and `font.family.mono`.
+- **Checkbox and radio:** `control.*`. The checked fill is `text.accent-secondary` rather than `accent.secondary`, because the bright cyan is 1.4:1 on light surfaces; the deep cyan is not.
+- **Success tint:** `color.status.success-subtle` and `-border`, so a success alert matches error and warning.
+- **Meter and spinner:** `meter.*` and `spinner.*`, from the Role Analyzer's score bar and spinner.
+- **New gates:** `npm run validate` now checks control edges, the checked state, and field text on field fills, in both themes.
+
 ## 2026-11-12: Figma library synced to v0.5.0
 Reason: the library had no page shell and still drew pills and tags as see-through, so it no longer matched the code or Storybook.
 - **Opaque pills and tags:** `tag/bg` now aliases `color/surface/page`, and the Pill fill is bound to `color/surface/page` at full opacity, matching `components.css` and the portfolio home page.

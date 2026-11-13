@@ -158,5 +158,125 @@
         "unit": "px"
       }
     }
+  },
+  "field": {
+    "bg": {
+      "$type": "color",
+      "$value": "{color.surface.raised}"
+    },
+    "bg-code": {
+      "$type": "color",
+      "$value": "{color.surface.sunken}",
+      "$description": "Multiline fields that take pasted code or long text."
+    },
+    "border": {
+      "$type": "color",
+      "$value": "{color.border.control}"
+    },
+    "border-hover": {
+      "$type": "color",
+      "$value": "{color.border.interactive-hover}"
+    },
+    "border-invalid": {
+      "$type": "color",
+      "$value": "{color.status.error}"
+    },
+    "text": {
+      "$type": "color",
+      "$value": "{color.text.primary}"
+    },
+    "placeholder": {
+      "$type": "color",
+      "$value": "{color.text.tertiary}"
+    },
+    "label": {
+      "$type": "color",
+      "$value": "{color.text.secondary}"
+    },
+    "help": {
+      "$type": "color",
+      "$value": "{color.text.tertiary}"
+    },
+    "error": {
+      "$type": "color",
+      "$value": "{color.status.error}"
+    },
+    "radius": {
+      "$type": "dimension",
+      "$value": "{radius.md}"
+    },
+    "min-height": {
+      "$type": "dimension",
+      "$value": "{layout.target-min}"
+    },
+    "padding-y": {
+      "$type": "dimension",
+      "$value": "{space.2}"
+    },
+    "padding-x": {
+      "$type": "dimension",
+      "$value": "{space.3}"
+    },
+    "multiline-padding": {
+      "$type": "dimension",
+      "$value": "{space.4}"
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.2}",
+      "$description": "Space between label, control and helper or error text."
+    }
+  },
+  "control": {
+    "size": {
+      "$type": "dimension",
+      "$value": "{space.5}",
+      "$description": "Checkbox and radio box (20px); the label extends the hit area to the 44px target."
+    },
+    "border": {
+      "$type": "color",
+      "$value": "{color.border.control}"
+    },
+    "checked-bg": {
+      "$type": "color",
+      "$value": "{color.text.accent-secondary}",
+      "$description": "Deep cyan in the light theme, so the checked box stays 3:1 on light surfaces."
+    },
+    "checked-mark": {
+      "$type": "color",
+      "$value": "{color.surface.page}"
+    },
+    "radius": {
+      "$type": "dimension",
+      "$value": "{radius.xs}"
+    }
+  },
+  "meter": {
+    "height": {
+      "$type": "dimension",
+      "$value": "{space.1}"
+    },
+    "track": {
+      "$type": "color",
+      "$value": "{color.border.subtle}"
+    },
+    "radius": {
+      "$type": "dimension",
+      "$value": "{radius.full}"
+    }
+  },
+  "spinner": {
+    "size": {
+      "$type": "dimension",
+      "$value": "{space.4}"
+    },
+    "track": {
+      "$type": "color",
+      "$value": "{color.border.subtle}"
+    },
+    "indicator": {
+      "$type": "color",
+      "$value": "{color.text.accent-secondary}"
+    }
   }
 }

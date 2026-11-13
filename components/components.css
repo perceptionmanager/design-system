@@ -300,6 +300,318 @@
   }
   .pm-skip-link:focus, .pm-skip-link[data-state="focus"] { top: var(--pm-space-4); }
 
+  /* ---- Form field ----
+     .pm-field stacks a label, one control, and optional helper and error text. Tie the text to the control with
+     aria-describedby; mark a failed control aria-invalid="true" and its .pm-field__error appears.
+     Controls: .pm-input (text, number, email, search…), .pm-textarea (+ --code for pasted code), .pm-select
+     (a wrapper around a native <select>), and .pm-checkbox / .pm-radio inside a .pm-choice label.
+     Fields are 16px on phones so iOS does not zoom in on focus. */
+  .pm-field { display: flex; flex-direction: column; gap: var(--pm-field-gap); min-width: 0; }
+  .pm-field__head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--pm-space-4); }
+  .pm-field__label {
+    font-size: var(--pm-type-small-size);
+    font-weight: var(--pm-font-weight-semibold);
+    line-height: var(--pm-font-line-height-snug);
+    color: var(--pm-field-label);
+  }
+  .pm-field__optional { font-weight: var(--pm-font-weight-regular); color: var(--pm-field-help); }
+  .pm-field__help, .pm-field__error { margin: 0; font-size: var(--pm-type-small-size); line-height: var(--pm-font-line-height-normal); }
+  .pm-field__help { color: var(--pm-field-help); }
+  .pm-field__error { display: none; color: var(--pm-field-error); }
+  .pm-field:has([aria-invalid="true"]) .pm-field__error, .pm-field__error[data-state="show"] { display: block; }
+  /* character count beside the label; data-state="warning" near the limit, "error" past it */
+  .pm-field__count { font-size: var(--pm-type-caption-size); color: var(--pm-field-help); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .pm-field__count[data-state="warning"] { color: var(--pm-color-status-warning); }
+  .pm-field__count[data-state="error"] { color: var(--pm-field-error); }
+
+  .pm-input, .pm-textarea, .pm-select select {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    min-height: var(--pm-field-min-height);
+    margin: 0;
+    padding: calc(var(--pm-field-padding-y) - 1px) calc(var(--pm-field-padding-x) - 1px);
+    border: 1px solid var(--pm-field-border);
+    border-radius: var(--pm-field-radius);
+    background: var(--pm-field-bg);
+    color: var(--pm-field-text);
+    font-family: var(--pm-font-family-sans);
+    font-size: var(--pm-type-body-size);
+    line-height: var(--pm-font-line-height-normal);
+    transition: border-color var(--pm-motion-hover);
+  }
+  .pm-input::placeholder, .pm-textarea::placeholder { color: var(--pm-field-placeholder); opacity: 1; }
+  .pm-input:hover, .pm-textarea:hover, .pm-select select:hover,
+  .pm-input[data-state="hover"], .pm-textarea[data-state="hover"], .pm-select select[data-state="hover"] { border-color: var(--pm-field-border-hover); }
+  /* focus: the ring replaces the border, so the edge does not double up */
+  .pm-input:focus-visible, .pm-textarea:focus-visible, .pm-select select:focus-visible,
+  .pm-input[data-state="focus"], .pm-textarea[data-state="focus"], .pm-select select[data-state="focus"] {
+    outline: var(--pm-focus-ring-width) solid var(--pm-color-focus-ring);
+    outline-offset: 0;
+    border-color: transparent;
+  }
+  .pm-input[aria-invalid="true"], .pm-textarea[aria-invalid="true"], .pm-select select[aria-invalid="true"] { border-color: var(--pm-field-border-invalid); }
+  .pm-input:disabled, .pm-textarea:disabled, .pm-select select:disabled { opacity: .45; cursor: not-allowed; border-color: var(--pm-field-border); }
+  .pm-input[type="number"] { font-variant-numeric: tabular-nums; }
+
+  .pm-textarea {
+    min-height: calc(var(--pm-space-32) + var(--pm-space-20));
+    padding: calc(var(--pm-field-multiline-padding) - 1px);
+    line-height: var(--pm-font-line-height-relaxed);
+    resize: vertical;
+  }
+  .pm-textarea--code { background: var(--pm-field-bg-code); font-family: var(--pm-font-family-mono); }
+  @media (min-width: 861px) { .pm-textarea--code { font-size: var(--pm-type-small-size); } }
+
+  /* dropdown: a native <select> (keyboard, screen reader and phone pickers come for free) with the design system's chevron */
+  .pm-select { position: relative; display: block; }
+  .pm-select select { appearance: none; padding-right: calc(var(--pm-field-padding-x) + var(--pm-space-6)); cursor: pointer; }
+  .pm-select::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: var(--pm-field-padding-x);
+    width: 1rem;
+    height: 1rem;
+    transform: translateY(-50%);
+    background: var(--pm-field-label);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+    pointer-events: none;
+  }
+  .pm-select select option { background: var(--pm-color-surface-raised); color: var(--pm-field-text); }
+
+  /* checkbox and radio: the whole label is the target, at least 44px tall; group them in a fieldset with a legend */
+  .pm-fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+  .pm-fieldset > legend { padding: 0; margin-bottom: var(--pm-space-1); }
+  .pm-choice {
+    display: flex;
+    align-items: center;
+    gap: var(--pm-space-3);
+    min-height: var(--pm-layout-target-min);
+    font-size: var(--pm-type-body-size);
+    line-height: var(--pm-font-line-height-snug);
+    color: var(--pm-field-text);
+    cursor: pointer;
+  }
+  .pm-choice:has(:disabled) { opacity: .45; cursor: not-allowed; }
+  .pm-checkbox, .pm-radio {
+    appearance: none;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    display: grid;
+    place-content: center;
+    width: var(--pm-control-size);
+    height: var(--pm-control-size);
+    margin: 0;
+    border: 1px solid var(--pm-control-border);
+    border-radius: var(--pm-control-radius);
+    background: var(--pm-field-bg);
+    cursor: inherit;
+    transition: border-color var(--pm-motion-hover), background-color var(--pm-motion-hover);
+  }
+  .pm-radio { border-radius: var(--pm-radius-full); }
+  .pm-checkbox::before, .pm-radio::before { content: ''; transform: scale(0); background: var(--pm-control-checked-mark); }
+  .pm-checkbox::before { width: .7rem; height: .7rem; clip-path: polygon(14% 44%, 0 59%, 39% 100%, 100% 24%, 85% 10%, 38% 69%); }
+  .pm-radio::before { width: .5rem; height: .5rem; border-radius: var(--pm-radius-full); }
+  .pm-choice:hover .pm-checkbox, .pm-choice:hover .pm-radio,
+  .pm-checkbox[data-state="hover"], .pm-radio[data-state="hover"] { border-color: var(--pm-field-border-hover); }
+  .pm-checkbox:checked, .pm-radio:checked, .pm-checkbox:indeterminate { border-color: var(--pm-control-checked-bg); background: var(--pm-control-checked-bg); }
+  .pm-checkbox:checked::before, .pm-radio:checked::before { transform: scale(1); }
+  .pm-checkbox:indeterminate::before { transform: scale(1); width: .6rem; height: 2px; clip-path: none; }
+  .pm-checkbox:focus-visible, .pm-radio:focus-visible, .pm-checkbox[data-state="focus"], .pm-radio[data-state="focus"] {
+    outline: var(--pm-focus-ring-width) solid var(--pm-color-focus-ring);
+    outline-offset: var(--pm-focus-ring-offset);
+  }
+  .pm-checkbox[aria-invalid="true"], .pm-radio[aria-invalid="true"] { border-color: var(--pm-field-border-invalid); }
+  @media (prefers-reduced-motion: no-preference) {
+    .pm-checkbox::before, .pm-radio::before { transition: transform var(--pm-duration-fast) var(--pm-easing-emphasized); }
+  }
+
+  /* ---- Status badge ----
+     A short label for a state or a level: severity, a gap, a result. The tone's color is the text, on its subtle
+     tint, with its border. Tone modifiers: --critical, --high, --medium, --low, --error, --warning, --success, --accent.
+     Never the only cue: the word itself says the level. */
+  .pm-badge {
+    --_c: var(--pm-color-status-low);
+    --_bg: var(--pm-color-status-low-subtle);
+    --_bd: var(--pm-color-status-low-border);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--pm-space-1);
+    padding: var(--pm-space-0-5) var(--pm-space-2);
+    border: 1px solid var(--_bd);
+    border-radius: var(--pm-radius-full);
+    background: var(--_bg);
+    color: color-mix(in srgb, var(--_c) var(--_ink, 100%), var(--pm-color-text-primary));
+    font-size: var(--pm-type-caption-size);
+    font-weight: var(--pm-font-weight-semibold);
+    letter-spacing: var(--pm-font-tracking-caps);
+    line-height: var(--pm-font-line-height-normal);
+    white-space: nowrap;
+  }
+  .pm-badge--critical { --_c: var(--pm-color-status-critical); --_bg: var(--pm-color-status-critical-subtle); --_bd: var(--pm-color-status-critical-border); }
+  .pm-badge--high     { --_c: var(--pm-color-status-high);     --_bg: var(--pm-color-status-high-subtle);     --_bd: var(--pm-color-status-high-border); }
+  .pm-badge--medium   { --_c: var(--pm-color-status-medium);   --_bg: var(--pm-color-status-medium-subtle);   --_bd: var(--pm-color-status-medium-border); }
+  .pm-badge--error    { --_c: var(--pm-color-status-error);    --_bg: var(--pm-color-status-error-subtle);    --_bd: var(--pm-color-status-error-border); }
+  .pm-badge--warning  { --_c: var(--pm-color-status-warning);  --_bg: var(--pm-color-status-warning-subtle);  --_bd: var(--pm-color-status-warning-border); }
+  .pm-badge--success  { --_c: var(--pm-color-status-success);  --_bg: var(--pm-color-status-success-subtle);  --_bd: var(--pm-color-status-success-border); }
+  .pm-badge--accent   { --_c: var(--pm-color-text-accent);     --_bg: var(--pm-color-accent-primary-subtle);  --_bd: var(--pm-color-border-accent); }
+  /* the larger, sentence-case badge for free text (the Role Analyzer's skill gaps) */
+  .pm-badge--lg { padding: var(--pm-space-2) var(--pm-space-3); font-weight: var(--pm-font-weight-regular); letter-spacing: var(--pm-font-tracking-wide); line-height: var(--pm-font-line-height-snug); white-space: normal; }
+
+  /* ---- Status line ----
+     A dot and one line of text, for the state of a run or a data source. data-state: success, warning, error,
+     loading (the dot pulses) or none (neutral). Give it role="status" when it changes while the page is open. */
+  .pm-status { display: flex; align-items: baseline; gap: var(--pm-space-3); font-size: var(--pm-type-small-size); line-height: var(--pm-font-line-height-normal); color: var(--pm-color-text-secondary); }
+  .pm-status__dot {
+    flex-shrink: 0;
+    position: relative;
+    top: -1px;
+    width: var(--pm-space-2);
+    height: var(--pm-space-2);
+    border-radius: var(--pm-radius-full);
+    background: var(--pm-color-text-tertiary);
+  }
+  .pm-status[data-state="success"] .pm-status__dot { background: var(--pm-color-status-success); box-shadow: var(--pm-shadow-glow-success); }
+  .pm-status[data-state="warning"] .pm-status__dot { background: var(--pm-color-status-warning); }
+  .pm-status[data-state="error"] .pm-status__dot { background: var(--pm-color-status-error); }
+  .pm-status[data-state="loading"] .pm-status__dot { background: var(--pm-color-text-accent-secondary); }
+  @media (prefers-reduced-motion: no-preference) {
+    .pm-status[data-state="loading"] .pm-status__dot { animation: pm-status-pulse 1.2s ease-in-out infinite; }
+  }
+  @keyframes pm-status-pulse { 50% { opacity: .3; } }
+
+  /* ---- Alert ----
+     A message about the page or the last action. Tones: --error, --warning, --success, or none for a neutral note.
+     Errors that appear after an action take role="alert"; other alerts role="status" or none.
+     --inline drops the box for a rule on the left, for a note inside running text. */
+  .pm-alert {
+    --_c: var(--pm-color-text-secondary);
+    --_bg: var(--pm-color-surface-raised);
+    --_bd: var(--pm-card-border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--pm-space-1);
+    padding: var(--pm-space-3) var(--pm-space-4);
+    border: 1px solid var(--_bd);
+    border-radius: var(--pm-radius-md);
+    background: var(--_bg);
+    color: var(--pm-color-text-primary);
+    font-size: var(--pm-type-small-size);
+    line-height: var(--pm-font-line-height-normal);
+  }
+  .pm-alert__title { margin: 0; font-weight: var(--pm-font-weight-semibold); color: color-mix(in srgb, var(--_c) var(--_ink, 100%), var(--pm-color-text-primary)); }
+  /* light theme: the status colors sit just under 4.5:1 on their own tints, so text on a tint leans a fifth toward
+     the text color. The hue stays; the contrast clears AA on every surface. */
+  :root[data-theme="light"] :is(.pm-badge, .pm-alert) { --_ink: 78%; }
+  .pm-alert > p { margin: 0; }
+  .pm-alert--error   { --_c: var(--pm-color-status-error);   --_bg: var(--pm-color-status-error-subtle);   --_bd: var(--pm-color-status-error-border); }
+  .pm-alert--warning { --_c: var(--pm-color-status-warning); --_bg: var(--pm-color-status-warning-subtle); --_bd: var(--pm-color-status-warning-border); }
+  .pm-alert--success { --_c: var(--pm-color-status-success); --_bg: var(--pm-color-status-success-subtle); --_bd: var(--pm-color-status-success-border); }
+  .pm-alert--inline { padding: var(--pm-space-1) 0 var(--pm-space-1) var(--pm-space-5); border: 0; border-left: 2px solid var(--_c); border-radius: 0; background: none; }
+  .pm-alert[hidden] { display: none; }
+
+  /* ---- Loading indicator ----
+     .pm-spinner is decorative (aria-hidden); the words beside it say what is happening. Use .pm-loading for a row
+     with text (role="status"), or put a spinner in a button with aria-busy="true" while it works. */
+  .pm-spinner {
+    box-sizing: border-box;
+    display: inline-block;
+    flex-shrink: 0;
+    width: var(--pm-spinner-size);
+    height: var(--pm-spinner-size);
+    border: 2px solid var(--pm-spinner-track);
+    border-top-color: var(--pm-spinner-indicator);
+    border-radius: var(--pm-radius-full);
+    animation: pm-spin 650ms linear infinite;
+  }
+  @keyframes pm-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .pm-spinner { animation-duration: 1.6s; } }
+  .pm-loading { display: flex; align-items: center; gap: var(--pm-space-3); padding: var(--pm-space-5) 0; font-size: var(--pm-type-small-size); color: var(--pm-color-text-tertiary); }
+  .pm-loading[hidden] { display: none; }
+  /* inside a button the spinner takes the label's color */
+  .pm-btn .pm-spinner { --pm-spinner-indicator: currentColor; --pm-spinner-track: color-mix(in srgb, currentColor 25%, transparent); width: 1em; height: 1em; }
+  .pm-btn[aria-busy="true"] { cursor: progress; }
+
+  /* ---- Meter ----
+     A value on a known range (a match score). role="meter" with aria-valuenow / -min / -max and an aria-label or
+     aria-labelledby; show the number as text too. data-level colors the fill: strong, moderate or weak. */
+  .pm-meter { position: relative; height: var(--pm-meter-height); border-radius: var(--pm-meter-radius); background: var(--pm-meter-track); overflow: hidden; }
+  .pm-meter__fill { height: 100%; width: 0; border-radius: inherit; background: var(--pm-color-text-tertiary); }
+  .pm-meter[data-level="strong"] .pm-meter__fill { background: var(--pm-color-text-accent-secondary); }
+  .pm-meter[data-level="moderate"] .pm-meter__fill { background: var(--pm-color-status-warning); }
+  @media (prefers-reduced-motion: no-preference) { .pm-meter__fill { transition: width 1s var(--pm-easing-emphasized); } }
+
+  /* ---- Modal ----
+     A native <dialog> opened with showModal(): the browser traps focus inside, makes the page behind inert, closes
+     on Escape and returns focus to the control that opened it. Give it aria-labelledby (or aria-label).
+     Image modal: buttons with data-modal-src (and data-modal-alt) open a shared one; shell.js builds it.
+     Panel modal: .pm-modal__panel holds text and actions, for a confirmation or a short form. */
+  .pm-modal {
+    box-sizing: border-box;
+    width: min(1000px, 100% - 2 * var(--pm-space-8));
+    max-width: none;
+    max-height: none;
+    margin: auto;
+    padding: var(--pm-space-14) 0 0;  /* room for the close button above the content */
+    border: 0;
+    background: transparent;
+    color: var(--pm-color-text-primary);
+    font-family: var(--pm-font-family-sans);
+    overflow: visible;
+  }
+  .pm-modal::backdrop { background: var(--pm-color-surface-scrim-strong); }
+  .pm-modal__body { position: relative; }
+  .pm-modal__img { display: block; width: 100%; height: auto; max-height: 82vh; object-fit: contain; border-radius: var(--pm-radius-md); }
+  .pm-modal__close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: var(--pm-layout-target-min);
+    height: var(--pm-layout-target-min);
+    padding: 0;
+    border: 1px solid var(--pm-color-border-strong);
+    border-radius: var(--pm-radius-full);
+    background: var(--pm-color-surface-card);
+    color: var(--pm-color-text-primary);
+    cursor: pointer;
+    transition: border-color var(--pm-motion-hover), color var(--pm-motion-hover);
+  }
+  .pm-modal__close svg { width: 18px; height: 18px; }
+  .pm-modal__close:hover, .pm-modal__close[data-state="hover"] { border-color: var(--pm-color-border-interactive-hover); color: var(--pm-color-text-interactive-hover); }
+  .pm-modal__close:focus-visible, .pm-modal__close[data-state="focus"] { outline: var(--pm-focus-ring-width) solid var(--pm-color-focus-ring); outline-offset: var(--pm-focus-ring-offset); }
+  .pm-modal__panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--pm-space-4);
+    max-width: var(--pm-layout-measure-narrow);
+    margin: 0 auto;
+    padding: var(--pm-space-8);
+    border: 1px solid var(--pm-card-border);
+    border-radius: var(--pm-card-radius);
+    background: var(--pm-card-bg);
+    box-shadow: var(--pm-shadow-elevation-3);
+  }
+  .pm-modal--panel { width: min(var(--pm-layout-measure-narrow), 100% - 2 * var(--pm-space-5)); padding: 0; }
+  .pm-modal__title { margin: 0; font-family: var(--pm-type-heading-sm-family); font-size: var(--pm-type-heading-sm-size); font-weight: var(--pm-type-heading-sm-weight); line-height: var(--pm-type-heading-sm-line-height); }
+  .pm-modal__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--pm-space-3); margin-top: var(--pm-space-2); }
+  /* the page behind does not scroll while a modal is open */
+  :root:has(.pm-modal[open]) { overflow: hidden; }
+  @media (max-width: 860px) {
+    .pm-modal { width: calc(100% - 2 * var(--pm-space-4)); }
+    .pm-modal__panel { padding: var(--pm-space-5); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .pm-modal, .pm-modal::backdrop { transition: opacity var(--pm-duration-base) ease, overlay var(--pm-duration-base) allow-discrete, display var(--pm-duration-base) allow-discrete; opacity: 0; }
+    .pm-modal[open], .pm-modal[open]::backdrop { opacity: 1; }
+    @starting-style { .pm-modal[open], .pm-modal[open]::backdrop { opacity: 0; } }
+  }
+
   /* Windows high-contrast mode drops colours and shadows, so state cues are redrawn with system colours. */
   @media (forced-colors: active) {
     .pm-pill--interactive[aria-pressed="true"], .pm-pill--interactive[aria-selected="true"] { outline: 2px solid Highlight; outline-offset: -2px; }
@@ -307,5 +619,15 @@
     .pm-nav-link[aria-current="page"]::after { background: Highlight; }
     .pm-card--accent-primary, .pm-card--accent-secondary { border-top: 2px solid CanvasText; }
     .pm-check { border: 1px solid CanvasText; }
+    .pm-input, .pm-textarea, .pm-select select, .pm-checkbox, .pm-radio { border-color: CanvasText; }
+    .pm-select::after { background: CanvasText; }
+    .pm-checkbox:checked, .pm-radio:checked, .pm-checkbox:indeterminate { background: Highlight; border-color: Highlight; }
+    .pm-checkbox::before, .pm-radio::before { background: HighlightText; }
+    .pm-badge, .pm-alert { border-color: CanvasText; }
+    .pm-alert--inline { border-left-color: CanvasText; }
+    .pm-status__dot, .pm-meter__fill { background: CanvasText; forced-color-adjust: none; }
+    .pm-meter { border: 1px solid CanvasText; }
+    .pm-spinner { border-color: GrayText; border-top-color: CanvasText; }
+    .pm-modal__close, .pm-modal__panel { border-color: CanvasText; }
   }
 }

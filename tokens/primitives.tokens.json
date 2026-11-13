@@ -36,6 +36,18 @@
           "hex": "#8b93a1"
         }
       },
+      "550": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.4471,
+            0.4784,
+            0.5373
+          ],
+          "hex": "#727a89"
+        },
+        "$description": "Control borders (fields, checkboxes, radios). At least 3:1 against every surface in both themes (WCAG 1.4.11)."
+      },
       "800": {
         "$value": {
           "colorSpace": "srgb",
@@ -447,6 +459,30 @@
           "alpha": 0.35
         }
       },
+      "green-a12": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.2902,
+            0.8706,
+            0.502
+          ],
+          "alpha": 0.12,
+          "hex": "#4ade80"
+        }
+      },
+      "green-a35": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.2902,
+            0.8706,
+            0.502
+          ],
+          "alpha": 0.35,
+          "hex": "#4ade80"
+        }
+      },
       "orange-a12": {
         "$value": {
           "colorSpace": "srgb",
@@ -637,6 +673,30 @@
           ],
           "hex": "#c0264a",
           "alpha": 0.35
+        }
+      },
+      "green-700-a10": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.102,
+            0.498,
+            0.2941
+          ],
+          "alpha": 0.1,
+          "hex": "#1a7f4b"
+        }
+      },
+      "green-700-a35": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.102,
+            0.498,
+            0.2941
+          ],
+          "alpha": 0.35,
+          "hex": "#1a7f4b"
         }
       },
       "orange-700-a10": {
@@ -932,6 +992,16 @@
           "Segoe UI",
           "sans-serif"
         ]
+      },
+      "mono": {
+        "$value": [
+          "ui-monospace",
+          "SF Mono",
+          "Menlo",
+          "Consolas",
+          "monospace"
+        ],
+        "$description": "Code and pasted source text (the Kiro UX Auditor and Role Analyzer inputs)."
       }
     },
     "weight": {
