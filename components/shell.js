@@ -559,7 +559,14 @@ window.pmShell = (function () {
     desktop: { stat0: [-160, 0], stat1: [0, 0], stat2: [160, 0], step0: [-80, -210], step1: [-80, -70], step2: [-80, 70], step3: [-80, 210] },
     mobile: { stat0: 260, stat1: 290, stat2: 320, step0: 480, step1: 610, step2: 740, step3: 870 }
   };
+  // case-study pages with three method steps instead of four
+  var THREE_STEP_ANCHORS = {
+    desktop: { stat0: [-160, 0], stat1: [0, 0], stat2: [160, 0], step0: [-80, -140], step1: [-80, 0], step2: [-80, 140] },
+    mobile: { stat0: 260, stat1: 290, stat2: 320, step0: 480, step1: 610, step2: 740 }
+  };
+  var ANCHOR_PRESETS = { lab: LAB_ANCHORS, 'three-steps': THREE_STEP_ANCHORS };
   function colorSlots(anchors) {
+    if (typeof anchors === 'string') anchors = ANCHOR_PRESETS[anchors];
     anchors = anchors || LAB_ANCHORS;
     var coralGroup = document.querySelector('[data-blob-role="coral"]');
     var cyanGroup = document.querySelector('[data-blob-role="cyan"]');
@@ -673,7 +680,8 @@ window.pmShell = (function () {
     // the shared stat bar's figures pop in when it scrolls into view; a page that fills them later marks the bar
     // data-num-pop="manual" and calls pmShell.numPop(bar, '.pm-stat__value') once the numbers are in
     document.querySelectorAll('.pm-page .pm-stat-bar:not([data-num-pop="manual"])').forEach(function (bar) { numPop(bar, '.pm-stat__value'); });
-    if (document.body.hasAttribute('data-color-slots')) colorSlots();
+    // <body data-color-slots> uses the Lab layout's anchors; data-color-slots="three-steps" the three-step case-study layout
+    if (document.body.hasAttribute('data-color-slots')) colorSlots(document.body.getAttribute('data-color-slots'));
   }
   function boot() { setTimeout(init, 0); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);

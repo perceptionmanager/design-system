@@ -2,6 +2,10 @@
 
 Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.md`.
 
+## v0.6.1 (2026-11-13)
+
+- **Glow-tinted numbers:** `<body data-color-slots="three-steps">` for pages with three method steps, so the portfolio's case studies no longer carry their own copy of the tinting script.
+
 ## v0.6.0 (2026-11-13)
 
 - **Check item:** the checkmark is now drawn (the Figma library's 10×7 mark, 2px stroke) instead of a ✓ text glyph, which every font drew differently. Existing markup with ✓ inside `.pm-check` keeps working; the glyph is hidden.
