@@ -21,6 +21,7 @@ dist/                      ← generated, committed so products can load it dire
 scripts/                   ← zero-dependency Node build and validator
 docs/audit/                ← the audit report and the CSV evidence behind it
 docs/shell.md              ← page shell markup and how to load it
+docs/forms.md              ← form field markup
 integrations/              ← Kiro steering rules to copy into each product repo
 ```
 

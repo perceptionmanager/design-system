@@ -2,6 +2,11 @@
 
 Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.md`.
 
+## Unreleased (v0.6.0)
+
+- **Tokens:** `color.border.control` (control edges at 3:1 or more in both themes), `field.*`, `control.*`, `meter.*`, `spinner.*`, `font.family.mono`, and `color.status.success-subtle` / `-border`. New contrast gates for controls. Inventory behind them: `docs/inventory-v0.6.md`.
+- **Form fields (new):** `.pm-field` with label, helper, error and character count; `.pm-input`, `.pm-textarea` (+ `--code`), `.pm-select`, `.pm-checkbox`, `.pm-radio`, `.pm-choice` and `.pm-fieldset`. Markup in `docs/forms.md`.
+
 ## v0.5.0 (2026-11-12)
 
 - **Pills and tags are opaque (visible change):** `pm-pill`, `pm-tag` and the selected interactive pill now use the page color instead of a see-through tint, so the backdrop glows no longer show through them. Matches what the portfolio already did with an override.

@@ -300,6 +300,134 @@
   }
   .pm-skip-link:focus, .pm-skip-link[data-state="focus"] { top: var(--pm-space-4); }
 
+  /* ---- Form field ----
+     .pm-field stacks a label, one control, and optional helper and error text. Tie the text to the control with
+     aria-describedby; mark a failed control aria-invalid="true" and its .pm-field__error appears.
+     Controls: .pm-input (text, number, email, search…), .pm-textarea (+ --code for pasted code), .pm-select
+     (a wrapper around a native <select>), and .pm-checkbox / .pm-radio inside a .pm-choice label.
+     Fields are 16px on phones so iOS does not zoom in on focus. */
+  .pm-field { display: flex; flex-direction: column; gap: var(--pm-field-gap); min-width: 0; }
+  .pm-field__head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--pm-space-4); }
+  .pm-field__label {
+    font-size: var(--pm-type-small-size);
+    font-weight: var(--pm-font-weight-semibold);
+    line-height: var(--pm-font-line-height-snug);
+    color: var(--pm-field-label);
+  }
+  .pm-field__optional { font-weight: var(--pm-font-weight-regular); color: var(--pm-field-help); }
+  .pm-field__help, .pm-field__error { margin: 0; font-size: var(--pm-type-small-size); line-height: var(--pm-font-line-height-normal); }
+  .pm-field__help { color: var(--pm-field-help); }
+  .pm-field__error { display: none; color: var(--pm-field-error); }
+  .pm-field:has([aria-invalid="true"]) .pm-field__error, .pm-field__error[data-state="show"] { display: block; }
+  /* character count beside the label; data-state="warning" near the limit, "error" past it */
+  .pm-field__count { font-size: var(--pm-type-caption-size); color: var(--pm-field-help); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .pm-field__count[data-state="warning"] { color: var(--pm-color-status-warning); }
+  .pm-field__count[data-state="error"] { color: var(--pm-field-error); }
+
+  .pm-input, .pm-textarea, .pm-select select {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    min-height: var(--pm-field-min-height);
+    margin: 0;
+    padding: calc(var(--pm-field-padding-y) - 1px) calc(var(--pm-field-padding-x) - 1px);
+    border: 1px solid var(--pm-field-border);
+    border-radius: var(--pm-field-radius);
+    background: var(--pm-field-bg);
+    color: var(--pm-field-text);
+    font-family: var(--pm-font-family-sans);
+    font-size: var(--pm-type-body-size);
+    line-height: var(--pm-font-line-height-normal);
+    transition: border-color var(--pm-motion-hover);
+  }
+  .pm-input::placeholder, .pm-textarea::placeholder { color: var(--pm-field-placeholder); opacity: 1; }
+  .pm-input:hover, .pm-textarea:hover, .pm-select select:hover,
+  .pm-input[data-state="hover"], .pm-textarea[data-state="hover"], .pm-select select[data-state="hover"] { border-color: var(--pm-field-border-hover); }
+  /* focus: the ring replaces the border, so the edge does not double up */
+  .pm-input:focus-visible, .pm-textarea:focus-visible, .pm-select select:focus-visible,
+  .pm-input[data-state="focus"], .pm-textarea[data-state="focus"], .pm-select select[data-state="focus"] {
+    outline: var(--pm-focus-ring-width) solid var(--pm-color-focus-ring);
+    outline-offset: 0;
+    border-color: transparent;
+  }
+  .pm-input[aria-invalid="true"], .pm-textarea[aria-invalid="true"], .pm-select select[aria-invalid="true"] { border-color: var(--pm-field-border-invalid); }
+  .pm-input:disabled, .pm-textarea:disabled, .pm-select select:disabled { opacity: .45; cursor: not-allowed; border-color: var(--pm-field-border); }
+  .pm-input[type="number"] { font-variant-numeric: tabular-nums; }
+
+  .pm-textarea {
+    min-height: calc(var(--pm-space-32) + var(--pm-space-20));
+    padding: calc(var(--pm-field-multiline-padding) - 1px);
+    line-height: var(--pm-font-line-height-relaxed);
+    resize: vertical;
+  }
+  .pm-textarea--code { background: var(--pm-field-bg-code); font-family: var(--pm-font-family-mono); }
+  @media (min-width: 861px) { .pm-textarea--code { font-size: var(--pm-type-small-size); } }
+
+  /* dropdown: a native <select> (keyboard, screen reader and phone pickers come for free) with the design system's chevron */
+  .pm-select { position: relative; display: block; }
+  .pm-select select { appearance: none; padding-right: calc(var(--pm-field-padding-x) + var(--pm-space-6)); cursor: pointer; }
+  .pm-select::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: var(--pm-field-padding-x);
+    width: 1rem;
+    height: 1rem;
+    transform: translateY(-50%);
+    background: var(--pm-field-label);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+    pointer-events: none;
+  }
+  .pm-select select option { background: var(--pm-color-surface-raised); color: var(--pm-field-text); }
+
+  /* checkbox and radio: the whole label is the target, at least 44px tall; group them in a fieldset with a legend */
+  .pm-fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+  .pm-fieldset > legend { padding: 0; margin-bottom: var(--pm-space-1); }
+  .pm-choice {
+    display: flex;
+    align-items: center;
+    gap: var(--pm-space-3);
+    min-height: var(--pm-layout-target-min);
+    font-size: var(--pm-type-body-size);
+    line-height: var(--pm-font-line-height-snug);
+    color: var(--pm-field-text);
+    cursor: pointer;
+  }
+  .pm-choice:has(:disabled) { opacity: .45; cursor: not-allowed; }
+  .pm-checkbox, .pm-radio {
+    appearance: none;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    display: grid;
+    place-content: center;
+    width: var(--pm-control-size);
+    height: var(--pm-control-size);
+    margin: 0;
+    border: 1px solid var(--pm-control-border);
+    border-radius: var(--pm-control-radius);
+    background: var(--pm-field-bg);
+    cursor: inherit;
+    transition: border-color var(--pm-motion-hover), background-color var(--pm-motion-hover);
+  }
+  .pm-radio { border-radius: var(--pm-radius-full); }
+  .pm-checkbox::before, .pm-radio::before { content: ''; transform: scale(0); background: var(--pm-control-checked-mark); }
+  .pm-checkbox::before { width: .7rem; height: .7rem; clip-path: polygon(14% 44%, 0 59%, 39% 100%, 100% 24%, 85% 10%, 38% 69%); }
+  .pm-radio::before { width: .5rem; height: .5rem; border-radius: var(--pm-radius-full); }
+  .pm-choice:hover .pm-checkbox, .pm-choice:hover .pm-radio,
+  .pm-checkbox[data-state="hover"], .pm-radio[data-state="hover"] { border-color: var(--pm-field-border-hover); }
+  .pm-checkbox:checked, .pm-radio:checked, .pm-checkbox:indeterminate { border-color: var(--pm-control-checked-bg); background: var(--pm-control-checked-bg); }
+  .pm-checkbox:checked::before, .pm-radio:checked::before { transform: scale(1); }
+  .pm-checkbox:indeterminate::before { transform: scale(1); width: .6rem; height: 2px; clip-path: none; }
+  .pm-checkbox:focus-visible, .pm-radio:focus-visible, .pm-checkbox[data-state="focus"], .pm-radio[data-state="focus"] {
+    outline: var(--pm-focus-ring-width) solid var(--pm-color-focus-ring);
+    outline-offset: var(--pm-focus-ring-offset);
+  }
+  .pm-checkbox[aria-invalid="true"], .pm-radio[aria-invalid="true"] { border-color: var(--pm-field-border-invalid); }
+  @media (prefers-reduced-motion: no-preference) {
+    .pm-checkbox::before, .pm-radio::before { transition: transform var(--pm-duration-fast) var(--pm-easing-emphasized); }
+  }
+
   /* Windows high-contrast mode drops colours and shadows, so state cues are redrawn with system colours. */
   @media (forced-colors: active) {
     .pm-pill--interactive[aria-pressed="true"], .pm-pill--interactive[aria-selected="true"] { outline: 2px solid Highlight; outline-offset: -2px; }
@@ -307,5 +435,9 @@
     .pm-nav-link[aria-current="page"]::after { background: Highlight; }
     .pm-card--accent-primary, .pm-card--accent-secondary { border-top: 2px solid CanvasText; }
     .pm-check { border: 1px solid CanvasText; }
+    .pm-input, .pm-textarea, .pm-select select, .pm-checkbox, .pm-radio { border-color: CanvasText; }
+    .pm-select::after { background: CanvasText; }
+    .pm-checkbox:checked, .pm-radio:checked, .pm-checkbox:indeterminate { background: Highlight; border-color: Highlight; }
+    .pm-checkbox::before, .pm-radio::before { background: HighlightText; }
   }
 }
