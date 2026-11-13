@@ -9,7 +9,7 @@ Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.
 - **Type motion:** the portfolio's title pop-in (every `h1` in `.pm-page`), a figure pop-in (automatic on every `.pm-stat-bar`, or `pmShell.numPop` for other figures) and glow-tinted stat and step numbers (`<body data-color-slots>` with `data-color-slot` on the figures), plus `pmShell.mixColor` for page scripts.
 - **Logos:** `dist/logos.svg`, a sprite of the footer's tool logos (`pm-logo-figma`, `-claude`, `-github`, `-vercel`, `-human`).
 - **Package exports:** `components.css`, `shell.css`, `shell.js`, `icons.svg` and `logos.svg` are now exported, so a bundled app can import them by version instead of keeping a copy. Package version is 0.5.0 (it had stayed at 0.1.0).
-- **Storybook:** a Shell section with the header (desktop and phone), the open mobile menu, the footer and the backdrop.
+- **Storybook:** a Shell section with the header (desktop and phone), the compact header, the open mobile menu, the footer and the backdrop. Storybook's own frame and docs pages now use the design system: IBM Plex type, the surface, text, border and accent tokens (read from `dist/tokens.resolved.json`), display-face headings, and "Alex Grinyayev · Design System" in the sidebar. The frame, docs and previews open in the visitor's system theme; the toolbar switch still flips the previews.
 
 ## v0.4.0 (2026-10-18)
 
