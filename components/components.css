@@ -229,12 +229,19 @@
     border-radius: 50%;
     background: var(--pm-check-bg);
     color: var(--pm-color-text-on-accent);
-    font-size: var(--pm-type-body-lg-size);
-    font-weight: var(--pm-font-weight-bold);
+    font-size: 0;   /* any ✓ glyph in the markup is hidden: fonts draw it differently, so the mark is drawn below */
+  }
+  /* the checkmark from the Figma library (10×7, 2px stroke), drawn in the on-accent color so it looks the same in every font */
+  .pm-check::before {
+    content: '';
+    width: 12px;
+    height: 9px;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 12 9' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M0 3.5 3.5 7 10 0'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-1 -1 12 9' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M0 3.5 3.5 7 10 0'/%3E%3C/svg%3E") center / contain no-repeat;
   }
   @media (max-width: 860px) {
     .pm-check-row { padding: var(--pm-space-4) 0; }
-    .pm-check { font-size: var(--pm-type-body-size); }
   }
 
   /* ---- Links ---- */
@@ -620,6 +627,7 @@
     .pm-nav-link[aria-current="page"]::after { background: Highlight; }
     .pm-card--accent-primary, .pm-card--accent-secondary { border-top: 2px solid CanvasText; }
     .pm-check { border: 1px solid CanvasText; }
+    .pm-check::before { background: CanvasText; forced-color-adjust: none; }
     .pm-input, .pm-textarea, .pm-select select, .pm-checkbox, .pm-radio { border-color: CanvasText; }
     .pm-select::after { background: CanvasText; }
     .pm-checkbox:checked, .pm-radio:checked, .pm-checkbox:indeterminate { background: Highlight; border-color: Highlight; }
