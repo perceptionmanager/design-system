@@ -13,6 +13,7 @@
     --pm-color-neutral-200: #e5e9f0;
     --pm-color-neutral-400: #a6adbb;
     --pm-color-neutral-500: #8b93a1;
+    --pm-color-neutral-550: #727a89;
     --pm-color-neutral-600: #5a6170;
     --pm-color-neutral-700: #4a5160;
     --pm-color-neutral-800: #20242f;
@@ -48,6 +49,8 @@
     --pm-color-alpha-cyan-a12: rgb(69 224 255 / 0.12);
     --pm-color-alpha-rose-a12: rgb(251 113 133 / 0.12);
     --pm-color-alpha-rose-a35: rgb(251 113 133 / 0.35);
+    --pm-color-alpha-green-a12: rgb(74 222 128 / 0.12);
+    --pm-color-alpha-green-a35: rgb(74 222 128 / 0.35);
     --pm-color-alpha-orange-a12: rgb(251 146 60 / 0.12);
     --pm-color-alpha-orange-a35: rgb(251 146 60 / 0.35);
     --pm-color-alpha-amber-a12: rgb(252 211 77 / 0.12);
@@ -64,6 +67,8 @@
     --pm-color-alpha-coral-700-a40: rgb(196 58 28 / 0.4);
     --pm-color-alpha-rose-700-a10: rgb(192 38 74 / 0.1);
     --pm-color-alpha-rose-700-a35: rgb(192 38 74 / 0.35);
+    --pm-color-alpha-green-700-a10: rgb(26 127 75 / 0.1);
+    --pm-color-alpha-green-700-a35: rgb(26 127 75 / 0.35);
     --pm-color-alpha-orange-700-a10: rgb(173 77 8 / 0.1);
     --pm-color-alpha-orange-700-a35: rgb(173 77 8 / 0.35);
     --pm-color-alpha-amber-700-a10: rgb(148 98 0 / 0.1);
@@ -103,6 +108,7 @@
     /* font */
     --pm-font-family-display: 'IBM Plex Serif', Georgia, serif;
     --pm-font-family-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --pm-font-family-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
     --pm-font-weight-regular: 400;
     --pm-font-weight-semibold: 600;
     --pm-font-weight-bold: 700;
@@ -168,6 +174,7 @@
     /* color.border */
     --pm-color-border-subtle: var(--pm-color-alpha-white-a10);
     --pm-color-border-strong: var(--pm-color-alpha-white-a24);
+    --pm-color-border-control: var(--pm-color-neutral-550);
     --pm-color-border-accent: var(--pm-color-alpha-coral-a35);
     --pm-color-border-interactive-hover: var(--pm-color-cyan-400);
     /* color.accent */
@@ -178,6 +185,8 @@
     --pm-color-accent-secondary-subtle: var(--pm-color-alpha-cyan-a12);
     /* color.status */
     --pm-color-status-success: var(--pm-color-green-400);
+    --pm-color-status-success-subtle: var(--pm-color-alpha-green-a12);
+    --pm-color-status-success-border: var(--pm-color-alpha-green-a35);
     --pm-color-status-critical: var(--pm-color-rose-400);
     --pm-color-status-critical-subtle: var(--pm-color-alpha-rose-a12);
     --pm-color-status-critical-border: var(--pm-color-alpha-rose-a35);
@@ -319,6 +328,37 @@
     /* focus */
     --pm-focus-ring-width: 2px;
     --pm-focus-ring-offset: 2px;
+    /* field */
+    --pm-field-bg: var(--pm-color-surface-raised);
+    --pm-field-bg-code: var(--pm-color-surface-sunken);
+    --pm-field-border: var(--pm-color-border-control);
+    --pm-field-border-hover: var(--pm-color-border-interactive-hover);
+    --pm-field-border-invalid: var(--pm-color-status-error);
+    --pm-field-text: var(--pm-color-text-primary);
+    --pm-field-placeholder: var(--pm-color-text-tertiary);
+    --pm-field-label: var(--pm-color-text-secondary);
+    --pm-field-help: var(--pm-color-text-tertiary);
+    --pm-field-error: var(--pm-color-status-error);
+    --pm-field-radius: var(--pm-radius-md);
+    --pm-field-min-height: var(--pm-layout-target-min);
+    --pm-field-padding-y: var(--pm-space-2);
+    --pm-field-padding-x: var(--pm-space-3);
+    --pm-field-multiline-padding: var(--pm-space-4);
+    --pm-field-gap: var(--pm-space-2);
+    /* control */
+    --pm-control-size: var(--pm-space-5);
+    --pm-control-border: var(--pm-color-border-control);
+    --pm-control-checked-bg: var(--pm-color-text-accent-secondary);
+    --pm-control-checked-mark: var(--pm-color-surface-page);
+    --pm-control-radius: var(--pm-radius-xs);
+    /* meter */
+    --pm-meter-height: var(--pm-space-1);
+    --pm-meter-track: var(--pm-color-border-subtle);
+    --pm-meter-radius: var(--pm-radius-full);
+    /* spinner */
+    --pm-spinner-size: var(--pm-space-4);
+    --pm-spinner-track: var(--pm-color-border-subtle);
+    --pm-spinner-indicator: var(--pm-color-text-accent-secondary);
   }
 
   /* ===== mode: light (set data-theme="light" on <html>) ===== */
@@ -343,6 +383,8 @@
     --pm-color-border-accent: var(--pm-color-alpha-coral-700-a40);
     --pm-color-border-interactive-hover: var(--pm-color-cyan-800);
     --pm-color-status-success: var(--pm-color-green-700);
+    --pm-color-status-success-subtle: var(--pm-color-alpha-green-700-a10);
+    --pm-color-status-success-border: var(--pm-color-alpha-green-700-a35);
     --pm-color-status-critical: var(--pm-color-rose-700);
     --pm-color-status-critical-subtle: var(--pm-color-alpha-rose-700-a10);
     --pm-color-status-critical-border: var(--pm-color-alpha-rose-700-a35);

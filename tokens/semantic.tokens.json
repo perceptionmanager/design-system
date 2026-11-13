@@ -60,6 +60,10 @@
       "strong": {
         "$value": "{color.alpha.white-a24}"
       },
+      "control": {
+        "$value": "{color.neutral.550}",
+        "$description": "Edge of a form control. Opaque, so it meets 3:1 on every surface (WCAG 1.4.11); subtle and strong are too faint for controls."
+      },
       "accent": {
         "$value": "{color.alpha.coral-a35}"
       },
@@ -88,6 +92,12 @@
       "success": {
         "$value": "{color.green.400}",
         "$description": "Positive status (live dot, success messages)."
+      },
+      "success-subtle": {
+        "$value": "{color.alpha.green-a12}"
+      },
+      "success-border": {
+        "$value": "{color.alpha.green-a35}"
       },
       "critical": {
         "$value": "{color.rose.400}",
