@@ -42,11 +42,11 @@ Replace `ICONS` and `LOGOS` with the product's copies of the sprites, and `SITE`
   <!-- backdrop (optional) -->
   <div class="pm-backdrop__grain"></div>
   <div class="pm-backdrop__aura"></div>
-  <div data-blob-group data-tx-range="90" data-ty-range="85" data-scale-min="0.55" data-scale-max="1.75" data-blur-min="30" data-blur-max="130" data-op-min="0.14" data-op-max="0.62" data-dur-min="4" data-dur-max="8">
+  <div data-blob-group data-blob-role="coral" data-tx-range="90" data-ty-range="85" data-scale-min="0.55" data-scale-max="1.75" data-blur-min="30" data-blur-max="130" data-op-min="0.14" data-op-max="0.62" data-dur-min="4" data-dur-max="8">
     <div class="pm-backdrop__clear" data-blob-target style="width:480px;height:480px;top:-180px;left:-170px"></div>
     <div class="pm-backdrop__blob pm-backdrop__blob--coral" data-blob-target style="width:320px;height:320px;top:-100px;left:-90px"></div>
   </div>
-  <div class="pm-backdrop__group--desktop" data-blob-group data-tx-range="90" data-ty-range="85" data-scale-min="0.55" data-scale-max="1.7" data-blur-min="30" data-blur-max="130" data-op-min="0.14" data-op-max="0.6" data-dur-min="4.5" data-dur-max="8.5">
+  <div class="pm-backdrop__group--desktop" data-blob-group data-blob-role="cyan" data-tx-range="90" data-ty-range="85" data-scale-min="0.55" data-scale-max="1.7" data-blur-min="30" data-blur-max="130" data-op-min="0.14" data-op-max="0.6" data-dur-min="4.5" data-dur-max="8.5">
     <div class="pm-backdrop__clear" data-blob-target style="width:630px;height:630px;top:35px;right:-265px"></div>
     <div class="pm-backdrop__blob pm-backdrop__blob--cyan" data-blob-target style="width:420px;height:420px;top:140px;right:-160px"></div>
   </div>
@@ -123,6 +123,14 @@ The Lab tools show only the name, the credential, a "Let's connect" button and t
 ```
 
 Keep the theme boot script in `<head>`, as on every page.
+
+## Type motion
+
+- **Titles:** every `h1` inside `.pm-page` pops in character by character on load (words stay whole). Nothing to add to the markup; screen readers get the title from `aria-label`.
+- **Figures:** `pmShell.numPop(container, '.figure-selector')` pops a row of figures in when it scrolls into view, each a beat after the one before (the portfolio's case-study stat strips use it).
+- **Glow-tinted numbers:** add `data-color-slots` to `<body>` and `data-color-slot="stat0"`…`"stat2"` to the stat values and `"step0"`…`"step3"` to the step numbers. Their color then follows the drifting glows (coral to cyan on desktop, coral to text color by depth on phones), fading over 5s. The glow groups need `data-blob-role="coral"` and `"cyan"`. The anchors fit the Lab page layout; for another layout call `pmShell.colorSlots({ desktop: {…}, mobile: {…} })` from a page script instead.
+
+All of it is off with reduced motion, apart from the color, which changes slowly and does not move anything.
 
 ## Behavior notes
 

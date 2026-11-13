@@ -395,4 +395,57 @@
   @media (prefers-reduced-motion: reduce) {
     .pm-backdrop__grain, .pm-backdrop__noise, .pm-backdrop__aura { animation: none; }
   }
+
+  /* ---- Type motion ----
+     Number and title pop-in, adapted from transitions.dev "Number pop-in": each character rises from below, pulls back
+     and springs into place past full size, staggered left to right. shell.js splits page titles (every h1 in .pm-page)
+     into words and characters and adds .is-animating; a product can do the same for any figure (pmShell.numPop). */
+  .pm-num-pop {
+    --np-dur: 600ms;
+    --np-stagger: 40ms;
+    --np-distance: 0.52em;
+    --np-blur: max(0.067em, 0.171em - 2.1px);
+    --np-lift: 0.125em;
+    --np-start-scale: 0.7;
+    --np-peak: 1.03;
+  }
+  .pm-num-pop .pm-num-pop__ch { display: inline-block; white-space: pre; opacity: 0; font: inherit; color: inherit; letter-spacing: inherit }
+  .pm-num-pop.is-animating .pm-num-pop__ch {
+    animation: pm-num-pop-in var(--np-dur) linear both;
+    animation-delay: calc(var(--np-base, 0ms) + var(--np-stagger) * var(--np-i, 0));
+  }
+  @keyframes pm-num-pop-in {
+    0% { transform: translateY(calc(var(--np-distance) * 1 + var(--np-lift) * 0)) scale(var(--np-start-scale)); opacity: 0; filter: blur(calc(var(--np-blur) * 1)); }
+    5% { transform: translateY(calc(var(--np-distance) * 0.941 + var(--np-lift) * 0.216)) scale(var(--np-start-scale)); opacity: 0.059; filter: blur(calc(var(--np-blur) * 1)); }
+    10% { transform: translateY(calc(var(--np-distance) * 0.755 + var(--np-lift) * 0.648)) scale(var(--np-start-scale)); opacity: 0.245; filter: blur(calc(var(--np-blur) * 1)); }
+    15% { transform: translateY(calc(var(--np-distance) * 0.475 + var(--np-lift) * 0.972)) scale(var(--np-start-scale)); opacity: 0.525; filter: blur(calc(var(--np-blur) * 1)); }
+    20% { transform: translateY(calc(var(--np-distance) * 0.206 + var(--np-lift) * 0.792)) scale(calc(1 + (var(--np-start-scale) - 1) * 0.792)); opacity: 0.794; filter: blur(calc(var(--np-blur) * 0.9)); }
+    25% { transform: translateY(calc(var(--np-distance) * 0.041 + var(--np-lift) * 0.392)) scale(calc(1 + (var(--np-start-scale) - 1) * 0.392)); opacity: 0.959; filter: blur(calc(var(--np-blur) * 0.75)); }
+    30% { transform: translateY(calc(var(--np-distance) * 0 + var(--np-lift) * 0.033)) scale(calc(1 + (var(--np-start-scale) - 1) * 0.033)); opacity: 1; filter: blur(calc(var(--np-blur) * 0.6)); }
+    35% { transform: translateY(calc(var(--np-distance) * 0 + var(--np-lift) * -0.194)) scale(calc(1 + (var(--np-peak) - 1) * 0.711)); opacity: 1; filter: blur(calc(var(--np-blur) * 0.45)); }
+    40% { transform: translateY(calc(var(--np-distance) * 0 + var(--np-lift) * -0.272)) scale(calc(1 + (var(--np-peak) - 1) * 0.997)); opacity: 1; filter: blur(calc(var(--np-blur) * 0.3)); }
+    45% { transform: translateY(calc(var(--np-distance) * 0 + var(--np-lift) * -0.238)) scale(calc(1 + (var(--np-peak) - 1) * 0.87)); opacity: 1; filter: blur(calc(var(--np-blur) * 0.15)); }
+    50% { transform: translateY(calc(var(--np-distance) * 0 + var(--np-lift) * -0.146)) scale(calc(1 + (var(--np-peak) - 1) * 0.535)); opacity: 1; filter: blur(calc(var(--np-blur) * 0)); }
+    55% { transform: translateY(calc(var(--np-distance) * 0 + var(--np-lift) * -0.05)) scale(calc(1 + (var(--np-peak) - 1) * 0.183)); opacity: 1; filter: blur(calc(var(--np-blur) * 0)); }
+    60% { transform: translateY(calc(var(--np-distance) * 0 + var(--np-lift) * 0.019)) scale(calc(1 + (var(--np-peak) - 1) * -0.069)); opacity: 1; filter: blur(calc(var(--np-blur) * 0)); }
+    65% { transform: translateY(calc(var(--np-distance) * 0 + var(--np-lift) * 0.05)) scale(calc(1 + (var(--np-peak) - 1) * -0.185)); opacity: 1; filter: blur(calc(var(--np-blur) * 0)); }
+    70% { transform: translateY(calc(var(--np-distance) * 0 + var(--np-lift) * 0.051)) scale(calc(1 + (var(--np-peak) - 1) * -0.187)); opacity: 1; filter: blur(calc(var(--np-blur) * 0)); }
+    75% { transform: translateY(calc(var(--np-distance) * 0 + var(--np-lift) * 0.035)) scale(calc(1 + (var(--np-peak) - 1) * -0.128)); opacity: 1; filter: blur(calc(var(--np-blur) * 0)); }
+    80% { transform: translateY(calc(var(--np-distance) * 0 + var(--np-lift) * 0.016)) scale(calc(1 + (var(--np-peak) - 1) * -0.057)); opacity: 1; filter: blur(calc(var(--np-blur) * 0)); }
+    85% { transform: translateY(calc(var(--np-distance) * 0 + var(--np-lift) * 0.002)) scale(calc(1 + (var(--np-peak) - 1) * -0.007)); opacity: 1; filter: blur(calc(var(--np-blur) * 0)); }
+    90% { transform: translateY(calc(var(--np-distance) * 0 + var(--np-lift) * -0.004)) scale(calc(1 + (var(--np-peak) - 1) * 0.013)); opacity: 1; filter: blur(calc(var(--np-blur) * 0)); }
+    95% { transform: translateY(calc(var(--np-distance) * 0 + var(--np-lift) * -0.003)) scale(calc(1 + (var(--np-peak) - 1) * 0.011)); opacity: 1; filter: blur(calc(var(--np-blur) * 0)); }
+    100% { transform: translateY(calc(var(--np-distance) * 0 + var(--np-lift) * 0)) scale(1); opacity: 1; filter: blur(calc(var(--np-blur) * 0)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pm-num-pop .pm-num-pop__ch { opacity: 1 }
+    .pm-num-pop.is-animating .pm-num-pop__ch { animation: none }
+  }
+  /* titles: words stay whole so lines only break between them; the older word-rise and fade-up title entrances are off */
+  .pm-title-pop.fade-in, .pm-title-pop .split-word { animation: none; opacity: 1; transform: none; }
+  .pm-title-pop .pm-num-pop__word { white-space: nowrap; }
+
+  /* stat values and step numbers whose color follows the glows (pmShell.colorSlots) fade between colors */
+  [data-color-slot] { transition: color 5s ease-in-out; }
+
 }

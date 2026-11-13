@@ -9,6 +9,10 @@
                                                                         (off when <body data-backdrop-lines="off">)
      [data-magnetic]                                                    buttons that lean toward the pointer
      a[href^="mailto:"]                                                 copy the address too, and say so
+     .pm-page h1                                                        title pop-in, character by character
+     <body data-color-slots> + [data-color-slot]                        stat and step numbers tinted by the glows (Lab layout)
+   Helpers for page scripts: pmShell.numPop(container, selector) pops figures in; pmShell.colorSlots() tints
+   [data-color-slot] figures by the glows; pmShell.mixColor(fromRGB, toRGB, t) blends brand colors for the theme.
    Runs once the page has parsed, after the page's own DOMContentLoaded handlers, so a page script can still
    switch a behavior off (for example data-backdrop-lines="off") before the shell starts. */
 window.pmShell = (function () {
@@ -437,6 +441,156 @@ window.pmShell = (function () {
     resize(); start();
   }
 
+  /* ---- color-interpolation helper, used by pages that fade a value's
+     color based on scroll/blob depth (e.g. stat callouts) ---- */
+  /* The pages pass the dark theme's brand colours (coral, cyan, light ink). In the light theme those would be unreadable as text,
+     so they are swapped for the matching text tokens: coral -> text.accent, cyan -> text.interactive-hover, ink -> text.primary.
+     In dark the tokens resolve to the same three colours, so nothing changes there. */
+  var themeColorCache = {};
+  function tokenRGB(token) {
+    var theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    var key = theme + token;
+    if (!themeColorCache[key]) {
+      var probe = document.createElement('span');
+      probe.style.color = 'var(' + token + ')';
+      probe.style.display = 'none';
+      document.body.appendChild(probe);
+      var m = getComputedStyle(probe).color.match(/\d+(\.\d+)?/g);
+      document.body.removeChild(probe);
+      themeColorCache[key] = m ? [Math.round(+m[0]), Math.round(+m[1]), Math.round(+m[2])] : null;
+    }
+    return themeColorCache[key];
+  }
+  var BRAND_TEXT = { '255,106,76': '--pm-color-text-accent', '69,224,255': '--pm-color-text-interactive-hover', '243,241,236': '--pm-color-text-primary' };
+  function forTheme(rgb) {
+    var token = BRAND_TEXT[rgb.join(',')];
+    return (token && tokenRGB(token)) || rgb;
+  }
+  function mixColor(fromRGB, toRGB, t) {
+    fromRGB = forTheme(fromRGB); toRGB = forTheme(toRGB);
+    t = Math.min(1, Math.max(0, t));
+    var r = Math.round(fromRGB[0] + (toRGB[0] - fromRGB[0]) * t);
+    var g = Math.round(fromRGB[1] + (toRGB[1] - fromRGB[1]) * t);
+    var b = Math.round(fromRGB[2] + (toRGB[2] - fromRGB[2]) * t);
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
+  }
+ 
+  /* ---- page title pop-in ----
+     Every h1 in .pm-page gets the number pop-in (shell.css "Type motion"): characters rise, pull back and spring
+     into place left to right on page load. Markup inside the title (highlighted words, split-word
+     spans) is kept; only its text is wrapped. The stagger shrinks on long titles so the whole
+     title lands in well under a second. Screen readers get the title from aria-label. */
+  function initTitlePop() {
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll('.pm-page h1').forEach(function (h1) {
+      var label = h1.textContent.replace(/\s+/g, ' ').trim();
+      if (!label) return;
+      var nodes = [], walker = document.createTreeWalker(h1, NodeFilter.SHOW_TEXT), n;
+      while ((n = walker.nextNode())) nodes.push(n);
+      var count = label.replace(/\s/g, '').length;
+      var stagger = Math.max(12, Math.min(40, Math.round(700 / count)));
+      var i = 0;
+      nodes.forEach(function (node) {
+        var parts = node.nodeValue.split(/(\s+)/), frag = document.createDocumentFragment();
+        parts.forEach(function (part) {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+          var word = document.createElement('span');
+          word.className = 'pm-num-pop__word';
+          Array.from(part).forEach(function (ch) {
+            var c = document.createElement('span');
+            c.className = 'pm-num-pop__ch';
+            c.style.setProperty('--np-i', i++);
+            c.textContent = ch;
+            word.appendChild(c);
+          });
+          frag.appendChild(word);
+        });
+        node.parentNode.replaceChild(frag, node);
+      });
+      h1.setAttribute('aria-label', label);
+      Array.from(h1.children).forEach(function (c) { c.setAttribute('aria-hidden', 'true'); });
+      h1.classList.add('pm-num-pop', 'pm-title-pop');
+      h1.style.setProperty('--np-stagger', stagger + 'ms');
+      h1.style.setProperty('--np-base', '80ms');
+      requestAnimationFrame(function () { h1.classList.add('is-animating'); });
+    });
+  }
+
+
+  /* ---- number pop-in for any figure ----
+     pmShell.numPop(container, figureSelector): splits each figure into characters and plays the pop-in when the
+     container scrolls into view, each figure a beat after the one before it. Screen readers get the figure from aria-label. */
+  function numPop(container, selector) {
+    if (!container || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+    var figs = container.querySelectorAll(selector);
+    figs.forEach(function (b, n) {
+      var text = b.textContent;
+      b.setAttribute('aria-label', text);
+      b.textContent = '';
+      Array.from(text).forEach(function (ch, i) {
+        var s = document.createElement('span');
+        s.className = 'pm-num-pop__ch';
+        s.setAttribute('aria-hidden', 'true');
+        s.style.setProperty('--np-i', i);
+        s.textContent = ch;
+        b.appendChild(s);
+      });
+      b.classList.add('pm-num-pop');
+      b.style.setProperty('--np-base', (250 + n * 140) + 'ms');
+    });
+    function play() { figs.forEach(function (b) { b.classList.add('is-animating'); }); }
+    if (!window.IntersectionObserver) { play(); return; }
+    var io = new IntersectionObserver(function (entries) {
+      if (entries.some(function (e) { return e.isIntersecting; })) { play(); io.disconnect(); }
+    }, { threshold: 0.4 });
+    io.observe(container);
+  }
+
+
+  /* ---- figures that take their color from the glows ----
+     pmShell.colorSlots(): every [data-color-slot] element (the Lab page layout: stat0-2 in the stat bar, step0-3 in the
+     steps) is tinted between coral and cyan by how close the drifting glows ([data-blob-role="coral"|"cyan"]) are on
+     desktop, and from coral toward the text color by depth on phones. Anchors are where each slot sits relative to the
+     glows; pass your own for another layout. Colors switch to the theme's text tokens in light (see mixColor). */
+  var LAB_ANCHORS = {
+    desktop: { stat0: [-160, 0], stat1: [0, 0], stat2: [160, 0], step0: [-80, -210], step1: [-80, -70], step2: [-80, 70], step3: [-80, 210] },
+    mobile: { stat0: 260, stat1: 290, stat2: 320, step0: 480, step1: 610, step2: 740, step3: 870 }
+  };
+  function colorSlots(anchors) {
+    anchors = anchors || LAB_ANCHORS;
+    var coralGroup = document.querySelector('[data-blob-role="coral"]');
+    var cyanGroup = document.querySelector('[data-blob-role="cyan"]');
+    var els = document.querySelectorAll('[data-color-slot]');
+    if (!els.length) return;
+    var mqDesktop = window.matchMedia('(min-width: 861px)');
+    var CORAL = [255, 106, 76], CYAN = [69, 224, 255], INK = [243, 241, 236];
+    function desktopColor(pos) {
+      var coral = (coralGroup && coralGroup.blobState) || { tx: 0, ty: 0 };
+      var cyan = (cyanGroup && cyanGroup.blobState) || { tx: 0, ty: 0 };
+      var dCoral = Math.hypot(pos[0] - (200 + coral.tx), pos[1] - coral.ty) + 1;
+      var dCyan = Math.hypot(pos[0] - (-200 + cyan.tx), pos[1] - cyan.ty) + 1;
+      var wCoral = 1 / (dCoral * dCoral), wCyan = 1 / (dCyan * dCyan);
+      return mixColor(CORAL, CYAN, wCyan / (wCoral + wCyan));
+    }
+    function mobileColor(depth) {
+      var coral = (coralGroup && coralGroup.blobState) || { ty: 0 };
+      return mixColor(CORAL, INK, Math.min(1, Math.max(0, depth - (40 + coral.ty)) / 700));
+    }
+    function update() {
+      var desktop = mqDesktop.matches;
+      els.forEach(function (el) {
+        var slot = el.getAttribute('data-color-slot');
+        var a = desktop ? anchors.desktop[slot] : anchors.mobile[slot];
+        if (a === undefined) return;
+        el.style.color = desktop ? desktopColor(a) : mobileColor(a);
+      });
+    }
+    update();
+    setInterval(update, 300);
+    window.addEventListener('resize', update);
+  }
+
   var started = false;
   function init() {
     if (started) return;
@@ -448,10 +602,12 @@ window.pmShell = (function () {
     initMagnetic();
     initMailtoCopy();
     initBackdropLines();
+    initTitlePop();
+    if (document.body.hasAttribute('data-color-slots')) colorSlots();
   }
   function boot() { setTimeout(init, 0); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
 
-  return { init: init, rand: rand };
+  return { init: init, rand: rand, mixColor: mixColor, numPop: numPop, colorSlots: colorSlots };
 })();
