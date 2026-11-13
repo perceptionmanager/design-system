@@ -32,7 +32,7 @@ Put this in `<head>`, before any stylesheet, so the page never flashes the wrong
 
 ## Markup
 
-Replace `ICONS` and `LOGOS` with the product's copies of the sprites, and `SITE` with the portfolio's address (`https://perceptionmanager.com/` on a tool; nothing on the portfolio itself). Mark the current page with `aria-current="page"` in both navs; the Lab tools mark Lab.
+Replace `ICONS` with the product's copy of the icon sprite, and `SITE` with the portfolio's address (`https://perceptionmanager.com/` on a tool; nothing on the portfolio itself). Mark the current page with `aria-current="page"` in both navs; the Lab tools mark Lab.
 
 ```html
 <body>
@@ -91,17 +91,12 @@ Replace `ICONS` and `LOGOS` with the product's copies of the sprites, and `SITE`
     <!-- page content -->
   </main>
 
-  <footer class="pm-site-footer">
-    <div class="pm-site-footer__inner">
-      <span>© Alex Grinyayev · 2026</span>
-      <span>Built with <svg class="pm-site-footer__logo" aria-hidden="true" focusable="false"><use href="LOGOS#pm-logo-claude"/></svg> Claude, source on <svg class="pm-site-footer__logo" aria-hidden="true" focusable="false"><use href="LOGOS#pm-logo-github"/></svg> GitHub, deployed on <svg class="pm-site-footer__logo" aria-hidden="true" focusable="false"><use href="LOGOS#pm-logo-vercel"/></svg> Vercel.</span>
-    </div>
-  </footer>
+  <footer class="pm-site-footer" data-pm-footer></footer>
 </div>
 </body>
 ```
 
-The footer's "Built with" line names what that product was actually built with; the logo sprite covers Figma, Claude, GitHub, Vercel and a human.
+**Footer:** every product shows the same standard footer, written once in `shell.js`: the copyright with the current year, and "Built with Figma and Claude, source on GitHub, deployed on Vercel. Validated by human." with the tool logos. Put an empty `<footer class="pm-site-footer" data-pm-footer></footer>` on the page and `shell.js` fills it; the logos are inlined, so the footer needs no sprite copy. To change the footer, change `initFooter` in `components/shell.js` and every product picks it up with its next design system update.
 
 ## Compact header (Lab tools)
 
