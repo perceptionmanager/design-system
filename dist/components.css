@@ -428,6 +428,121 @@
     .pm-checkbox::before, .pm-radio::before { transition: transform var(--pm-duration-fast) var(--pm-easing-emphasized); }
   }
 
+  /* ---- Status badge ----
+     A short label for a state or a level: severity, a gap, a result. The tone's color is the text, on its subtle
+     tint, with its border. Tone modifiers: --critical, --high, --medium, --low, --error, --warning, --success, --accent.
+     Never the only cue: the word itself says the level. */
+  .pm-badge {
+    --_c: var(--pm-color-status-low);
+    --_bg: var(--pm-color-status-low-subtle);
+    --_bd: var(--pm-color-status-low-border);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--pm-space-1);
+    padding: var(--pm-space-0-5) var(--pm-space-2);
+    border: 1px solid var(--_bd);
+    border-radius: var(--pm-radius-full);
+    background: var(--_bg);
+    color: color-mix(in srgb, var(--_c) var(--_ink, 100%), var(--pm-color-text-primary));
+    font-size: var(--pm-type-caption-size);
+    font-weight: var(--pm-font-weight-semibold);
+    letter-spacing: var(--pm-font-tracking-caps);
+    line-height: var(--pm-font-line-height-normal);
+    white-space: nowrap;
+  }
+  .pm-badge--critical { --_c: var(--pm-color-status-critical); --_bg: var(--pm-color-status-critical-subtle); --_bd: var(--pm-color-status-critical-border); }
+  .pm-badge--high     { --_c: var(--pm-color-status-high);     --_bg: var(--pm-color-status-high-subtle);     --_bd: var(--pm-color-status-high-border); }
+  .pm-badge--medium   { --_c: var(--pm-color-status-medium);   --_bg: var(--pm-color-status-medium-subtle);   --_bd: var(--pm-color-status-medium-border); }
+  .pm-badge--error    { --_c: var(--pm-color-status-error);    --_bg: var(--pm-color-status-error-subtle);    --_bd: var(--pm-color-status-error-border); }
+  .pm-badge--warning  { --_c: var(--pm-color-status-warning);  --_bg: var(--pm-color-status-warning-subtle);  --_bd: var(--pm-color-status-warning-border); }
+  .pm-badge--success  { --_c: var(--pm-color-status-success);  --_bg: var(--pm-color-status-success-subtle);  --_bd: var(--pm-color-status-success-border); }
+  .pm-badge--accent   { --_c: var(--pm-color-text-accent);     --_bg: var(--pm-color-accent-primary-subtle);  --_bd: var(--pm-color-border-accent); }
+  /* the larger, sentence-case badge for free text (the Role Analyzer's skill gaps) */
+  .pm-badge--lg { padding: var(--pm-space-2) var(--pm-space-3); font-weight: var(--pm-font-weight-regular); letter-spacing: var(--pm-font-tracking-wide); line-height: var(--pm-font-line-height-snug); white-space: normal; }
+
+  /* ---- Status line ----
+     A dot and one line of text, for the state of a run or a data source. data-state: success, warning, error,
+     loading (the dot pulses) or none (neutral). Give it role="status" when it changes while the page is open. */
+  .pm-status { display: flex; align-items: baseline; gap: var(--pm-space-3); font-size: var(--pm-type-small-size); line-height: var(--pm-font-line-height-normal); color: var(--pm-color-text-secondary); }
+  .pm-status__dot {
+    flex-shrink: 0;
+    position: relative;
+    top: -1px;
+    width: var(--pm-space-2);
+    height: var(--pm-space-2);
+    border-radius: var(--pm-radius-full);
+    background: var(--pm-color-text-tertiary);
+  }
+  .pm-status[data-state="success"] .pm-status__dot { background: var(--pm-color-status-success); box-shadow: var(--pm-shadow-glow-success); }
+  .pm-status[data-state="warning"] .pm-status__dot { background: var(--pm-color-status-warning); }
+  .pm-status[data-state="error"] .pm-status__dot { background: var(--pm-color-status-error); }
+  .pm-status[data-state="loading"] .pm-status__dot { background: var(--pm-color-text-accent-secondary); }
+  @media (prefers-reduced-motion: no-preference) {
+    .pm-status[data-state="loading"] .pm-status__dot { animation: pm-status-pulse 1.2s ease-in-out infinite; }
+  }
+  @keyframes pm-status-pulse { 50% { opacity: .3; } }
+
+  /* ---- Alert ----
+     A message about the page or the last action. Tones: --error, --warning, --success, or none for a neutral note.
+     Errors that appear after an action take role="alert"; other alerts role="status" or none.
+     --inline drops the box for a rule on the left, for a note inside running text. */
+  .pm-alert {
+    --_c: var(--pm-color-text-secondary);
+    --_bg: var(--pm-color-surface-raised);
+    --_bd: var(--pm-card-border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--pm-space-1);
+    padding: var(--pm-space-3) var(--pm-space-4);
+    border: 1px solid var(--_bd);
+    border-radius: var(--pm-radius-md);
+    background: var(--_bg);
+    color: var(--pm-color-text-primary);
+    font-size: var(--pm-type-small-size);
+    line-height: var(--pm-font-line-height-normal);
+  }
+  .pm-alert__title { margin: 0; font-weight: var(--pm-font-weight-semibold); color: color-mix(in srgb, var(--_c) var(--_ink, 100%), var(--pm-color-text-primary)); }
+  /* light theme: the status colors sit just under 4.5:1 on their own tints, so text on a tint leans a fifth toward
+     the text color. The hue stays; the contrast clears AA on every surface. */
+  :root[data-theme="light"] :is(.pm-badge, .pm-alert) { --_ink: 78%; }
+  .pm-alert > p { margin: 0; }
+  .pm-alert--error   { --_c: var(--pm-color-status-error);   --_bg: var(--pm-color-status-error-subtle);   --_bd: var(--pm-color-status-error-border); }
+  .pm-alert--warning { --_c: var(--pm-color-status-warning); --_bg: var(--pm-color-status-warning-subtle); --_bd: var(--pm-color-status-warning-border); }
+  .pm-alert--success { --_c: var(--pm-color-status-success); --_bg: var(--pm-color-status-success-subtle); --_bd: var(--pm-color-status-success-border); }
+  .pm-alert--inline { padding: var(--pm-space-1) 0 var(--pm-space-1) var(--pm-space-5); border: 0; border-left: 2px solid var(--_c); border-radius: 0; background: none; }
+  .pm-alert[hidden] { display: none; }
+
+  /* ---- Loading indicator ----
+     .pm-spinner is decorative (aria-hidden); the words beside it say what is happening. Use .pm-loading for a row
+     with text (role="status"), or put a spinner in a button with aria-busy="true" while it works. */
+  .pm-spinner {
+    box-sizing: border-box;
+    display: inline-block;
+    flex-shrink: 0;
+    width: var(--pm-spinner-size);
+    height: var(--pm-spinner-size);
+    border: 2px solid var(--pm-spinner-track);
+    border-top-color: var(--pm-spinner-indicator);
+    border-radius: var(--pm-radius-full);
+    animation: pm-spin 650ms linear infinite;
+  }
+  @keyframes pm-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .pm-spinner { animation-duration: 1.6s; } }
+  .pm-loading { display: flex; align-items: center; gap: var(--pm-space-3); padding: var(--pm-space-5) 0; font-size: var(--pm-type-small-size); color: var(--pm-color-text-tertiary); }
+  .pm-loading[hidden] { display: none; }
+  /* inside a button the spinner takes the label's color */
+  .pm-btn .pm-spinner { --pm-spinner-indicator: currentColor; --pm-spinner-track: color-mix(in srgb, currentColor 25%, transparent); width: 1em; height: 1em; }
+  .pm-btn[aria-busy="true"] { cursor: progress; }
+
+  /* ---- Meter ----
+     A value on a known range (a match score). role="meter" with aria-valuenow / -min / -max and an aria-label or
+     aria-labelledby; show the number as text too. data-level colors the fill: strong, moderate or weak. */
+  .pm-meter { position: relative; height: var(--pm-meter-height); border-radius: var(--pm-meter-radius); background: var(--pm-meter-track); overflow: hidden; }
+  .pm-meter__fill { height: 100%; width: 0; border-radius: inherit; background: var(--pm-color-text-tertiary); }
+  .pm-meter[data-level="strong"] .pm-meter__fill { background: var(--pm-color-text-accent-secondary); }
+  .pm-meter[data-level="moderate"] .pm-meter__fill { background: var(--pm-color-status-warning); }
+  @media (prefers-reduced-motion: no-preference) { .pm-meter__fill { transition: width 1s var(--pm-easing-emphasized); } }
+
   /* Windows high-contrast mode drops colours and shadows, so state cues are redrawn with system colours. */
   @media (forced-colors: active) {
     .pm-pill--interactive[aria-pressed="true"], .pm-pill--interactive[aria-selected="true"] { outline: 2px solid Highlight; outline-offset: -2px; }
@@ -439,5 +554,10 @@
     .pm-select::after { background: CanvasText; }
     .pm-checkbox:checked, .pm-radio:checked, .pm-checkbox:indeterminate { background: Highlight; border-color: Highlight; }
     .pm-checkbox::before, .pm-radio::before { background: HighlightText; }
+    .pm-badge, .pm-alert { border-color: CanvasText; }
+    .pm-alert--inline { border-left-color: CanvasText; }
+    .pm-status__dot, .pm-meter__fill { background: CanvasText; forced-color-adjust: none; }
+    .pm-meter { border: 1px solid CanvasText; }
+    .pm-spinner { border-color: GrayText; border-top-color: CanvasText; }
   }
 }
