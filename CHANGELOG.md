@@ -2,6 +2,10 @@
 
 Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.md`.
 
+## v0.6.2 (2026-11-13)
+
+- **Hero spacing (visible change):** new token `layout.hero-top`, the space between the site header and the first line of a page's hero: 84px on a laptop, 40px on a phone, scaling in between. `.pm-hero` uses it, so the Lab tools' heroes start lower on a laptop (was 48px) and on a phone (was 24px), the same as the portfolio's top-level pages.
+
 ## v0.6.1 (2026-11-13)
 
 - **Glow-tinted numbers:** `<body data-color-slots="three-steps">` for pages with three method steps, so the portfolio's case studies no longer carry their own copy of the tinting script.

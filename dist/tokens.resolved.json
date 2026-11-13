@@ -2918,6 +2918,26 @@
       }
     }
   },
+  "layout.hero-top": {
+    "type": "dimension",
+    "tier": "semantic",
+    "value": {
+      "value": 5.25,
+      "unit": "rem"
+    },
+    "extensions": {
+      "com.perceptionmanager.fluid": {
+        "min": {
+          "value": 2.5,
+          "unit": "rem"
+        },
+        "max": {
+          "value": 5.25,
+          "unit": "rem"
+        }
+      }
+    }
+  },
   "layout.target-min": {
     "type": "dimension",
     "tier": "semantic",

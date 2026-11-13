@@ -747,6 +747,25 @@
         }
       }
     },
+    "hero-top": {
+      "$value": {
+        "value": 5.25,
+        "unit": "rem"
+      },
+      "$description": "Space between the site header and the first line of a page's hero (eyebrow or title): 84px on a laptop, 40px on a phone. One value for every product.",
+      "$extensions": {
+        "com.perceptionmanager.fluid": {
+          "min": {
+            "value": 2.5,
+            "unit": "rem"
+          },
+          "max": {
+            "value": 5.25,
+            "unit": "rem"
+          }
+        }
+      }
+    },
     "target-min": {
       "$value": {
         "value": 2.75,
