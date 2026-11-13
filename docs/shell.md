@@ -105,7 +105,7 @@ The footer's "Built with" line names what that product was actually built with; 
 
 ## Compact header (Lab tools)
 
-The Lab tools show only the name, the credential and a "Let's connect" button: no nav, theme switch or menu, and so no mobile menu markup. The name is plain text. The button stays on phones and turns icon-only below 600px; its label stays available to screen readers.
+The Lab tools show only the name, the credential, a "Let's connect" button and the theme switch: no nav or menu, and so no mobile menu markup. The name is plain text. The button stays on phones and turns icon-only below 600px; its label stays available to screen readers.
 
 ```html
 <header class="pm-site-header">
@@ -115,13 +115,14 @@ The Lab tools show only the name, the credential and a "Let's connect" button: n
       <a class="pm-site-header__cred" href="https://www.nngroup.com/ux-certification/people/" target="_blank" rel="noopener">…badge and label as above…</a>
     </div>
     <a class="pm-btn pm-btn--ghost pm-site-header__cta" data-magnetic href="mailto:perceptionmanager@gmail.com"><svg class="pm-icon" aria-hidden="true" focusable="false"><use href="ICONS#pm-icon-mail"/></svg><span class="pm-site-header__cta-label">Let's connect</span></a>
+    <button class="pm-btn pm-btn--ghost pm-btn--icon-only pm-theme-toggle" type="button" aria-label="Switch to light theme" data-theme-toggle>…sun and moon icons as above…</button>
   </div>
   <div class="pm-site-header__rule"></div>
   <div class="pm-site-header__progress" data-scroll-progress></div>
 </header>
 ```
 
-Keep the theme boot script in `<head>`: without a switch, the page still follows the visitor's saved choice or system setting.
+Keep the theme boot script in `<head>`, as on every page.
 
 ## Behavior notes
 

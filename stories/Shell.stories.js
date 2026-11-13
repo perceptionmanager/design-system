@@ -58,6 +58,7 @@ export const CompactHeader = {
       <a class="pm-site-header__cred" href="#"><span class="pm-site-header__badge-label"><span class="pm-site-header__badge-prefix">NNg Certified - </span>ID 1064178</span></a>
     </div>
     <a class="pm-btn pm-btn--ghost pm-site-header__cta" href="#">${icon('mail')}<span class="pm-site-header__cta-label">Let's connect</span></a>
+    <button class="pm-btn pm-btn--ghost pm-btn--icon-only pm-theme-toggle" type="button" aria-label="Switch theme">${icon('sun', 'pm-icon pm-theme-toggle__sun')}${icon('moon', 'pm-icon pm-theme-toggle__moon')}</button>
   </div>
   <div class="pm-site-header__rule"></div>
 </header><div style="height:var(--pm-space-16)"></div></div>`,
