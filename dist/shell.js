@@ -10,6 +10,7 @@
      [data-magnetic]                                                    buttons that lean toward the pointer
      a[href^="mailto:"]                                                 copy the address too, and say so
      .pm-page h1                                                        title pop-in, character by character
+     .pm-stat-bar .pm-stat__value                                       figures pop in when the bar scrolls into view
      <body data-color-slots> + [data-color-slot]                        stat and step numbers tinted by the glows (Lab layout)
    Helpers for page scripts: pmShell.numPop(container, selector) pops figures in; pmShell.colorSlots() tints
    [data-color-slot] figures by the glows; pmShell.mixColor(fromRGB, toRGB, t) blends brand colors for the theme.
@@ -536,6 +537,7 @@ window.pmShell = (function () {
         s.textContent = ch;
         b.appendChild(s);
       });
+      b.classList.remove('is-animating');
       b.classList.add('pm-num-pop');
       b.style.setProperty('--np-base', (250 + n * 140) + 'ms');
     });
@@ -603,6 +605,9 @@ window.pmShell = (function () {
     initMailtoCopy();
     initBackdropLines();
     initTitlePop();
+    // the shared stat bar's figures pop in when it scrolls into view; a page that fills them later marks the bar
+    // data-num-pop="manual" and calls pmShell.numPop(bar, '.pm-stat__value') once the numbers are in
+    document.querySelectorAll('.pm-page .pm-stat-bar:not([data-num-pop="manual"])').forEach(function (bar) { numPop(bar, '.pm-stat__value'); });
     if (document.body.hasAttribute('data-color-slots')) colorSlots();
   }
   function boot() { setTimeout(init, 0); }

@@ -127,7 +127,7 @@ Keep the theme boot script in `<head>`, as on every page.
 ## Type motion
 
 - **Titles:** every `h1` inside `.pm-page` pops in character by character on load (words stay whole). Nothing to add to the markup; screen readers get the title from `aria-label`.
-- **Figures:** `pmShell.numPop(container, '.figure-selector')` pops a row of figures in when it scrolls into view, each a beat after the one before (the portfolio's case-study stat strips use it).
+- **Figures:** the values in every `.pm-stat-bar` pop in when the bar scrolls into view, each a beat after the one before. A page that fills its numbers in later (from data) marks the bar `data-num-pop="manual"` and calls `pmShell.numPop(bar, '.pm-stat__value')` once they are in. `pmShell.numPop(container, selector)` works for any other row of figures (the portfolio's case-study stat strips use it).
 - **Glow-tinted numbers:** add `data-color-slots` to `<body>` and `data-color-slot="stat0"`…`"stat2"` to the stat values and `"step0"`…`"step3"` to the step numbers. Their color then follows the drifting glows (coral to cyan on desktop, coral to text color by depth on phones), fading over 5s. The glow groups need `data-blob-role="coral"` and `"cyan"`. The anchors fit the Lab page layout; for another layout call `pmShell.colorSlots({ desktop: {…}, mobile: {…} })` from a page script instead.
 
 All of it is off with reduced motion, apart from the color, which changes slowly and does not move anything.
