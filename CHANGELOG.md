@@ -2,7 +2,7 @@
 
 Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.md`.
 
-## Unreleased (v0.6.0)
+## v0.6.0 (2026-11-13)
 
 - **Tokens:** `color.border.control` (control edges at 3:1 or more in both themes), `field.*`, `control.*`, `meter.*`, `spinner.*`, `font.family.mono`, and `color.status.success-subtle` / `-border`. New contrast gates for controls. Inventory behind them: `docs/inventory-v0.6.md`.
 - **Form fields (new):** `.pm-field` with label, helper, error and character count; `.pm-input`, `.pm-textarea` (+ `--code`), `.pm-select`, `.pm-checkbox`, `.pm-radio`, `.pm-choice` and `.pm-fieldset`. Markup in `docs/forms.md`.

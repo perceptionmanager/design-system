@@ -124,6 +124,5 @@ CI runs `npm run check` on every push and pull request. It also fails if `dist/`
 - [x] Shared component CSS (`dist/components.css`): button, card, pill, tag, stat, step, check item
 - [x] Page shell (`dist/shell.css`, `dist/shell.js`): header, mobile menu, footer, backdrop (v0.5.0)
 - [x] Migrate perceptionmanager.com, Role Analyzer, UX Intelligence Engine and Kiro UX Auditor to the components and the shell
-- [ ] Form field, alert, status badge, loading indicator and meter (needed by the Lab tools)
+- [x] Form fields, feedback (badge, status, alert, loading, meter), modal and Lab page layout (v0.6.0)
 - [x] Light theme (`data-theme="light"`, see DECISIONS.md)
-- [ ] Figma library: add a light color mode

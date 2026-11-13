@@ -26,7 +26,7 @@ The content patterns of a Lab tool page, in `dist/shell.css` with the rest of th
     <h2>How it works</h2>
     <div>
       <p class="pm-split__intro">One paragraph on the method.</p>
-      <ol class="pm-steps">…</ol>
+      <!-- the method steps -->
       <p class="pm-split__note">Sources and caveats.</p>
     </div>
   </section>
