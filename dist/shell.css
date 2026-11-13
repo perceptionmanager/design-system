@@ -82,7 +82,7 @@
     white-space: nowrap;
     transition: color var(--pm-duration-base) ease;
   }
-  .pm-site-header__name:hover { color: var(--pm-color-text-accent); }
+  a.pm-site-header__name:hover { color: var(--pm-color-text-accent); }
   .pm-site-header__cred {
     display: flex;
     align-items: center;
@@ -143,6 +143,15 @@
   /* the header's call to action is a ghost button, a step smaller than the default */
   .pm-site-nav__cta.pm-btn { padding: var(--pm-space-3) var(--pm-space-5); font-size: var(--pm-type-small-size); }
   .pm-site-nav__cta .pm-icon { width: 16px; height: 16px; }
+
+  /* Compact header (the Lab tools): name, credential and one call to action, no nav, theme switch or menu.
+     The button sits at the right edge, stays on phones, and turns icon-only below 600px so the row fits. */
+  .pm-site-header__cta.pm-btn { flex: none; width: auto; margin-left: auto; padding: var(--pm-space-3) var(--pm-space-5); font-size: var(--pm-type-small-size); white-space: nowrap; }
+  .pm-site-header__cta .pm-icon { width: 16px; height: 16px; }
+  @media (max-width: 599px) {
+    .pm-site-header__cta.pm-btn { padding: var(--pm-space-3); }
+    .pm-site-header__cta-label { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  }
 
   /* ---- Theme switch: shows the theme it switches to ---- */
   .pm-theme-toggle.pm-btn { flex-shrink: 0; width: 44px; min-height: 44px; height: 44px; padding: 0; margin-left: var(--pm-space-4); }

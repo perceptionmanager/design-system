@@ -49,6 +49,20 @@ export const HeaderOnPhone = {
   render: () => `<div class="pm-page" style="max-width:390px">${header()}</div>`,
 };
 
+export const CompactHeader = {
+  name: 'Compact header (Lab tools)',
+  render: () => `<div class="pm-page"><header class="pm-site-header" style="${inPlace}">
+  <div class="pm-site-header__inner">
+    <div class="pm-site-header__brand">
+      <span class="pm-site-header__name">Alex Grinyayev</span>
+      <a class="pm-site-header__cred" href="#"><span class="pm-site-header__badge-label"><span class="pm-site-header__badge-prefix">NNg Certified - </span>ID 1064178</span></a>
+    </div>
+    <a class="pm-btn pm-btn--ghost pm-site-header__cta" href="#">${icon('mail')}<span class="pm-site-header__cta-label">Let's connect</span></a>
+  </div>
+  <div class="pm-site-header__rule"></div>
+</header><div style="height:var(--pm-space-16)"></div></div>`,
+};
+
 export const MobileMenu = {
   name: 'Mobile menu (open)',
   render: () => `<div class="pm-page" style="height:560px">
