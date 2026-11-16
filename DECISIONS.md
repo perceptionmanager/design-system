@@ -154,3 +154,11 @@ Reason: pills and tags sit over the backdrop glows, and their see-through tints 
 - `pm-pill` background: `color.surface.tint` → `color.surface.page`.
 - `tag.bg`: `color.surface.tint-strong` → `color.surface.page` (supersedes the 2026-10-07 correction).
 - Selected interactive pill: the secondary accent's tint mixed onto the page color (`color-mix(in srgb, accent.secondary 12%, surface.page)`), the same look as before but opaque.
+
+## 2026-11-16: Still backdrop, dotted lines (v0.7.0)
+Alex: "I don't think dynamic drawing makes sense anymore." The line canvas redrew the full width every frame for as long as a page was open, and kept the portfolio's main thread about 60% busy at idle in a test browser; the drifting glows were what made it redraw.
+- **Glows are placed once:** a random placement per load keeps each visit slightly different without any motion afterwards.
+- **Lines are still and finer:** 1px lines every 3px, each a random run of dots and dashes, masked to the glow with a radial fade. The chromatic coral/cyan split and the motion-driven offsets are dropped; with nothing moving they had no purpose.
+- **Values stay raw:** like the rest of the backdrop (2026-11-12), the line pitch, dash lengths, fade stops and strengths were tuned by eye on the portfolio and are not tokens.
+- Tried first in the portfolio (Home, then every page) before moving here.
+

@@ -334,7 +334,8 @@
   }
   @keyframes pm-noise-pan { 0% { background-position: 0 0; } 33% { background-position: -42px 21px; } 66% { background-position: 25px -36px; } 100% { background-position: 0 0; } }
 
-  /* set on <html> by shell.js on screens that can't keep up: the animated noise holds still */
+  /* data-fx="lite" on <html> holds the animated noise still. shell.js no longer sets it (the line canvas that needed
+     it is gone in v0.7.0); kept so a product can still set it. */
   [data-fx="lite"] .pm-backdrop__grain,
   [data-fx="lite"] .pm-backdrop__noise { animation: none; }
 
@@ -379,28 +380,49 @@
   .pm-backdrop__blob--coral { background: radial-gradient(circle at 35% 35%, var(--pm-color-accent-primary) 0%, transparent 70%); }
   .pm-backdrop__blob--cyan { background: radial-gradient(circle at 65% 65%, var(--pm-color-accent-secondary) 0%, transparent 70%); }
 
-  /* engraved line pattern, drawn by shell.js only inside the glows and the aura */
+  /* line pattern inside the glows and the aura (shell.js initBackdropLines): one still element per glow. Its colour
+     shows only through fine lines (one every 3px, each a random run of dots and dashes: a tile shell.js draws per page
+     load and sets as the mask together with --fade). The mask here, plain 1px lines, is only the fallback. */
   .pm-backdrop__lines {
     position: absolute;
-    top: 0;
-    left: 0;
     z-index: var(--pm-z-raised);
-    width: 100%;
-    height: 1100px;
     pointer-events: none;
+    --i: .6;
+    --fade: radial-gradient(closest-side, rgba(0,0,0,.9), rgba(0,0,0,.62) 35%, rgba(0,0,0,.18) 70%, transparent);
+    -webkit-mask-image: repeating-linear-gradient(to bottom, #000 0 1px, transparent 1px 3px), var(--fade);
+    mask-image: repeating-linear-gradient(to bottom, #000 0 1px, transparent 1px 3px), var(--fade);
+    -webkit-mask-size: 360px 90px, 100% 100%;
+    mask-size: 360px 90px, 100% 100%;
+    -webkit-mask-repeat: repeat, no-repeat;
+    mask-repeat: repeat, no-repeat;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
     mix-blend-mode: screen;
-    opacity: .15;
+    opacity: calc(.32 * var(--i));
+  }
+  .pm-backdrop__lines--coral { background: var(--pm-color-accent-primary); }
+  .pm-backdrop__lines--cyan { background: var(--pm-color-accent-secondary); }
+  /* the aura's lines: same place and size as the aura, coral into cyan, still */
+  .pm-backdrop__lines--aura {
+    top: -320px;
+    left: 50%;
+    width: 920px;
+    height: 920px;
+    margin-left: -460px;
+    --i: .7;
+    --fade: radial-gradient(closest-side, rgba(0,0,0,.75), rgba(0,0,0,.5) 35%, rgba(0,0,0,.14) 70%, transparent 90%);
+    background: linear-gradient(135deg, var(--pm-color-accent-primary) 25%, var(--pm-color-accent-secondary) 75%);
   }
 
   @media (max-width: 860px) {
     .pm-backdrop__aura { top: -200px; width: 520px; height: 520px; margin-left: -260px; filter: blur(70px); }
     .pm-backdrop__blob { filter: blur(60px); }
-    .pm-backdrop__lines { height: 800px; }
+    .pm-backdrop__lines--aura { top: -200px; width: 520px; height: 520px; margin-left: -260px; }
     .pm-backdrop__group--desktop { display: none; }
   }
 
   /* light theme: the lines print as ink and the glows are quieter and warmer, a soft wash instead of a colored smudge */
-  :root[data-theme="light"] .pm-backdrop__lines { mix-blend-mode: multiply; opacity: .45; }
+  :root[data-theme="light"] .pm-backdrop__lines { mix-blend-mode: multiply; opacity: calc(.38 * var(--i)); }
   :root[data-theme="light"] .pm-page::before { mix-blend-mode: multiply; }
   :root[data-theme="light"] [data-blob-group] { opacity: .5; }
   :root[data-theme="light"] .pm-backdrop__blob--coral { background: radial-gradient(circle at 35% 35%, var(--pm-color-coral-300) 0%, transparent 70%); }

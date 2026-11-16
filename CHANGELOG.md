@@ -2,6 +2,13 @@
 
 Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.md`.
 
+## v0.7.0 (2026-11-16)
+
+- **Still backdrop (visible change):** the glows no longer drift. Each `[data-blob-group]` is placed once per page load at a random offset, size and strength inside its `data-*` ranges (the middle of them with reduced motion). `data-dur-min` / `data-dur-max` are no longer read; `group.blobState` still gives the placement.
+- **Line pattern (visible change):** the engraved lines inside the glows and the aura are now still elements instead of a canvas redrawn every frame. They are finer (1px, one every 3px) and each line is a random run of dots and dashes (a tile drawn once per load, used as a mask). `.pm-backdrop__lines` is now one element per glow, with `--coral`, `--cyan` and `--aura` modifiers. `<body data-backdrop-lines="off">` still turns them off. On the portfolio this took the idle main thread from about 60% to about 2% in a test browser.
+- **Glow-tinted numbers:** `pmShell.colorSlots()` sets the colors once (and on resize) instead of every 300ms, since the glows no longer move.
+- `shell.js` no longer sets `data-fx="lite"` (it existed for the line canvas). The CSS rule stays, so a product can still set it.
+
 ## v0.6.2 (2026-11-13)
 
 - **Hero spacing (visible change):** new token `layout.hero-top`, the space between the site header and the first line of a page's hero: 84px on a laptop, 40px on a phone, scaling in between. `.pm-hero` uses it, so the Lab tools' heroes start lower on a laptop (was 48px) and on a phone (was 24px), the same as the portfolio's top-level pages.

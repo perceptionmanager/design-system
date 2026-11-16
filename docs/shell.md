@@ -7,7 +7,7 @@ The shell is everything a page shares around its own content: skip link, site he
 | File | What it does |
 |---|---|
 | `dist/shell.css` | Layout and look of the shell. Load after `tokens.css` and `components.css`. |
-| `dist/shell.js` | Menu, theme switch, reading-progress bar, drifting glows, line pattern, magnetic buttons, copy-on-mailto. |
+| `dist/shell.js` | Menu, theme switch, reading-progress bar, glows (placed once), line pattern, magnetic buttons, copy-on-mailto. |
 | `dist/icons.svg` | Icon sprite (sun, moon, LinkedIn, mail…). |
 | `dist/logos.svg` | Tool logos for the footer (Figma, Claude, GitHub, Vercel, human). |
 
@@ -123,7 +123,7 @@ Keep the theme boot script in `<head>`, as on every page.
 
 - **Titles:** every `h1` inside `.pm-page` pops in character by character on load (words stay whole). Nothing to add to the markup; screen readers get the title from `aria-label`.
 - **Figures:** the values in every `.pm-stat-bar` pop in when the bar scrolls into view, each a beat after the one before. A page that fills its numbers in later (from data) marks the bar `data-num-pop="manual"` and calls `pmShell.numPop(bar, '.pm-stat__value')` once they are in. `pmShell.numPop(container, selector)` works for any other row of figures (the portfolio's case-study stat strips use it).
-- **Glow-tinted numbers:** add `data-color-slots` to `<body>` and `data-color-slot="stat0"`…`"stat2"` to the stat values and `"step0"`…`"step3"` to the step numbers. Their color then follows the drifting glows (coral to cyan on desktop, coral to text color by depth on phones), fading over 5s. The glow groups need `data-blob-role="coral"` and `"cyan"`. The anchors fit the Lab page layout (four steps); `data-color-slots="three-steps"` fits a page with three steps (`step0`…`step2`). For another layout call `pmShell.colorSlots({ desktop: {…}, mobile: {…} })` from a page script instead.
+- **Glow-tinted numbers:** add `data-color-slots` to `<body>` and `data-color-slot="stat0"`…`"stat2"` to the stat values and `"step0"`…`"step3"` to the step numbers. Their color is set from where the glows were placed (coral to cyan on desktop, coral to text color by depth on phones), once on load and again on resize. The glow groups need `data-blob-role="coral"` and `"cyan"`. The anchors fit the Lab page layout (four steps); `data-color-slots="three-steps"` fits a page with three steps (`step0`…`step2`). For another layout call `pmShell.colorSlots({ desktop: {…}, mobile: {…} })` from a page script instead.
 
 All of it is off with reduced motion, apart from the color, which changes slowly and does not move anything.
 
@@ -131,5 +131,5 @@ All of it is off with reduced motion, apart from the color, which changes slowly
 
 - **Menu:** the button opens the full-screen menu below 861px; Escape or any link closes it; after Escape, focus returns to the menu button.
 - **Theme switch:** flips `data-theme` on `<html>` and saves it as `pm-theme`. A change of the system setting wins over a saved choice.
-- **Backdrop:** the glows and the line pattern are decorative and `aria-hidden` by being empty. On a slow screen the line pattern steps down and sets `data-fx="lite"`, which stops the animated noise. Set `<body data-backdrop-lines="off">` on reading pages to keep the glow without the lines.
-- **Reduced motion:** the drift, the noise flicker, the aura spin, the nav underline animation and the magnetic buttons all stop.
+- **Backdrop:** the glows are placed once per page load (a random offset, size and strength inside each group's `data-*` ranges) and do not move. The line pattern is fine horizontal lines, one every 3px, each a random run of dots and dashes, shown only inside each glow and the aura: one still element per glow (`.pm-backdrop__lines`, `--coral` / `--cyan` / `--aura`), masked by a dot-and-dash tile drawn once per load. Nothing is redrawn while the page is open. Everything is decorative and `aria-hidden` by being empty. Set `<body data-backdrop-lines="off">` to keep the glows without the lines. `data-dur-min` / `data-dur-max` on a glow group are no longer read.
+- **Reduced motion:** the glows sit at the middle of their ranges; the noise flicker, the aura spin, the nav underline animation and the magnetic buttons stop.
