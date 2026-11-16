@@ -4,7 +4,7 @@
      [data-menu-open] / [data-menu-close] / .pm-site-menu[data-menu]   mobile menu
      [data-theme-toggle]                                                theme switch (with the boot script in <head>, see docs/shell.md)
      [data-scroll-progress]                                             reading-progress bar under the header
-     [data-blob-group] > [data-blob-target]                             drifting backdrop glows
+     [data-blob-group] > [data-blob-target]                             backdrop glows (placed once)
      .pm-backdrop__aura + .pm-backdrop__blob--coral/--cyan              engraved line pattern inside the glows
                                                                         (off when <body data-backdrop-lines="off">)
      [data-magnetic]                                                    buttons that lean toward the pointer
@@ -84,100 +84,30 @@ window.pmShell = (function () {
     update();
   }
  
-  /* ---- decorative blob drift ----
-     A "blob group" is a wrapper carrying data-tx-range / data-ty-range /
-     data-scale-min / data-scale-max / data-blur-min / data-blur-max /
-     data-op-min / data-op-max / data-dur-min / data-dur-max, containing one
-     or more [data-blob-target] elements (a .grain-clear mask + a .blob glow)
-     that share one drift path, matching the original design's per-page tuning.
-
-     How it moves: each group gets one closed, smooth random path (a looping
-     Catmull-Rom spline through a handful of random waypoints), sampled into
-     Web Animations keyframes. Only transform and opacity animate, so the
-     browser runs it on the GPU compositor and it stays smooth even when the
-     page's main thread is busy. The blur radius is fixed (the midpoint of the
-     data-blur range): animating a blur is what made the old version stutter on
-     slower screens, and it also stopped and restarted at every waypoint.
-     Exposes the live state on the group element (group.blobState, read-only,
-     recomputed on each read) so page scripts can read it. With "reduce motion"
-     on, the blobs sit still at their mid position. */
+  /* ---- backdrop glows: placed once ----
+     Each [data-blob-group] (data-tx-range / data-ty-range / data-scale-min / data-scale-max / data-blur-min /
+     data-blur-max / data-op-min / data-op-max) holds one or more [data-blob-target] elements (a .pm-backdrop__clear
+     mask and a .pm-backdrop__blob glow) that share one placement. On load each group is placed once: a random offset,
+     size and strength inside those ranges, and the blur at the middle of its range. Nothing moves afterwards, so the
+     glows cost nothing while the page is open. (Until v0.7.0 they drifted on a loop; data-dur-min / data-dur-max are
+     no longer read.) With "reduce motion" on, the groups sit at the middle of their ranges.
+     group.blobState (read-only) gives the placement, { tx, ty, scale, op, blur }, for page scripts. */
   function initBlobDrift() {
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var canAnimate = !reduced && typeof Element !== 'undefined' && Element.prototype.animate;
-
     document.querySelectorAll('[data-blob-group]').forEach(function (group) {
-      var cfg = {
-        tx: num(group, 'txRange', 150), ty: num(group, 'tyRange', 140),
-        scale: [num(group, 'scaleMin', 0.55), num(group, 'scaleMax', 1.7)],
-        blur: [num(group, 'blurMin', 30), num(group, 'blurMax', 130)],
-        op: [num(group, 'opMin', 0.14), num(group, 'opMax', 0.6)],
-        dur: [num(group, 'durMin', 4), num(group, 'durMax', 8)]
-      };
-      var blur = Math.round((cfg.blur[0] + cfg.blur[1]) / 2);
-      var N = 7;                                           // waypoints on the loop
-      var seg = (cfg.dur[0] + cfg.dur[1]) / 2;             // seconds between waypoints, so one lap is ~40s
-      var period = seg * N;
-      var wp = { tx: [], ty: [], scale: [], op: [] };
-      for (var i = 0; i < N; i++) {
-        wp.tx.push(rand(-cfg.tx, cfg.tx));
-        wp.ty.push(rand(-cfg.ty, cfg.ty));
-        wp.scale.push(rand(cfg.scale[0], cfg.scale[1]));
-        wp.op.push(rand(cfg.op[0], cfg.op[1]));
-      }
-      // closed Catmull-Rom: passes through every waypoint with no stop at any of them
-      function cr(pts, u) {
-        var i1 = Math.floor(u) % N, f = u - Math.floor(u);
-        var p0 = pts[(i1 + N - 1) % N], p1 = pts[i1], p2 = pts[(i1 + 1) % N], p3 = pts[(i1 + 2) % N];
-        return 0.5 * ((2 * p1) + (-p0 + p2) * f + (2 * p0 - 5 * p1 + 4 * p2 - p3) * f * f + (-p0 + 3 * p1 - 3 * p2 + p3) * f * f * f);
-      }
-      function clampTo(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
-      function sample(t) {                                 // t in seconds
-        var u = (((t % period) + period) % period) / seg;
-        return {
-          tx: clampTo(cr(wp.tx, u), -cfg.tx, cfg.tx), ty: clampTo(cr(wp.ty, u), -cfg.ty, cfg.ty),
-          scale: clampTo(cr(wp.scale, u), cfg.scale[0], cfg.scale[1]), op: clampTo(cr(wp.op, u), cfg.op[0], cfg.op[1]),
-          blur: blur, dur: seg
-        };
-      }
-      var mid = { tx: 0, ty: 0, scale: (cfg.scale[0] + cfg.scale[1]) / 2, op: (cfg.op[0] + cfg.op[1]) / 2, blur: blur, dur: seg };
-      var targets = Array.prototype.slice.call(group.querySelectorAll('[data-blob-target]'));
-      var anims = [];
-
-      function css(st) { return 'translate(' + st.tx.toFixed(2) + 'px,' + st.ty.toFixed(2) + 'px) scale(' + st.scale.toFixed(3) + ')'; }
-
-      // blur is fixed; transform/opacity are the only animated properties
-      targets.forEach(function (el) {
-        if (el.classList.contains('pm-backdrop__blob')) el.style.filter = 'blur(' + blur + 'px)';
+      var tx = num(group, 'txRange', 150), ty = num(group, 'tyRange', 140);
+      var sc = [num(group, 'scaleMin', 0.55), num(group, 'scaleMax', 1.7)], op = [num(group, 'opMin', 0.14), num(group, 'opMax', 0.6)];
+      var st = reduced
+        ? { tx: 0, ty: 0, scale: (sc[0] + sc[1]) / 2, op: (op[0] + op[1]) / 2 }
+        : { tx: rand(-tx, tx), ty: rand(-ty, ty), scale: rand(sc[0], sc[1]), op: rand(op[0], op[1]) };
+      st.blur = Math.round((num(group, 'blurMin', 30) + num(group, 'blurMax', 130)) / 2);
+      group.querySelectorAll('[data-blob-target]').forEach(function (el) {
+        el.style.transform = 'translate(' + st.tx.toFixed(1) + 'px,' + st.ty.toFixed(1) + 'px) scale(' + st.scale.toFixed(3) + ')';
+        el.style.opacity = st.op.toFixed(3);
+        if (el.classList.contains('pm-backdrop__blob')) el.style.filter = 'blur(' + st.blur + 'px)';
       });
-
-      if (canAnimate) {
-        var STEP = 0.4, count = Math.ceil(period / STEP), frames = [];
-        for (var k = 0; k <= count; k++) {
-          var st = sample(k * STEP);
-          frames.push({ transform: css(st), opacity: st.op.toFixed(3), offset: Math.min(1, k * STEP / period) });
-        }
-        targets.forEach(function (el) {
-          el.style.willChange = 'transform, opacity';
-          anims.push(el.animate(frames, { duration: period * 1000, iterations: Infinity, easing: 'linear', fill: 'both' }));
-        });
-      } else {
-        targets.forEach(function (el) {
-          el.style.transform = css(mid);
-          el.style.opacity = mid.op;
-        });
-      }
-
-      // live state for page scripts (read on demand; the animation clock is the single source of time)
-      Object.defineProperty(group, 'blobState', {
-        configurable: true,
-        get: function () {
-          if (!anims.length) return mid;
-          var t = anims[0].currentTime;
-          return sample((t == null ? 0 : Number(t)) / 1000);
-        }
-      });
+      Object.defineProperty(group, 'blobState', { configurable: true, get: function () { return st; } });
     });
-
     function num(el, key, fallback) {
       var v = el.dataset[key];
       return v === undefined ? fallback : Number(v);
@@ -274,172 +204,68 @@ window.pmShell = (function () {
   }
 
   /* ---- backdrop line pattern ----
-     An engraved horizontal line pattern that exists only inside the lit areas of the decorative backdrop: the two
-     drifting spotlights (.blob.coral / .blob.cyan) and the coloured .aura behind the page title. It is added to every
-     page that has the backdrop; nothing to put in the HTML. Opt a page out with <body data-backdrop-lines="off">.
-     - Spotlight position, size and brightness are read live from the animated .blob elements every frame, and the
-       aura's rotation from its CSS animation, so the lines follow the light as it drifts, grows, fades and turns.
-     - Visibility = proximity (strongest at a light's centre, fading to nothing at its edge) x intensity (the blob's
-       live opacity). Chromatic split: a coral copy and a cyan copy of the lines, offset by brightness and speed.
-     - The canvas is styled by .spotlight-lines in base.css. If that rule is not there yet (stale cached stylesheet),
-       the effect simply does not start, so a half-updated deploy can never show an unstyled canvas.
-     Decorative only: aria-hidden, paused when the tab is hidden or the hero is scrolled away, still frame for
-     reduced motion. */
+     Fine horizontal lines (one every 3px), each a random run of dots and dashes, that show only inside the lit areas
+     of the backdrop: each .pm-backdrop__blob glow and the coloured .pm-backdrop__aura behind the page title. Added to
+     every page with the backdrop; nothing to put in the HTML. Opt a page out with <body data-backdrop-lines="off">.
+     - One 360x90 dot-and-dash tile is drawn per page load and used as a mask; the element's colour (coral, cyan, or
+       coral into cyan on the aura) shows only through it, faded out from the centre (.pm-backdrop__lines in
+       shell.css). Brighter glows get stronger lines.
+     - Placed once from where the glows ended up, again only on resize. Nothing is redrawn, so it costs nothing while
+       the page is open. (Until v0.7.0 this was a canvas redrawn every frame.)
+     Decorative only: empty, aria-hidden. If the tile cannot be drawn, shell.css falls back to plain 1px lines. */
   function initBackdropLines() {
+    if (document.body.getAttribute('data-backdrop-lines') === 'off') return;
+    var tile = '';
+    try {
+      var TW = 360, TH = 90, PITCH = 3, cv = document.createElement('canvas'), c2 = cv.getContext('2d');
+      cv.width = TW; cv.height = TH; c2.fillStyle = '#000';
+      for (var y = 0; y < TH; y += PITCH) {
+        var x = Math.floor(Math.random() * 6);
+        while (x < TW) {
+          var len = Math.random() < 0.5 ? 1 : 3 + Math.floor(Math.random() * 8);   // a dot, or a dash of 3-10px
+          c2.fillRect(x, y, Math.min(len, TW - x), 1);
+          x += len + 2 + Math.floor(Math.random() * 5);                              // gap of 2-6px
+        }
+      }
+      tile = 'url("' + cv.toDataURL('image/png') + '")';
+    } catch (e) { tile = ''; }
+    // the tile goes straight into each element's mask (with its --fade), not through a custom property
+    function useTile(el) {
+      if (!tile) return;
+      var v = tile + ', ' + getComputedStyle(el).getPropertyValue('--fade').trim();
+      el.style.webkitMaskImage = v; el.style.maskImage = v;
+    }
+    function make(cls) {
+      var el = document.createElement('div');
+      el.className = 'pm-backdrop__lines ' + cls; el.setAttribute('aria-hidden', 'true');
+      return el;
+    }
+    var made = [];
+    document.querySelectorAll('.pm-backdrop__blob').forEach(function (blob) {
+      var el = make(blob.classList.contains('pm-backdrop__blob--cyan') ? 'pm-backdrop__lines--cyan' : 'pm-backdrop__lines--coral');
+      var group = blob.closest('[data-blob-group]') || blob.parentNode;   // beside the group, so the group's light-theme dimming doesn't apply twice
+      group.parentNode.insertBefore(el, group.nextSibling); useTile(el);
+      made.push({ el: el, blob: blob });
+    });
     var aura = document.querySelector('.pm-backdrop__aura');
-    if (!aura || !aura.parentNode || document.body.getAttribute('data-backdrop-lines') === 'off') return;
-    var canvas = document.createElement('canvas');
-    canvas.className = 'pm-backdrop__lines';
-    canvas.setAttribute('aria-hidden', 'true');
-    aura.parentNode.insertBefore(canvas, aura.nextSibling);
-    if (!canvas.getContext || getComputedStyle(canvas).position !== 'absolute') { canvas.remove(); return; }
-
-    var ctx = canvas.getContext('2d');
-    var blobs = [
-      { el: document.querySelector('.pm-backdrop__blob--coral'), x: null, y: null, vx: 0, vy: 0 },
-      { el: document.querySelector('.pm-backdrop__blob--cyan'), x: null, y: null, vx: 0, vy: 0 }
-    ].filter(function (b) { return b.el; });
-    var CORAL = 'rgb(255,106,76)', CYAN = 'rgb(69,224,255)';
-    var PITCH = 4;          // px between lines
-    var THICK = 1.5;        // px line thickness
-    var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var W = 0, H = 0, last = 0, raf = 0, timer = 0, lastRaf = 0, frameNo = 0, stopped = false;
-    // Quality governor: on a screen that can't keep up, step the effect down instead of letting the page stutter.
-    // Only irregular frame times count (a steady 30 fps is a battery-saver cap, not a struggle), and it never steps back up.
-    var gov = { wait: 60, n: 0, sum: 0, sumsq: 0, tier: 0 };
-    function govern(now) {
-      var ms = lastRaf ? now - lastRaf : 0; lastRaf = now;
-      if (!ms || ms > 250 || reduced) return;                    // first frame, or a stall from a tab switch
-      if (gov.wait > 0) { gov.wait--; return; }
-      gov.n++; gov.sum += ms; gov.sumsq += ms * ms;
-      if (gov.n < 45) return;
-      var mean = gov.sum / gov.n, sd = Math.sqrt(Math.max(0, gov.sumsq / gov.n - mean * mean));
-      gov.n = gov.sum = gov.sumsq = 0;
-      if (mean > 33 && sd > 4 && gov.tier < 2) {
-        gov.tier++; gov.wait = 45;
-        if (gov.tier === 1 && dpr > 1) { dpr = 1; resize(); }                       // 1: draw the lines at 1x
-        else if (gov.tier === 2) document.documentElement.setAttribute('data-fx', 'lite');   // 2: stop the animated noise layers; lines at half rate
-        // The lines are never switched off: an earlier third step hid them for good on light-theme screens with uneven frame times.
-      }
-    }
-    var off = document.createElement('canvas'), octx = off.getContext('2d');
-    var tmp = document.createElement('canvas'), tctx = tmp.getContext('2d');
-
-    function resize() {
-      var r = canvas.getBoundingClientRect();
-      W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height));
-      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-    }
-    function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
-    function grow(c, n) { if (c.width < n) c.width = c.height = n; }   // scratch canvases only ever grow, so no per-frame reallocation
-    function auraAngle() {
-      var a = aura.getAnimations ? aura.getAnimations()[0] : null;
-      var t = a && a.currentTime != null ? Number(a.currentTime) : performance.now();
-      return ((t % 34000) / 34000) * Math.PI * 2;
-    }
-
-    function frame(now) {
-      govern(now);
-      if (stopped) return;
-      if (gov.tier >= 2 && !reduced && (frameNo++ & 1)) { raf = requestAnimationFrame(frame); return; }   // half rate on slow screens
-      var dt = last ? Math.max(1, now - last) / 1000 : 0.016; last = now;
-      var origin = canvas.getBoundingClientRect();
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.globalCompositeOperation = 'lighter';
-
-      // the coloured aura behind the title: same pattern, lines take the aura's rotating coral/cyan colours
-      if (aura.offsetWidth > 4) {
-        var arect = aura.getBoundingClientRect();                // centre is unaffected by the aura's rotation
-        var ar = aura.offsetWidth / 2 * 0.9;
-        var acx = arect.left + arect.width / 2 - origin.left, acy = arect.top + arect.height / 2 - origin.top;
-        if (!(acy + ar < 0 || acy - ar > H)) {
-          var asize = Math.ceil(ar * 2), apx = Math.round(asize * dpr), AI = 0.85, aoy = 1.2 + 2.2 * AI;
-          grow(off, apx); grow(tmp, apx);
-          octx.setTransform(1, 0, 0, 1, 0, 0); octx.globalCompositeOperation = 'source-over'; octx.clearRect(0, 0, off.width, off.height);
-          octx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          var atop = acy - ar, ay0 = Math.floor(atop / PITCH) * PITCH, ang = auraAngle() - Math.PI / 2;
-          [[CORAL, -aoy, [1, 0.15, 1, 1]], [CYAN, aoy, [0.15, 1, 0.15, 0.15]]].forEach(function (L) {
-            tctx.setTransform(1, 0, 0, 1, 0, 0); tctx.globalCompositeOperation = 'source-over'; tctx.clearRect(0, 0, tmp.width, tmp.height);
-            tctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            tctx.fillStyle = L[0];
-            for (var y = ay0; y < atop + asize; y += PITCH) tctx.fillRect(0, y - atop + L[1], asize, THICK);
-            if (tctx.createConicGradient) {          // keep this colour only where the aura is that colour
-              var cg = tctx.createConicGradient(ang, ar, ar), w = L[2];
-              cg.addColorStop(0, 'rgba(0,0,0,' + w[0] + ')'); cg.addColorStop(1 / 3, 'rgba(0,0,0,' + w[1] + ')');
-              cg.addColorStop(2 / 3, 'rgba(0,0,0,' + w[2] + ')'); cg.addColorStop(1, 'rgba(0,0,0,' + w[3] + ')');
-              tctx.globalCompositeOperation = 'destination-in'; tctx.fillStyle = cg; tctx.fillRect(0, 0, asize, asize);
-            }
-            octx.setTransform(1, 0, 0, 1, 0, 0); octx.globalCompositeOperation = 'lighter'; octx.drawImage(tmp, 0, 0);
-            octx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          });
-          octx.globalCompositeOperation = 'destination-in';
-          var ag = octx.createRadialGradient(ar, ar, 0, ar, ar, ar);
-          ag.addColorStop(0, 'rgba(0,0,0,' + AI + ')'); ag.addColorStop(0.35, 'rgba(0,0,0,' + (AI * 0.7) + ')');
-          ag.addColorStop(0.7, 'rgba(0,0,0,' + (AI * 0.2) + ')'); ag.addColorStop(1, 'rgba(0,0,0,0)');
-          octx.fillStyle = ag; octx.fillRect(0, 0, asize, asize);
-          ctx.drawImage(off, 0, 0, apx, apx, acx - ar, acy - ar, asize, asize);
-        }
-      }
-
-      // the spotlights: proximity falloff x intensity, with a chromatic split that grows with brightness and speed
-      blobs.forEach(function (b) {
-        var r = b.el.getBoundingClientRect();
-        if (r.width < 4) return;                                // spotlight hidden at this breakpoint
-        var cx = r.left + r.width / 2 - origin.left, cy = r.top + r.height / 2 - origin.top;
-        var vx = b.x === null ? 0 : (cx - b.x) / dt, vy = b.y === null ? 0 : (cy - b.y) / dt;
-        b.vx += (vx - b.vx) * 0.08; b.vy += (vy - b.vy) * 0.08;   // smoothed velocity, px/s
-        b.x = cx; b.y = cy;
-        var g0 = b.el.closest('[data-blob-group]'), op = g0 && g0.blobState ? g0.blobState.op : (parseFloat(getComputedStyle(b.el).opacity) || 0);   // live opacity from the drift path, no style read
-        var I = clamp((op - 0.08) / 0.5, 0.12, 1);             // intensity from the blob's live opacity
-        var R = Math.min(r.width * 0.72, 430);                 // reach of the lines
-        var size = Math.ceil(R * 2);
-        if (cy + R < 0 || cy - R > H) return;
-        var oy = 1.2 + 2.2 * I + Math.min(4, Math.abs(b.vy) * 0.05);
-        var ox = clamp(b.vx * 0.05, -4, 4);
-        var px = Math.round(size * dpr);
-        grow(off, px);
-        octx.setTransform(1, 0, 0, 1, 0, 0); octx.globalCompositeOperation = 'source-over'; octx.clearRect(0, 0, off.width, off.height);
-        octx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        octx.globalCompositeOperation = 'lighter';
-        var top = cy - R, y0 = Math.floor(top / PITCH) * PITCH;  // lines stay locked to the page, not to the spotlight
-        function lines(color, dx, dy) {
-          octx.fillStyle = color;
-          for (var y = y0; y < top + size; y += PITCH) octx.fillRect(dx, y - top + dy, size, THICK);
-        }
-        lines(CORAL, ox, -oy);
-        lines(CYAN, -ox, oy);
-        octx.globalCompositeOperation = 'destination-in';
-        var g = octx.createRadialGradient(R, R, 0, R, R, R);
-        g.addColorStop(0, 'rgba(0,0,0,' + I + ')');
-        g.addColorStop(0.35, 'rgba(0,0,0,' + (I * 0.7) + ')');
-        g.addColorStop(0.7, 'rgba(0,0,0,' + (I * 0.2) + ')');
-        g.addColorStop(1, 'rgba(0,0,0,0)');
-        octx.fillStyle = g; octx.fillRect(0, 0, size, size);
-        ctx.drawImage(off, 0, 0, px, px, cx - R, cy - R, size, size);
+    if (aura && aura.parentNode) { var a = make('pm-backdrop__lines--aura'); aura.parentNode.insertBefore(a, aura.nextSibling); useTile(a); }
+    function place() {
+      made.forEach(function (m) {
+        if (!m.blob.offsetParent) { m.el.style.display = 'none'; return; }   // glow hidden at this width
+        m.el.style.display = '';
+        var box = m.el.offsetParent || document.body;                       // positioned against this
+        var r = m.blob.getBoundingClientRect(), h = box.getBoundingClientRect();
+        var size = Math.round(r.width * 1.44);                          // the lines reach a little past the glow
+        m.el.style.width = m.el.style.height = size + 'px';
+        m.el.style.left = Math.round(r.left - h.left + r.width / 2 - size / 2) + 'px';
+        m.el.style.top = Math.round(r.top - h.top + r.height / 2 - size / 2) + 'px';   // whole pixels keep the lines sharp
+        var op = parseFloat(m.blob.style.opacity) || 0.35;
+        m.el.style.setProperty('--i', Math.max(0.12, Math.min(1, (op - 0.08) / 0.5)).toFixed(3));
       });
-      ctx.globalCompositeOperation = 'source-over';
-      if (!reduced) raf = requestAnimationFrame(frame);
     }
-
-    function start() {
-      cancelAnimationFrame(raf); clearInterval(timer);
-      if (reduced) { frame(performance.now()); timer = setInterval(function () { frame(performance.now()); }, 1500); }
-      else raf = requestAnimationFrame(frame);
-    }
-    // pause while the tab is hidden or the page is scrolled well past the hero (the lit areas live at the top)
-    var running = true;
-    function gate() {
-      var v = !document.hidden && window.scrollY < 1400;
-      if (v && !running) { running = true; last = 0; lastRaf = 0; start(); }
-      else if (!v && running) { running = false; cancelAnimationFrame(raf); clearInterval(timer); }
-    }
-    document.addEventListener('visibilitychange', gate);
-    window.addEventListener('scroll', gate, { passive: true });
-    window.addEventListener('resize', resize);
-    resize(); start();
+    place();
+    var t = 0;
+    window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(place, 150); });
   }
 
   /* ---- color-interpolation helper, used by pages that fade a value's
@@ -552,7 +378,7 @@ window.pmShell = (function () {
 
   /* ---- figures that take their color from the glows ----
      pmShell.colorSlots(): every [data-color-slot] element (the Lab page layout: stat0-2 in the stat bar, step0-3 in the
-     steps) is tinted between coral and cyan by how close the drifting glows ([data-blob-role="coral"|"cyan"]) are on
+     steps) is tinted between coral and cyan by how close the glows ([data-blob-role="coral"|"cyan"]) are on
      desktop, and from coral toward the text color by depth on phones. Anchors are where each slot sits relative to the
      glows; pass your own for another layout. Colors switch to the theme's text tokens in light (see mixColor). */
   var LAB_ANCHORS = {
@@ -595,8 +421,7 @@ window.pmShell = (function () {
         el.style.color = desktop ? desktopColor(a) : mobileColor(a);
       });
     }
-    update();
-    setInterval(update, 300);
+    update();                                   // the glows are placed once, so once is enough (and on resize)
     window.addEventListener('resize', update);
   }
 
