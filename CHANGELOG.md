@@ -2,6 +2,10 @@
 
 Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.md`.
 
+## v0.8.1 (2026-11-16)
+
+- **Fix:** the title build-up drawing (`.pm-tb`) sat above everything, so on a short screen, where the page is scrolled while the title is still being drawn, the dots and lines showed on top of the fixed site header. It now sits under the header and the sticky Lab and case-study bars (`calc(var(--pm-z-nav) - 3)`).
+
 ## v0.8.0 (2026-11-16)
 
 - **Title build-up (visible change, replaces the title pop-in):** every `h1` in `.pm-page` is built word by word in grayscale dots and lines, then each word fades in. Add `pm-title-pending` in the `<head>` boot script (new version in `docs/shell.md`) so the title is hidden until the build starts. `<h1 data-title-build="manual">` with `pmShell.buildTitle(h1, options)` for pages that start it themselves; `data-title-build="off"` to skip. **Breaking** for pages that styled `.pm-title-pop` or its `.pm-num-pop__word` spans in titles: those are no longer added to titles.
