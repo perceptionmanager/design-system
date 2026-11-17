@@ -27,7 +27,7 @@ In a bundled app (Next.js), import the CSS from the package before any app CSS, 
 Put this in `<head>`, before any stylesheet, so the page never flashes the wrong theme. It uses the saved choice, then the visitor's system setting. The theme switch in the header saves the choice under the same key, so it carries across the portfolio and the tools that share a domain.
 
 ```html
-<script>(function(){var t;try{t=localStorage.getItem('pm-theme')}catch(e){}if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark'}document.documentElement.setAttribute('data-theme',t)})();</script>
+<script>(function(){var t;try{t=localStorage.getItem('pm-theme')}catch(e){}if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark'}document.documentElement.setAttribute('data-theme',t);if(!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)){document.documentElement.classList.add('pm-title-pending')}})();</script>
 ```
 
 ## Markup
@@ -121,7 +121,8 @@ Keep the theme boot script in `<head>`, as on every page.
 
 ## Type motion
 
-- **Titles:** every `h1` inside `.pm-page` pops in character by character on load (words stay whole). Nothing to add to the markup; screen readers get the title from `aria-label`.
+- **Titles:** every `h1` inside `.pm-page` is built word by word, left to right: each word is outlined and its text line traced in grayscale dots and lines, then the real word fades in (about 2 seconds for a seven-word title; long titles are squeezed so the last word starts within 1.3s). The boot script above adds `pm-title-pending` to `<html>`, which hides the title until the build starts (and shows it after 3s if `shell.js` never runs). A title already split into `.pm-split-word` spans is used as it is; plain text is split into `.pm-title-word` spans. `<h1 data-title-build="manual">` leaves the start to the page: call `pmShell.buildTitle(h1, options)`, which returns `{ finished, cancel() }`; `data-title-build="off"` skips it. Any click, key or focus finishes it at once.
+- **Section titles:** with `<body data-serif-reveal>`, each visible `h2` in `<main>` switches from the sans face to the serif face, letter by letter, as it scrolls into view, with a small random dotted mark at each end. Titles that arrive together play in page order. Screen readers get the title from `aria-label`.
 - **Figures:** the values in every `.pm-stat-bar` pop in when the bar scrolls into view, each a beat after the one before. A page that fills its numbers in later (from data) marks the bar `data-num-pop="manual"` and calls `pmShell.numPop(bar, '.pm-stat__value')` once they are in. `pmShell.numPop(container, selector)` works for any other row of figures (the portfolio's case-study stat strips use it).
 - **Glow-tinted numbers:** add `data-color-slots` to `<body>` and `data-color-slot="stat0"`…`"stat2"` to the stat values and `"step0"`…`"step3"` to the step numbers. Their color is set from where the glows were placed (coral to cyan on desktop, coral to text color by depth on phones), once on load and again on resize. The glow groups need `data-blob-role="coral"` and `"cyan"`. The anchors fit the Lab page layout (four steps); `data-color-slots="three-steps"` fits a page with three steps (`step0`…`step2`). For another layout call `pmShell.colorSlots({ desktop: {…}, mobile: {…} })` from a page script instead.
 

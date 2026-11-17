@@ -6,6 +6,8 @@ A native `<dialog>` opened with `showModal()`. The browser traps focus inside it
 
 Put `data-modal-src` (the large image) and `data-modal-alt` (its alt text) on the button that wraps a thumbnail. `shell.js` builds one shared dialog for the page and opens the picture in it. Nothing else to add.
 
+The dialog is as wide as the picture, so the close button sits just above its corner. A click or tap on the picture zooms it to full size (at least twice the fitted size) around the spot clicked; Ctrl + / Ctrl − (Cmd on a Mac), Ctrl + scroll or a trackpad pinch zoom in steps, and Ctrl 0 fits it again. While the dialog is open these keys zoom the picture, not the page. Drag (or swipe) to move around; Escape or closing resets it.
+
 ```html
 <button type="button" class="shot-btn" data-modal-src="shot-1600.webp" data-modal-alt="Apply Platform wireframes with the four-step shell" aria-label="View larger: Apply Platform wireframes with the four-step shell">
   <img src="shot-960.webp" alt="Apply Platform wireframes with the four-step shell" width="960" height="611">

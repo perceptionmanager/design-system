@@ -9,10 +9,14 @@
                                                                         (off when <body data-backdrop-lines="off">)
      [data-magnetic]                                                    buttons that lean toward the pointer
      a[href^="mailto:"]                                                 copy the address too, and say so
-     .pm-page h1                                                        title pop-in, character by character
+     .pm-page h1                                                        title build-up, word by word in dots and lines
+                                                                        (<html class="pm-title-pending"> hides it before first paint)
+     <body data-serif-reveal> + main h2                                 section titles switch from sans to serif as they scroll in
+     .pm-modal__img                                                     click, Ctrl +/- or pinch to zoom the image modal
      .pm-stat-bar .pm-stat__value                                       figures pop in when the bar scrolls into view
      <body data-color-slots> + [data-color-slot]                        stat and step numbers tinted by the glows (Lab layout)
-   Helpers for page scripts: pmShell.numPop(container, selector) pops figures in; pmShell.colorSlots() tints
+   Helpers for page scripts: pmShell.buildTitle(h1, options) builds a title (for <h1 data-title-build="manual">);
+   pmShell.numPop(container, selector) pops figures in; pmShell.colorSlots() tints
    [data-color-slot] figures by the glows; pmShell.mixColor(fromRGB, toRGB, t) blends brand colors for the theme.
    Runs once the page has parsed, after the page's own DOMContentLoaded handlers, so a page script can still
    switch a behavior off (for example data-backdrop-lines="off") before the shell starts. */
@@ -302,46 +306,292 @@ window.pmShell = (function () {
     return 'rgb(' + r + ',' + g + ',' + b + ')';
   }
  
-  /* ---- page title pop-in ----
-     Every h1 in .pm-page gets the number pop-in (shell.css "Type motion"): characters rise, pull back and spring
-     into place left to right on page load. Markup inside the title (highlighted words, split-word
-     spans) is kept; only its text is wrapped. The stagger shrinks on long titles so the whole
-     title lands in well under a second. Screen readers get the title from aria-label. */
-  function initTitlePop() {
-    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    document.querySelectorAll('.pm-page h1').forEach(function (h1) {
-      var label = h1.textContent.replace(/\s+/g, ' ').trim();
-      if (!label) return;
-      var nodes = [], walker = document.createTreeWalker(h1, NodeFilter.SHOW_TEXT), n;
-      while ((n = walker.nextNode())) nodes.push(n);
-      var count = label.replace(/\s/g, '').length;
-      var stagger = Math.max(12, Math.min(40, Math.round(700 / count)));
-      var i = 0;
-      nodes.forEach(function (node) {
-        var parts = node.nodeValue.split(/(\s+)/), frag = document.createDocumentFragment();
-        parts.forEach(function (part) {
-          if (!part) return;
-          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
-          var word = document.createElement('span');
-          word.className = 'pm-num-pop__word';
-          Array.from(part).forEach(function (ch) {
-            var c = document.createElement('span');
-            c.className = 'pm-num-pop__ch';
-            c.style.setProperty('--np-i', i++);
-            c.textContent = ch;
-            word.appendChild(c);
-          });
-          frag.appendChild(word);
-        });
-        node.parentNode.replaceChild(frag, node);
+  /* ---- page title build-up ----
+     Replaces the title pop-in (until v0.8.0). Every .pm-page h1 is built word by word, left to right, in the system's
+     drawing language: each word is outlined and its text line traced in grayscale dots and lines (with corner handles,
+     a small size label and a sparse dot field lit by a sweep), then the real word fades in from a slight blur.
+     - Words: a title already split into .pm-split-word spans is used as it is; plain text is split into
+       .pm-title-word spans here, keeping any inline markup around the words.
+     - Before first paint: add the class pm-title-pending to <html> in the <head> boot script (docs/shell.md); shell.css
+       hides the title until the build starts, and shows it after 3s if the script never runs. Without that class the
+       title shows briefly before the build.
+     - <h1 data-title-build="manual"> leaves the start to the page: call pmShell.buildTitle(h1, options), which returns
+       { finished: Promise, cancel() } (the portfolio's home page chains its AI field after it). data-title-build="off"
+       skips the build.
+     - Any click, key or focus finishes it at once. Off with reduced motion. Decorative layer: aria-hidden. */
+  var TB_NS = 'http://www.w3.org/2000/svg';
+  function tbClamp(x) { return Math.max(0, Math.min(1, x)); }
+  function tbSmooth(a, b, x) { var q = tbClamp((x - a) / (b - a)); return q * q * (3 - 2 * q); }
+  function tbF(n) { return (+n).toFixed(2); }
+  function tbBezier(x1, y1, x2, y2) {
+    function cx(t) { return 3 * x1 * t * (1 - t) * (1 - t) + 3 * x2 * t * t * (1 - t) + t * t * t; }
+    function cy(t) { return 3 * y1 * t * (1 - t) * (1 - t) + 3 * y2 * t * t * (1 - t) + t * t * t; }
+    return function (x) { if (x <= 0) return 0; if (x >= 1) return 1; var lo = 0, hi = 1, m = 0.5; for (var i = 0; i < 28; i++) { m = (lo + hi) / 2; if (cx(m) < x) lo = m; else hi = m; } return cy(m); };
+  }
+  var TB_OUT = tbBezier(0.16, 1, 0.3, 1), TB_REVEAL = tbBezier(0.22, 1, 0.36, 1), TB_FLOW = 0.016;
+  function tbSvg(tag, attrs, parent) {
+    var e = document.createElementNS(TB_NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  // half a rounded box from the left middle to the right middle, over the top (dir 1) or under the bottom (dir 0):
+  // both halves start on the left and meet on the right, so every word is drawn left to right
+  function tbHalf(x, y, w, h, r, dir) {
+    r = Math.max(0, Math.min(r, w / 2, h / 2));
+    function X(v) { return tbF(x + v); } function Y(v) { return tbF(y + v); } var R = tbF(r);
+    return dir
+      ? 'M' + X(0) + ' ' + Y(h / 2) + 'V' + Y(r) + 'A' + R + ' ' + R + ' 0 0 1 ' + X(r) + ' ' + Y(0) + 'H' + X(w - r) + 'A' + R + ' ' + R + ' 0 0 1 ' + X(w) + ' ' + Y(r) + 'V' + Y(h / 2)
+      : 'M' + X(0) + ' ' + Y(h / 2) + 'V' + Y(h - r) + 'A' + R + ' ' + R + ' 0 0 0 ' + X(r) + ' ' + Y(h) + 'H' + X(w - r) + 'A' + R + ' ' + R + ' 0 0 0 ' + X(w) + ' ' + Y(h - r) + 'V' + Y(h / 2);
+  }
+  var TB_DEFAULTS = {
+    words: '',        // selector for the word spans; default: .pm-split-word if present, else words split here
+    delay: 120,       // ms before the first word starts
+    wordDraw: 520,    // ms to trace one word
+    stagger: 190,     // ms between word starts
+    maxSpan: 1300,    // long titles: starts are squeezed so the last word starts within this many ms
+    fade: 360,        // ms the real word takes to fade in
+    revealAt: 0.62,   // fraction of wordDraw at which the word starts fading in
+    dotGap: 6.4,      // spacing of the dots on a line
+    fieldGap: 30,     // spacing of the background dot field
+    pad: 6            // space between a word's glyphs and its outline
+  };
+  // wrap each word of plain text in a span; whitespace stays as text, so lines wrap as before
+  function tbSplit(h1) {
+    if (h1.querySelector('.pm-split-word')) return '.pm-split-word';
+    if (h1.querySelector('.pm-title-word')) return '.pm-title-word';
+    var walker = document.createTreeWalker(h1, NodeFilter.SHOW_TEXT), nodes = [];
+    while (walker.nextNode()) if (walker.currentNode.nodeValue.trim()) nodes.push(walker.currentNode);
+    nodes.forEach(function (n) {
+      var frag = document.createDocumentFragment();
+      n.nodeValue.split(/(\s+)/).forEach(function (tok) {
+        if (!tok) return;
+        if (/^\s+$/.test(tok)) { frag.appendChild(document.createTextNode(tok)); return; }
+        var s = document.createElement('span'); s.className = 'pm-title-word'; s.textContent = tok; frag.appendChild(s);
       });
-      h1.setAttribute('aria-label', label);
-      Array.from(h1.children).forEach(function (c) { c.setAttribute('aria-hidden', 'true'); });
-      h1.classList.add('pm-num-pop', 'pm-title-pop');
-      h1.style.setProperty('--np-stagger', stagger + 'ms');
-      h1.style.setProperty('--np-base', '80ms');
-      requestAnimationFrame(function () { h1.classList.add('is-animating'); });
+      n.parentNode.replaceChild(frag, n);
     });
+    return '.pm-title-word';
+  }
+  function tbMeasure(h1, words, o) {
+    var R = h1.getBoundingClientRect();
+    return { R: R, w: R.width, h: R.height, words: words.map(function (el, i) {
+      var rg = document.createRange(); rg.selectNodeContents(el);
+      var rects = Array.prototype.filter.call(rg.getClientRects(), function (q) { return q.width && q.height; });
+      var q = rects.length ? rects.reduce(function (a, b) { return { left: Math.min(a.left, b.left), top: Math.min(a.top, b.top), right: Math.max(a.right, b.right), bottom: Math.max(a.bottom, b.bottom) }; }) : el.getBoundingClientRect();
+      var hh = q.bottom - q.top, trimT = hh * 0.1, trimB = hh * 0.06;   // hug the letters, not the line's leading
+      return { el: el, i: i, text: el.textContent.trim(), x: q.left - R.left - o.pad, y: q.top - R.top + trimT - o.pad * 0.6, w: q.right - q.left + 2 * o.pad, h: hh - trimT - trimB + o.pad * 1.2 };
+    }) };
+  }
+  function tbBuild(M, o) {
+    var MG = 36, w = M.w, h = M.h;
+    var layer = document.createElement('div');
+    layer.className = 'pm-tb'; layer.setAttribute('aria-hidden', 'true');
+    layer.style.left = tbF(M.R.left + window.scrollX) + 'px'; layer.style.top = tbF(M.R.top + window.scrollY) + 'px';
+    layer.style.width = tbF(w) + 'px'; layer.style.height = tbF(h) + 'px';
+    var root = tbSvg('svg', { 'class': 'pm-tb__svg', width: tbF(w), height: tbF(h), viewBox: '0 0 ' + tbF(w) + ' ' + tbF(h) }, layer);
+    document.body.appendChild(layer);
+    var G = { layer: layer, words: [], dots: [] };
+    var dots = tbSvg('g', {}, root), SP = o.fieldGap;                    // sparse dot field, lit by the sweep
+    for (var x = -MG + ((w + 2 * MG) % SP) / 2; x <= w + MG; x += SP) for (var y = -MG + ((h + 2 * MG) % SP) / 2; y <= h + MG; y += SP) {
+      var out = Math.max(0, -x, x - w, -y, y - h);
+      G.dots.push({ el: tbSvg('circle', { cx: tbF(x), cy: tbF(y), r: 1, 'class': 'pm-tb__dot' }, dots), x: x, y: y, edge: 1 - tbClamp(out / MG) });
+    }
+    function line(d, parent, cls) { var e = tbSvg('path', { d: d, 'class': cls || 'pm-tb__wire' }, parent); return { el: e, L: e.getTotalLength(), gap: o.dotGap }; }
+    function head(parent, r) { return tbSvg('circle', { r: r || 2.3, 'class': 'pm-tb__head', opacity: 0 }, parent); }
+    M.words.forEach(function (W) {
+      var g = tbSvg('g', {}, root), r = Math.min(6, W.h / 4);
+      var outline = [1, 0].map(function (dir) { var s = line(tbHalf(W.x, W.y, W.w, W.h, r, dir), g); s.head = head(g); return s; });
+      var tx0 = W.x + o.pad + 2, tx1 = W.x + W.w - o.pad - 2, ty = W.y + W.h * 0.56;   // the text line, with end caps
+      var tl = line('M' + tbF(tx0) + ' ' + tbF(ty) + 'H' + tbF(tx1), g); tl.head = head(g, 1.9);
+      tl.caps = [tbSvg('circle', { cx: tbF(tx0), cy: tbF(ty), r: 1.6, 'class': 'pm-tb__head', opacity: 0 }, g), tbSvg('circle', { cx: tbF(tx1), cy: tbF(ty), r: 1.6, 'class': 'pm-tb__head', opacity: 0 }, g)];
+      var probe = tbSvg('path', { d: 'M0 ' + tbF(W.y - 14) + 'V' + tbF(W.y + W.h + 14), 'class': 'pm-tb__guide pm-tb__guide--dashed', opacity: 0 }, g);
+      var base = line('M' + tbF(W.x - 12) + ' ' + tbF(W.y + W.h) + 'H' + tbF(W.x + W.w + 12), g, 'pm-tb__guide'); base.gap = 6.5;
+      var handles = [[W.x, W.y], [W.x + W.w, W.y], [W.x + W.w, W.y + W.h], [W.x, W.y + W.h]].map(function (p) {
+        return { el: tbSvg('rect', { x: -2, y: -2, width: 4, height: 4, 'class': 'pm-tb__handle', transform: 'translate(' + tbF(p[0]) + ' ' + tbF(p[1]) + ') scale(0)' }, g), x: p[0], y: p[1] };
+      });
+      var label = tbSvg('text', { x: tbF(W.x), y: tbF(W.y - 6), 'class': 'pm-tb__label', opacity: 0 }, g);
+      var t0 = o.delay + W.i * o.stagger;
+      G.words.push({ W: W, g: g, outline: outline, text: tl, probe: probe, base: base, handles: handles, label: label, t0: t0, t1: t0 + o.wordDraw, fadeAt: t0 + o.wordDraw * o.revealAt });
+    });
+    G.end = G.words.length ? Math.max.apply(null, G.words.map(function (k) { return Math.max(k.t1 + 220, k.fadeAt + o.fade); })) : o.delay;
+    return G;
+  }
+  function tbLine(s, q, t) {
+    var on = q > 0; s.el.style.opacity = on ? 1 : 0;
+    if (on) {
+      var n = Math.floor((s.L * Math.min(1, q)) / s.gap) + 1;
+      if (n !== s.n) { s.n = n; s.el.style.strokeDasharray = new Array(n).join('0 ' + tbF(s.gap) + ' ') + '0 ' + tbF(s.L + 10); }
+      s.el.style.strokeDashoffset = tbF(-(t * TB_FLOW) % s.gap);
+    }
+    if (s.head) {
+      var live = q > 0 && q < 1; s.head.setAttribute('opacity', live ? 1 : 0);
+      if (live) { var pt = s.el.getPointAtLength(Math.floor((s.L * q) / s.gap) * s.gap); s.head.setAttribute('cx', tbF(pt.x)); s.head.setAttribute('cy', tbF(pt.y)); }
+    }
+    if (s.caps) { s.caps[0].setAttribute('opacity', on ? 1 : 0); s.caps[1].setAttribute('opacity', q >= 1 ? 1 : 0); }
+  }
+  function tbFrame(G, t, o) {
+    var sweep = -999, live = 0;                                          // x of the rightmost drawing head
+    G.words.forEach(function (K) {
+      var p = tbClamp((t - K.t0) / (K.t1 - K.t0));
+      var oq = TB_OUT(tbClamp(p / 0.78)), tq = TB_OUT(tbClamp((p - 0.3) / 0.62));
+      K.g.setAttribute('opacity', tbF(1 - TB_REVEAL(tbClamp((t - K.fadeAt) / (o.fade * 1.1)))));   // the drawing clears as the word comes in
+      K.outline.forEach(function (s) { tbLine(s, oq, t); });
+      tbLine(K.text, tq, t);
+      var bq = TB_OUT(tbClamp(p / 0.5)); tbLine(K.base, bq, t); K.base.el.style.opacity = bq > 0 ? 0.55 : 0;
+      var hq = TB_OUT(tbClamp((p - 0.12) / 0.3));
+      K.handles.forEach(function (hd) { hd.el.setAttribute('transform', 'translate(' + tbF(hd.x) + ' ' + tbF(hd.y) + ') scale(' + tbF(hq) + ')'); });
+      K.label.setAttribute('opacity', tbF(p > 0 ? 0.85 : 0));
+      K.label.textContent = (K.W.text.replace(/[^\w]/g, '').toLowerCase() || 'word') + ' ' + Math.round(K.W.w * oq) + '×' + Math.round(K.W.h * oq);
+      var hx = K.W.x + K.W.w * oq, pOn = p > 0 && p < 1;
+      K.probe.setAttribute('transform', 'translate(' + tbF(hx) + ' 0)');
+      K.probe.setAttribute('opacity', tbF(pOn ? tbSmooth(0, 0.08, p) * (1 - tbSmooth(0.7, 0.95, p)) * 0.7 : 0));
+      if (pOn) { live++; sweep = Math.max(sweep, hx); }
+      var e = TB_REVEAL(tbClamp((t - K.fadeAt) / o.fade)), st = K.W.el.style;   // the real word: faint and blurred to sharp
+      st.opacity = tbF(e);
+      st.filter = e > 0 && e < 0.99 ? 'blur(' + tbF(3 * (1 - e)) + 'px)' : '';
+    });
+    var fieldOn = tbSmooth(o.delay - 120, o.delay + 200, t) * (1 - tbSmooth(G.end - 500, G.end, t));
+    G.dots.forEach(function (d) {
+      var lit = live ? Math.exp(-Math.pow((d.x - sweep) / 26, 2)) : 0;
+      d.el.setAttribute('opacity', tbF(Math.max(0.35, lit) * d.edge * fieldOn));
+      d.el.setAttribute('r', tbF(0.95 + lit * 0.7));
+      d.el.classList.toggle('is-lit', lit > 0.4);
+    });
+  }
+  // pmShell.buildTitle(h1, options) -> { finished: Promise, cancel() }
+  function buildTitle(h1, options) {
+    var o = {}, k;
+    for (k in TB_DEFAULTS) o[k] = TB_DEFAULTS[k];
+    for (k in (options || {})) o[k] = options[k];
+    var sel = o.words || tbSplit(h1);
+    var words = Array.prototype.slice.call(h1.querySelectorAll(sel));
+    if (words.length > 1) o.stagger = Math.min(o.stagger, o.maxSpan / (words.length - 1));
+    var resolve, raf = 0, G = null, stopped = false;
+    var finished = new Promise(function (r) { resolve = r; });
+    // words keep animation:none and no transform afterwards, or a stylesheet word animation would replay
+    function settle() { words.forEach(function (el) { el.style.animation = 'none'; el.style.transform = 'none'; el.style.opacity = '1'; el.style.filter = ''; }); }
+    function finish() { if (stopped) return; stopped = true; cancelAnimationFrame(raf); if (G) G.layer.remove(); settle(); h1.style.opacity = '1'; resolve(h1); }
+    words.forEach(function (el) { el.style.animation = 'none'; el.style.transform = 'none'; el.style.opacity = '0'; });
+    h1.style.animation = 'none'; h1.style.opacity = '1';                 // the title's own fade, if any, is replaced by the build
+    document.documentElement.classList.remove('pm-title-pending');
+    try { G = tbBuild(tbMeasure(h1, words, o), o); }
+    catch (e) { finish(); return { finished: finished, cancel: finish }; }
+    var t0 = performance.now();
+    tbFrame(G, 0, o);
+    function tick(now) {
+      if (stopped) return;
+      var t = now - t0; tbFrame(G, t, o);
+      if (t >= G.end) { finish(); return; }
+      raf = requestAnimationFrame(tick);
+    }
+    raf = requestAnimationFrame(tick);
+    return { finished: finished, cancel: finish };
+  }
+  function initTitleBuild() {
+    var root = document.documentElement;
+    var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var titles = Array.prototype.filter.call(document.querySelectorAll('.pm-page h1'), function (h1) {
+      var m = h1.getAttribute('data-title-build'); return m !== 'manual' && m !== 'off' && h1.textContent.trim();
+    });
+    if (reduced || !titles.length) { root.classList.remove('pm-title-pending'); return; }
+    var runs = [], interrupted = false, events = ['pointerdown', 'keydown', 'focusin'];
+    function stop() { interrupted = true; runs.forEach(function (r) { r.cancel(); }); events.forEach(function (t) { document.removeEventListener(t, stop, true); }); root.classList.remove('pm-title-pending'); }
+    events.forEach(function (t) { document.addEventListener(t, stop, true); });
+    // text is measured from the fonts: wait for them, briefly
+    var fonts = document.fonts && document.fonts.ready ? Promise.race([document.fonts.ready, new Promise(function (r) { setTimeout(r, 600); })]) : Promise.resolve();
+    fonts.then(function () {
+      if (interrupted) return;
+      titles.forEach(function (h1) { runs.push(buildTitle(h1)); });
+      Promise.all(runs.map(function (r) { return r.finished; })).then(function () { events.forEach(function (t) { document.removeEventListener(t, stop, true); }); });
+    });
+  }
+
+  /* ---- section titles: sans to serif as they scroll in ----
+     Opt in with <body data-serif-reveal>. Each visible section h2 in <main> starts in the sans face; as it comes into
+     view its letters switch to the serif face one by one, left to right, word after word. Titles that come into view
+     together play in page order. Each letter switches at once (no fade); the serif glyph keeps the width, so nothing
+     shifts. A small dotted mark, picked at random (a corner along the foot or top, a side guide, an arm reaching out,
+     or loose dots), shows at the left edge as a title starts and at the right edge as it ends, then both go.
+     Screen readers get the title from aria-label. Titles already scrolled past show in serif straight away.
+     Off with reduced motion. */
+  function initSerifTitles() {
+    if (!document.body.hasAttribute('data-serif-reveal') || !('IntersectionObserver' in window)) return;
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var LETTER = 14, WORD = 35, GAP = 60;                                  // ms between letters, extra between words, between titles
+    var titles = Array.prototype.slice.call(document.querySelectorAll('main h2:not(.pm-visually-hidden):not(.pt-visually-hidden):not(.sr-only)'));
+    function split(el) {
+      var text = el.textContent.replace(/\s+/g, ' ').trim();
+      el.setAttribute('aria-label', text);
+      var wrap = document.createElement('span'); wrap.setAttribute('aria-hidden', 'true');
+      var chars = [], words = text.split(' ');
+      words.forEach(function (w, wi) {
+        var ws = document.createElement('span'); ws.className = 'pm-sr-word';
+        Array.prototype.forEach.call(w, function (ch) {
+          var c = document.createElement('span'); c.className = 'pm-sr-ch'; c.setAttribute('data-ch', ch);
+          var s = document.createElement('span'); s.className = 'pm-sr-s'; s.textContent = ch;
+          c.appendChild(s); ws.appendChild(c); chars.push({ el: c, word: wi });
+        });
+        wrap.appendChild(ws);
+        if (wi < words.length - 1) wrap.appendChild(document.createTextNode(' '));
+      });
+      el.textContent = ''; el.appendChild(wrap);
+      el.classList.add('pm-sr-armed');
+      return { chars: chars, wrap: wrap };
+    }
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+    function mark(svg, x, y0, y1, dir) {                                  // dir 1 = left edge, -1 = right edge
+      var g = tbSvg('g', {}, svg), ym = (y0 + y1) / 2, L = Math.round(rnd(10, 24)), d = '', dots = [];
+      switch (Math.floor(Math.random() * 5)) {
+        case 0: d = 'M' + x + ' ' + y0 + 'V' + y1 + 'H' + (x + dir * L); dots = [[x, y0], [x + dir * L, y1]]; break;   // corner, foot
+        case 1: d = 'M' + x + ' ' + y1 + 'V' + y0 + 'H' + (x + dir * L); dots = [[x, y1], [x + dir * L, y0]]; break;   // corner, top
+        case 2: d = 'M' + x + ' ' + y0 + 'V' + y1; dots = [[x, y0], [x, y1]]; break;                                   // side guide
+        case 3: d = 'M' + x + ' ' + ym + 'H' + (x - dir * L); dots = [[x - dir * L, ym], [x, rnd(y0, y1)]]; break;   // arm outward
+        default: dots = [[x, y0 + rnd(0, 6)], [x - dir * rnd(4, 10), ym], [x, y1 - rnd(0, 6)]];                    // loose dots
+      }
+      if (d) tbSvg('path', { d: d, 'class': 'pm-sr-mark-line' }, g);
+      dots.forEach(function (p) { tbSvg('circle', { cx: p[0].toFixed(1), cy: p[1].toFixed(1), r: 2.3, 'class': 'pm-sr-mark-dot' }, g); });
+      return g;
+    }
+    function marks(el) {
+      var rg = document.createRange(); rg.selectNodeContents(el);
+      var rs = Array.prototype.filter.call(rg.getClientRects(), function (r) { return r.width && r.height; });
+      if (!rs.length) return null;
+      var H = el.getBoundingClientRect(), first = rs[0], last = rs[rs.length - 1], P = 9;
+      var svg = tbSvg('svg', { 'class': 'pm-sr-marks', 'aria-hidden': 'true', width: H.width, height: H.height }, el);
+      mark(svg, Math.round(first.left - H.left - P) + 0.5, Math.round(first.top - H.top) - 2, Math.round(first.bottom - H.top) + 2, 1);
+      var b = mark(svg, Math.round(last.right - H.left + P) + 0.5, Math.round(last.top - H.top) - 2, Math.round(last.bottom - H.top) + 2, -1);
+      b.style.display = 'none';
+      return { svg: svg, end: b };
+    }
+    var queue = [], busy = false;
+    function next() {
+      if (busy || !queue.length) return;
+      busy = true;
+      var it = queue.shift(), chars = it.chars, t = 0, m = marks(it.el);
+      chars.forEach(function (c, i) {
+        if (i && c.word !== chars[i - 1].word) t += WORD;
+        setTimeout(function () { c.el.classList.add('is-on'); }, t);
+        if (i < chars.length - 1) t += LETTER;
+      });
+      if (m) { setTimeout(function () { m.end.style.display = ''; }, t); setTimeout(function () { m.svg.remove(); }, t + 220); }
+      setTimeout(function () { busy = false; next(); }, t + LETTER + GAP);
+    }
+    // the observer watches the title's text, not the h2: in some layouts an h2 stretches to its column's height
+    var items = titles.map(function (el) { var s = split(el); return { el: el, chars: s.chars, t: s.wrap }; });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting || e.boundingClientRect.bottom > 0) return;
+        io.unobserve(e.target);
+        e.target.querySelectorAll('.pm-sr-ch').forEach(function (c) { c.classList.add('is-on'); });
+      });
+      entries.filter(function (e) { return e.isIntersecting; })
+        .map(function (e) { return items.filter(function (it) { return it.t === e.target; })[0]; })
+        .sort(function (a, b) { return titles.indexOf(a.el) - titles.indexOf(b.el); })
+        .forEach(function (it) { io.unobserve(it.t); queue.push(it); });
+      next();
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 1 });
+    items.forEach(function (it) { io.observe(it.t); });
   }
 
 
@@ -479,6 +729,80 @@ window.pmShell = (function () {
     if (alt) dlg.setAttribute('aria-label', alt);
     if (!dlg.open) dlg.showModal();
   }
+  /* ---- zoom in the image modal ----
+     A fitted picture is often too small to read (a journey map, a diagram), so:
+     - click or tap the picture: fitted <-> full size (at least twice the fitted size), keeping the clicked spot
+       under the pointer;
+     - Ctrl + / Ctrl - (Cmd on a Mac), Ctrl + scroll or a trackpad pinch: zoom in and out in steps; Ctrl 0 fits it again.
+       While the modal is open these zoom the picture, not the page;
+     - drag with the mouse (or swipe) to move around; Escape or closing the modal resets it. */
+  function initImageZoom() {
+    var drag = null, STEP = 1.4;
+    function openDialog() { return document.querySelector('.pm-modal[open]'); }
+    function parts(dlg) { return { img: dlg.querySelector('.pm-modal__img'), body: dlg.querySelector('.pm-modal__body') }; }
+    function ready(dlg) { if (!dlg.__zoomReady) { dlg.__zoomReady = true; dlg.addEventListener('close', function () { fit(dlg); }); } }
+    function fit(dlg) { var p = parts(dlg); dlg.classList.remove('is-zoomed'); dlg.__fitW = 0; if (p.img) p.img.style.width = ''; }
+    // zoom to width w; (ax, ay) is the screen point that stays put (default: the middle of the view)
+    function zoomTo(dlg, w, ax, ay) {
+      var p = parts(dlg); if (!p.img || !p.body) return;
+      ready(dlg);
+      if (!dlg.classList.contains('is-zoomed')) dlg.__fitW = p.img.getBoundingClientRect().width;
+      var fitW = dlg.__fitW, max = Math.max((p.img.naturalWidth || fitW) * 2, fitW * 4);
+      if (w <= fitW * 1.02) { fit(dlg); return; }
+      w = Math.min(w, max);
+      var r = p.img.getBoundingClientRect();
+      if (ax === undefined) { var c = dlg.classList.contains('is-zoomed') ? p.body.getBoundingClientRect() : r; ax = c.left + c.width / 2; ay = c.top + c.height / 2; }
+      var fx = (ax - r.left) / r.width, fy = (ay - r.top) / r.height;
+      dlg.classList.add('is-zoomed');
+      p.img.style.width = Math.round(w) + 'px';
+      var b = p.body.getBoundingClientRect();
+      p.body.scrollLeft = fx * p.img.offsetWidth - (ax - b.left);
+      p.body.scrollTop = fy * p.img.offsetHeight - (ay - b.top);
+    }
+    function current(dlg) { var p = parts(dlg); return p.img ? p.img.getBoundingClientRect().width : 0; }
+    document.addEventListener('click', function (e) {
+      // the end of a drag is not a click (and must not reach the click-outside-to-close)
+      if (drag && drag.moved) { e.stopPropagation(); e.preventDefault(); return; }
+      var img = e.target.closest && e.target.closest('.pm-modal__img');
+      if (!img) return;
+      var dlg = img.closest('.pm-modal');
+      if (!dlg) return;
+      if (dlg.classList.contains('is-zoomed')) { fit(dlg); return; }
+      zoomTo(dlg, Math.max(img.naturalWidth || 0, img.getBoundingClientRect().width * 2), e.clientX, e.clientY);
+    }, true);
+    document.addEventListener('keydown', function (e) {
+      var dlg = openDialog();
+      if (!dlg || !(e.ctrlKey || e.metaKey) || !parts(dlg).img) return;
+      if (e.key === '+' || e.key === '=') { e.preventDefault(); zoomTo(dlg, current(dlg) * STEP); }
+      else if (e.key === '-' || e.key === '_') { e.preventDefault(); zoomTo(dlg, current(dlg) / STEP); }
+      else if (e.key === '0') { e.preventDefault(); fit(dlg); }
+    });
+    document.addEventListener('wheel', function (e) {                   // Ctrl + wheel, and a trackpad pinch
+      var dlg = openDialog();
+      if (!dlg || !e.ctrlKey || !parts(dlg).img) return;
+      e.preventDefault();
+      zoomTo(dlg, current(dlg) * Math.exp(-e.deltaY * 0.004), e.clientX, e.clientY);
+    }, { passive: false });
+    document.addEventListener('pointerdown', function (e) {             // mouse drag pans; touch scrolls natively
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      var body = e.target.closest && e.target.closest('.pm-modal.is-zoomed .pm-modal__body');
+      if (!body) return;
+      drag = { body: body, x: e.clientX, y: e.clientY, sl: body.scrollLeft, st: body.scrollTop, moved: false };
+      e.preventDefault();
+    });
+    document.addEventListener('pointermove', function (e) {
+      if (!drag || drag.done) return;
+      var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (Math.abs(dx) + Math.abs(dy) > 4) { drag.moved = true; drag.body.classList.add('is-dragging'); }
+      drag.body.scrollLeft = drag.sl - dx; drag.body.scrollTop = drag.st - dy;
+    });
+    document.addEventListener('pointerup', function () {
+      if (!drag) return;
+      drag.body.classList.remove('is-dragging'); drag.done = true;
+      var d = drag; setTimeout(function () { if (drag === d) drag = null; }, 0);   // the click that follows still sees .moved
+    });
+  }
+
   function initImageModal() {
     document.addEventListener('click', function (e) {
       var btn = e.target.closest && e.target.closest('[data-modal-src]');
@@ -500,8 +824,10 @@ window.pmShell = (function () {
     initMagnetic();
     initMailtoCopy();
     initBackdropLines();
-    initTitlePop();
+    initTitleBuild();
+    initSerifTitles();
     initImageModal();
+    initImageZoom();
     // the shared stat bar's figures pop in when it scrolls into view; a page that fills them later marks the bar
     // data-num-pop="manual" and calls pmShell.numPop(bar, '.pm-stat__value') once the numbers are in
     document.querySelectorAll('.pm-page .pm-stat-bar:not([data-num-pop="manual"])').forEach(function (bar) { numPop(bar, '.pm-stat__value'); });
@@ -512,5 +838,5 @@ window.pmShell = (function () {
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
 
-  return { init: init, rand: rand, mixColor: mixColor, numPop: numPop, colorSlots: colorSlots, openImage: openImage };
+  return { init: init, rand: rand, mixColor: mixColor, numPop: numPop, colorSlots: colorSlots, openImage: openImage, buildTitle: buildTitle };
 })();
