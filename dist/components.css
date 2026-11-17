@@ -195,7 +195,7 @@
 
   /* ---- Step ---- */
   ol.pm-steps, ul.pm-checks { list-style: none; margin: 0; padding: 0; }
-  .pm-step { --_num: var(--pm-step-num-size); display: flex; gap: var(--pm-space-6); align-items: flex-start; position: relative; padding-bottom: var(--pm-space-12); }
+  .pm-step { --_num: var(--pm-step-num-size); display: flex; gap: var(--pm-space-6); align-items: baseline;   /* the title sits on the number's baseline */ position: relative; padding-bottom: var(--pm-space-12); }
   .pm-step:last-child { padding-bottom: 0; }
   .pm-step__line {
     position: absolute; left: calc(var(--_num) / 2 - 1px); top: var(--_num); bottom: 0;
@@ -571,7 +571,16 @@
   .pm-modal::backdrop { background: var(--pm-color-surface-scrim-strong); }
   .pm-modal__body { position: relative; display: flex; justify-content: center; }
   /* the image box matches the picture (no letterboxing), so its rounded corners and any entrance effect sit on its real edge */
-  .pm-modal__img { display: block; width: auto; max-width: 100%; height: auto; max-height: 82vh; border-radius: var(--pm-radius-md); }
+  .pm-modal__img { display: block; width: auto; max-width: 100%; height: auto; max-height: 82vh; border-radius: var(--pm-radius-md); cursor: zoom-in; }
+  /* image modal, fitted: only as wide as the picture, so the close button sits just above the picture's corner */
+  .pm-modal:has(.pm-modal__img):not(.is-zoomed) { width: fit-content; max-width: calc(100% - 2 * var(--pm-space-8)); }
+  .pm-modal:has(.pm-modal__img) { padding-top: calc(var(--pm-layout-target-min) + var(--pm-space-2)); }
+  /* zoomed (shell.js): the picture at full size in a scrolling frame */
+  .pm-modal.is-zoomed { width: min(1400px, 100% - 2 * var(--pm-space-8)); }
+  .pm-modal.is-zoomed .pm-modal__body { display: block; height: 82vh; overflow: auto; overscroll-behavior: contain; border-radius: var(--pm-radius-md); cursor: grab; touch-action: pan-x pan-y pinch-zoom; }
+  .pm-modal.is-zoomed .pm-modal__body.is-dragging { cursor: grabbing; user-select: none; }
+  .pm-modal.is-zoomed .pm-modal__img { max-width: none; max-height: none; height: auto; margin: 0 auto; cursor: zoom-out; border-radius: 0; }
+  .pm-modal.is-zoomed .pm-modal__body.is-dragging .pm-modal__img { cursor: grabbing; }
   .pm-modal__close {
     position: absolute;
     top: 0;
@@ -612,6 +621,8 @@
   :root:has(.pm-modal[open]) { overflow: hidden; }
   @media (max-width: 860px) {
     .pm-modal { width: calc(100% - 2 * var(--pm-space-4)); }
+    .pm-modal:has(.pm-modal__img):not(.is-zoomed) { max-width: calc(100% - 2 * var(--pm-space-4)); }
+    .pm-modal.is-zoomed { width: calc(100% - 2 * var(--pm-space-4)); }
     .pm-modal__panel { padding: var(--pm-space-5); }
   }
   @media (prefers-reduced-motion: no-preference) {

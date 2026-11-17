@@ -2,6 +2,14 @@
 
 Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.md`.
 
+## v0.8.0 (2026-11-16)
+
+- **Title build-up (visible change, replaces the title pop-in):** every `h1` in `.pm-page` is built word by word in grayscale dots and lines, then each word fades in. Add `pm-title-pending` in the `<head>` boot script (new version in `docs/shell.md`) so the title is hidden until the build starts. `<h1 data-title-build="manual">` with `pmShell.buildTitle(h1, options)` for pages that start it themselves; `data-title-build="off"` to skip. **Breaking** for pages that styled `.pm-title-pop` or its `.pm-num-pop__word` spans in titles: those are no longer added to titles.
+- **Section titles, sans to serif (new):** `<body data-serif-reveal>` switches each visible `h2` in `<main>` from sans to serif, letter by letter, as it scrolls in, with small random dotted marks at the ends.
+- **Image modal zoom (new):** click or tap, Ctrl +/- (Cmd on a Mac), Ctrl + scroll or pinch to zoom the picture; drag or swipe to move around; Escape or close resets. The fitted dialog is only as wide as the picture, so the close button sits just above its corner.
+- **Steps (visible change):** `.pm-step` aligns on the baseline, so a step's title sits on the baseline of its number instead of the circle's top.
+- Tried on the portfolio first (title build-up and section titles since 2026-11-16, zoom and step alignment the same day).
+
 ## v0.7.0 (2026-11-16)
 
 - **Still backdrop (visible change):** the glows no longer drift. Each `[data-blob-group]` is placed once per page load at a random offset, size and strength inside its `data-*` ranges (the middle of them with reduced motion). `data-dur-min` / `data-dur-max` are no longer read; `group.blobState` still gives the placement.

@@ -162,3 +162,11 @@ Alex: "I don't think dynamic drawing makes sense anymore." The line canvas redre
 - **Values stay raw:** like the rest of the backdrop (2026-11-12), the line pitch, dash lengths, fade stops and strengths were tuned by eye on the portfolio and are not tokens.
 - Tried first in the portfolio (Home, then every page) before moving here.
 
+## 2026-11-16: Title build-up, serif section titles, modal zoom, step baseline (v0.8.0)
+Alex asked for the Lab tools to be treated the same way as the rest of the portfolio. These four were portfolio-only code, so they move here and every product shares one copy.
+- **Title build-up replaces the pop-in:** the drawing language (dots, traced lines, handles) is the one already used for the portfolio's AI field, so titles and tools read as one system. Grayscale and at half strength so it never competes with the brand glows.
+- **Serif section titles are opt-in** (`data-serif-reveal`): they suit long reading pages; a page with one or two headings gains little.
+- **Zoom lives in the modal** because the fitted picture made diagrams unreadable, and browser zoom would scale the whole page instead.
+- **Steps on the baseline:** the title read as floating above its number when aligned to the circle's top.
+- Values (timings, dot spacing, mark sizes) were tuned by eye on the portfolio and stay raw, like the backdrop.
+

@@ -437,9 +437,9 @@
   }
 
   /* ---- Type motion ----
-     Number and title pop-in, adapted from transitions.dev "Number pop-in": each character rises from below, pulls back
-     and springs into place past full size, staggered left to right. shell.js splits page titles (every h1 in .pm-page)
-     into words and characters and adds .is-animating; a product can do the same for any figure (pmShell.numPop). */
+     Number pop-in, adapted from transitions.dev "Number pop-in": each character rises from below, pulls back and
+     springs into place past full size, staggered left to right. shell.js plays it on the .pm-stat-bar figures, and a
+     product can do the same for any figure (pmShell.numPop). Page titles no longer use it (title build-up, below). */
   .pm-num-pop {
     --np-dur: 600ms;
     --np-stagger: 40ms;
@@ -481,9 +481,45 @@
     .pm-num-pop .pm-num-pop__ch { opacity: 1 }
     .pm-num-pop.is-animating .pm-num-pop__ch { animation: none }
   }
-  /* titles: words stay whole so lines only break between them; the older word-rise and fade-up title entrances are off */
-  .pm-title-pop.fade-in, .pm-title-pop .split-word { animation: none; opacity: 1; transform: none; }
-  .pm-title-pop .pm-num-pop__word { white-space: nowrap; }
+
+  /* ---- Page title build-up (shell.js initTitleBuild / pmShell.buildTitle) ----
+     Grayscale drawing (every colour from the text tokens, so both themes follow) at half strength; the real words come
+     in at full. <html class="pm-title-pending">, set in the <head> boot script, hides the title before first paint;
+     if shell.js never runs, the title shows after 3s anyway (the failsafe animation also replaces any title entrance
+     animation while it waits). */
+  :root {
+    --pm-tb-line: color-mix(in srgb, var(--pm-color-text-tertiary) 80%, transparent);   /* dotted lines and guides */
+    --pm-tb-strong: var(--pm-color-text-primary);                                       /* drawing heads, caps, handles, lit dots */
+    --pm-tb-ink: color-mix(in srgb, var(--pm-color-text-primary) 18%, transparent);     /* the resting dot field */
+  }
+  .pm-title-pending .pm-page h1:not([data-title-build="off"]) { opacity: 0; animation: pm-title-failsafe 0s linear 3s forwards; }
+  @keyframes pm-title-failsafe { to { opacity: 1; transform: none; } }
+  .pm-title-word { display: inline-block; }
+  .pm-tb { position: absolute; z-index: 2147483000; pointer-events: none; opacity: .5; }
+  .pm-tb__svg { position: absolute; left: 0; top: 0; overflow: visible; }
+  .pm-tb__dot { fill: var(--pm-tb-ink); }
+  .pm-tb__dot.is-lit { fill: var(--pm-tb-strong); }
+  .pm-tb__wire { fill: none; stroke: var(--pm-tb-line); stroke-width: 2.1px; stroke-linecap: round; stroke-linejoin: round; }
+  .pm-tb__guide { fill: none; stroke: var(--pm-tb-line); stroke-width: 1.4; stroke-linecap: round; }
+  .pm-tb__guide--dashed { stroke-dasharray: 0 5; }
+  .pm-tb__head { fill: var(--pm-tb-strong); }
+  .pm-tb__handle { fill: var(--pm-color-surface-card); stroke: var(--pm-tb-strong); stroke-width: 1; }
+  .pm-tb__label { font-family: var(--pm-font-family-mono); font-size: 8px; fill: var(--pm-color-text-tertiary); letter-spacing: .03em; }
+
+  /* ---- Section titles, sans to serif (shell.js initSerifTitles, <body data-serif-reveal>) ----
+     Each letter holds its serif glyph (.pm-sr-s, which sets the width) and a sans copy on top (::before); .is-on swaps
+     them at once. The marks at each end are the title build's drawing language in miniature. */
+  .pm-sr-word { white-space: nowrap; }
+  .pm-sr-ch { position: relative; display: inline-block; }
+  .pm-sr-ch::before { content: attr(data-ch); position: absolute; left: 50%; top: 0; transform: translateX(-50%); font-family: var(--pm-font-family-sans); font-weight: var(--pm-font-weight-regular, 400); opacity: 0; pointer-events: none; }
+  .pm-sr-armed { position: relative; }
+  .pm-sr-armed .pm-sr-ch .pm-sr-s { opacity: 0; }
+  .pm-sr-armed .pm-sr-ch::before { opacity: 1; }
+  .pm-sr-armed .pm-sr-ch.is-on .pm-sr-s { opacity: 1; }
+  .pm-sr-armed .pm-sr-ch.is-on::before { opacity: 0; }
+  .pm-sr-marks { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; opacity: .7; }
+  .pm-sr-mark-line { fill: none; stroke: var(--pm-color-text-tertiary); stroke-width: 2.1; stroke-linecap: round; stroke-dasharray: 0 4.5; }
+  .pm-sr-mark-dot { fill: var(--pm-tb-strong); }
 
   /* stat values and step numbers whose color follows the glows (pmShell.colorSlots) fade between colors */
   [data-color-slot] { transition: color 5s ease-in-out; }
