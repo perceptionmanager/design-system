@@ -495,7 +495,7 @@
   .pm-title-pending .pm-page h1:not([data-title-build="off"]) { opacity: 0; animation: pm-title-failsafe 0s linear 3s forwards; }
   @keyframes pm-title-failsafe { to { opacity: 1; transform: none; } }
   .pm-title-word { display: inline-block; }
-  .pm-tb { position: absolute; z-index: 2147483000; pointer-events: none; opacity: .5; }
+  .pm-tb { position: absolute; z-index: calc(var(--pm-z-nav) - 3);   /* under the fixed header and the sticky Lab and case-study bars, so a scrolled page never shows the drawing on top of them */ pointer-events: none; opacity: .5; }
   .pm-tb__svg { position: absolute; left: 0; top: 0; overflow: visible; }
   .pm-tb__dot { fill: var(--pm-tb-ink); }
   .pm-tb__dot.is-lit { fill: var(--pm-tb-strong); }
