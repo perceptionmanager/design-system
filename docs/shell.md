@@ -98,6 +98,8 @@ Replace `ICONS` with the product's copy of the icon sprite, and `SITE` with the 
 
 **Footer:** every product shows the same standard footer, written once in `shell.js`: the copyright with the current year, and "Built with Figma and Claude, source on GitHub, deployed on Vercel. Validated by human." with the tool logos. Put an empty `<footer class="pm-site-footer" data-pm-footer></footer>` on the page and `shell.js` fills it; the logos are inlined, so the footer needs no sprite copy. To change the footer, change `initFooter` in `components/shell.js` and every product picks it up with its next design system update.
 
+A product that relies on another service can add it with `data-pm-footer-tools`: `<footer class="pm-site-footer" data-pm-footer data-pm-footer-tools="google-cloud"></footer>` reads "Built with Figma, Claude and Google Cloud, …". `google-cloud` is the only extra tool so far; add others in `initFooter` and their logo to `logos/logos.svg`.
+
 ## Compact header (Lab tools)
 
 The Lab tools show only the name, the credential, a "Let's connect" button and the theme switch: no nav or menu, and so no mobile menu markup. The name is plain text. The button stays on phones and turns icon-only below 600px; its label stays available to screen readers.
