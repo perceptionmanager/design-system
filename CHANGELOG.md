@@ -2,6 +2,10 @@
 
 Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.md`.
 
+## v0.10.0 (2026-11-17)
+
+- **Icons (new):** `eye`, `skip-forward`, `file-text`, `send` and `circle-x` (19 icons in total). Drawn from Lucide (ISC license) and kept to the set's rules: 24px grid, 2px stroke, round caps and joins, `currentColor`. First used by the job finder's status dropdown (Reviewed, Skipped, Resume ready, Applied, Closed by me; New uses `sparkle`).
+
 ## v0.9.0 (2026-11-17)
 
 - **Footer, extra tools (new):** `<footer data-pm-footer data-pm-footer-tools="google-cloud">` adds Google Cloud to the standard footer: "Built with Figma, Claude and Google Cloud, source on GitHub, deployed on Vercel. Validated by human." Products that don't set the attribute keep the footer as it was. First used by the job-finder, which stores resumes in Google Drive through Google Cloud.
