@@ -90,3 +90,8 @@ export const Backdrop = {
   ${header('Home')}
 </div>`,
 };
+
+export const FooterWithGoogleCloud = {
+  name: 'Footer, with Google Cloud',
+  render: () => `<div class="pm-page">${footer.replace('Figma and <svg class="pm-site-footer__logo" aria-hidden="true"><use href="#pm-logo-claude"/></svg> Claude,', 'Figma, <svg class="pm-site-footer__logo" aria-hidden="true"><use href="#pm-logo-claude"/></svg> Claude and <svg class="pm-site-footer__logo" aria-hidden="true"><use href="#pm-logo-googlecloud"/></svg> Google Cloud,')}</div>`,
+};

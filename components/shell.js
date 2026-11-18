@@ -688,9 +688,14 @@ window.pmShell = (function () {
   function initFooter() {
     document.querySelectorAll('footer[data-pm-footer]').forEach(function (f) {
       f.classList.add('pm-site-footer');
+      // optional extra tools a product uses: <footer data-pm-footer data-pm-footer-tools="google-cloud">
+      var tools = (f.getAttribute('data-pm-footer-tools') || '').split(/\s+/);
+      var built = tools.indexOf('google-cloud') >= 0
+        ? footerLogo('figma') + ' Figma, ' + footerLogo('claude') + ' Claude and ' + footerLogo('googlecloud') + ' Google Cloud'
+        : footerLogo('figma') + ' Figma and ' + footerLogo('claude') + ' Claude';
       f.innerHTML = '<div class="pm-site-footer__inner">' +
         '<span>\u00a9 Alex Grinyayev \u00b7 ' + new Date().getFullYear() + '</span>' +
-        '<span>Built with ' + footerLogo('figma') + ' Figma and ' + footerLogo('claude') + ' Claude, source on ' + footerLogo('github') +
+        '<span>Built with ' + built + ', source on ' + footerLogo('github') +
         ' GitHub, deployed on ' + footerLogo('vercel') + ' Vercel. Validated by ' + footerLogo('human', 'pm-site-footer__logo--human') + ' human.</span>' +
         '</div>';
     });

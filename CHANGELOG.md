@@ -2,6 +2,11 @@
 
 Breaking changes are marked **Breaking**. Products pin a tag; see `CONTRIBUTING.md`.
 
+## v0.9.0 (2026-11-17)
+
+- **Footer, extra tools (new):** `<footer data-pm-footer data-pm-footer-tools="google-cloud">` adds Google Cloud to the standard footer: "Built with Figma, Claude and Google Cloud, source on GitHub, deployed on Vercel. Validated by human." Products that don't set the attribute keep the footer as it was. First used by the job-finder, which stores resumes in Google Drive through Google Cloud.
+- **Logos:** `pm-logo-googlecloud` in `dist/logos.svg` (Simple Icons artwork, single color like the others).
+
 ## v0.8.1 (2026-11-16)
 
 - **Fix:** the title build-up drawing (`.pm-tb`) sat above everything, so on a short screen, where the page is scrolled while the title is still being drawn, the dots and lines showed on top of the fixed site header. It now sits under the header and the sticky Lab and case-study bars (`calc(var(--pm-z-nav) - 3)`).
